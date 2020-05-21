@@ -10,31 +10,31 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * InlineResponse200
+ * InlineResponse2001
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T17:34:38.187Z[GMT]")
-public class InlineResponse200   {
-  @JsonProperty("userid")
-  private Integer userid = null;
+public class InlineResponse2001   {
+  @JsonProperty("userId")
+  private Integer userId = null;
 
-  public InlineResponse200 userid(Integer userid) {
-    this.userid = userid;
+  public InlineResponse2001 userId(Integer userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get userid
-   * @return userid
+   * Get userId
+   * @return userId
   **/
   @ApiModelProperty(value = "")
   
-    public Integer getUserid() {
-    return userid;
+    public Integer getUserId() {
+    return userId;
   }
 
-  public void setUserid(Integer userid) {
-    this.userid = userid;
+  public void setUserId(Integer userId) {
+    this.userId = userId;
   }
 
 
@@ -46,21 +46,21 @@ public class InlineResponse200   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineResponse200 inlineResponse200 = (InlineResponse200) o;
-    return Objects.equals(this.userid, inlineResponse200.userid);
+    InlineResponse2001 inlineResponse2001 = (InlineResponse2001) o;
+    return Objects.equals(this.userId, inlineResponse2001.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userid);
+    return Objects.hash(userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class InlineResponse200 {\n");
+    sb.append("class InlineResponse2001 {\n");
     
-    sb.append("    userid: ").append(toIndentedString(userid)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Body1;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.InlineResponse2002;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T16:27:48.077Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T17:34:38.187Z[GMT]")
 @Controller
 public class LoginApiController implements LoginApi {
 
@@ -39,19 +39,19 @@ public class LoginApiController implements LoginApi {
         this.request = request;
     }
 
-    public ResponseEntity<InlineResponse200> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
+    public ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<InlineResponse200>(objectMapper.readValue("{\n  \"tokenType\" : \"tokenType\",\n  \"userId\" : \"userId\",\n  \"tokenValue\" : \"tokenValue\"\n}", InlineResponse200.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<InlineResponse2002>(objectMapper.readValue("{\n  \"tokenType\" : \"tokenType\",\n  \"userId\" : \"userId\",\n  \"tokenValue\" : \"tokenValue\"\n}", InlineResponse2002.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<InlineResponse200>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<InlineResponse2002>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<InlineResponse200>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<InlineResponse2002>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
