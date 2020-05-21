@@ -5,42 +5,43 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.MinimalUser;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Body1
+ * ExtendedUser
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T17:34:38.187Z[GMT]")
-public class Body1   {
-  @JsonProperty("username")
-  private String username = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+public class ExtendedUser extends MinimalUser  {
+  @JsonProperty("email")
+  private String email = null;
 
   @JsonProperty("password")
   private String password = null;
 
-  public Body1 username(String username) {
-    this.username = username;
+  public ExtendedUser email(String email) {
+    this.email = email;
     return this;
   }
 
   /**
-   * Get username
-   * @return username
+   * Get email
+   * @return email
   **/
   @ApiModelProperty(value = "")
   
-    public String getUsername() {
-    return username;
+    public String getEmail() {
+    return email;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
-  public Body1 password(String password) {
+  public ExtendedUser password(String password) {
     this.password = password;
     return this;
   }
@@ -68,22 +69,23 @@ public class Body1   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body1 body1 = (Body1) o;
-    return Objects.equals(this.username, body1.username) &&
-        Objects.equals(this.password, body1.password);
+    ExtendedUser extendedUser = (ExtendedUser) o;
+    return Objects.equals(this.email, extendedUser.email) &&
+        Objects.equals(this.password, extendedUser.password) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password);
+    return Objects.hash(email, password, super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body1 {\n");
-    
-    sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("class ExtendedUser {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();

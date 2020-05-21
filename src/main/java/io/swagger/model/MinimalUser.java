@@ -10,62 +10,18 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * User
+ * MinimalUser
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T17:34:38.187Z[GMT]")
-public class User   {
-  @JsonProperty("email")
-  private String email = null;
-
-  @JsonProperty("password")
-  private String password = null;
-
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+public class MinimalUser   {
   @JsonProperty("userId")
   private Integer userId = null;
 
   @JsonProperty("username")
   private String username = null;
 
-  public User email(String email) {
-    this.email = email;
-    return this;
-  }
-
-  /**
-   * Get email
-   * @return email
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public User password(String password) {
-    this.password = password;
-    return this;
-  }
-
-  /**
-   * Get password
-   * @return password
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public User userId(Integer userId) {
+  public MinimalUser userId(Integer userId) {
     this.userId = userId;
     return this;
   }
@@ -84,7 +40,7 @@ public class User   {
     this.userId = userId;
   }
 
-  public User username(String username) {
+  public MinimalUser username(String username) {
     this.username = username;
     return this;
   }
@@ -112,25 +68,21 @@ public class User   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    User user = (User) o;
-    return Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password) &&
-        Objects.equals(this.userId, user.userId) &&
-        Objects.equals(this.username, user.username);
+    MinimalUser minimalUser = (MinimalUser) o;
+    return Objects.equals(this.userId, minimalUser.userId) &&
+        Objects.equals(this.username, minimalUser.username);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, password, userId, username);
+    return Objects.hash(userId, username);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class User {\n");
+    sb.append("class MinimalUser {\n");
     
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("}");

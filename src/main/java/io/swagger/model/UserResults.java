@@ -2,6 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 import io.swagger.annotations.ApiModel;
+import io.swagger.model.MinimalUser;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +14,8 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "A users list.")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T16:27:48.077Z[GMT]")
-public class UserResults extends ArrayList<Integer>  {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+public class UserResults extends ArrayList<MinimalUser>  {
 
   @Override
   public boolean equals(java.lang.Object o) {
