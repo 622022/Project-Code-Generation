@@ -10,18 +10,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * MinimalUser
+ * InlineResponse2001
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
-public class MinimalUser   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
+public class InlineResponse2001   {
   @JsonProperty("userId")
   private Integer userId = null;
 
-  @JsonProperty("username")
-  private String username = null;
-
-  public MinimalUser userId(Integer userId) {
+  public InlineResponse2001 userId(Integer userId) {
     this.userId = userId;
     return this;
   }
@@ -40,25 +37,6 @@ public class MinimalUser   {
     this.userId = userId;
   }
 
-  public MinimalUser username(String username) {
-    this.username = username;
-    return this;
-  }
-
-  /**
-   * Get username
-   * @return username
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -68,23 +46,21 @@ public class MinimalUser   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MinimalUser minimalUser = (MinimalUser) o;
-    return Objects.equals(this.userId, minimalUser.userId) &&
-        Objects.equals(this.username, minimalUser.username);
+    InlineResponse2001 inlineResponse2001 = (InlineResponse2001) o;
+    return Objects.equals(this.userId, inlineResponse2001.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, username);
+    return Objects.hash(userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MinimalUser {\n");
+    sb.append("class InlineResponse2001 {\n");
     
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -10,32 +10,53 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Body
+ * Body1
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
-public class Body   {
-  @JsonProperty("accountType")
-  private String accountType = null;
+public class Body1   {
+  @JsonProperty("username")
+  private String username = null;
 
-  public Body accountType(String accountType) {
-    this.accountType = accountType;
+  @JsonProperty("password")
+  private String password = null;
+
+  public Body1 username(String username) {
+    this.username = username;
     return this;
   }
 
   /**
-   * Get accountType
-   * @return accountType
+   * Get username
+   * @return username
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public String getAccountType() {
-    return accountType;
+  @ApiModelProperty(value = "")
+  
+    public String getUsername() {
+    return username;
   }
 
-  public void setAccountType(String accountType) {
-    this.accountType = accountType;
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public Body1 password(String password) {
+    this.password = password;
+    return this;
+  }
+
+  /**
+   * Get password
+   * @return password
+  **/
+  @ApiModelProperty(value = "")
+  
+    public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
 
@@ -47,21 +68,23 @@ public class Body   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body body = (Body) o;
-    return Objects.equals(this.accountType, body.accountType);
+    Body1 body1 = (Body1) o;
+    return Objects.equals(this.username, body1.username) &&
+        Objects.equals(this.password, body1.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accountType);
+    return Objects.hash(username, password);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body {\n");
+    sb.append("class Body1 {\n");
     
-    sb.append("    accountType: ").append(toIndentedString(accountType)).append("\n");
+    sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();
   }

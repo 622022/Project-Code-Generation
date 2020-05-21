@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * Transaction
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class Transaction   {
   @JsonProperty("id")
   private Integer id = null;
@@ -29,9 +29,6 @@ public class Transaction   {
 
   @JsonProperty("Amount")
   private Double amount = null;
-
-  @JsonProperty("Timestamp")
-  private String timestamp = null;
 
   @JsonProperty("Performedby")
   private Integer performedby = null;
@@ -131,25 +128,6 @@ public class Transaction   {
     this.amount = amount;
   }
 
-  public Transaction timestamp(String timestamp) {
-    this.timestamp = timestamp;
-    return this;
-  }
-
-  /**
-   * Get timestamp
-   * @return timestamp
-  **/
-  @ApiModelProperty(value = "")
-  
-    public String getTimestamp() {
-    return timestamp;
-  }
-
-  public void setTimestamp(String timestamp) {
-    this.timestamp = timestamp;
-  }
-
   public Transaction performedby(Integer performedby) {
     this.performedby = performedby;
     return this;
@@ -184,13 +162,12 @@ public class Transaction   {
         Objects.equals(this.receiver, transaction.receiver) &&
         Objects.equals(this.receiverName, transaction.receiverName) &&
         Objects.equals(this.amount, transaction.amount) &&
-        Objects.equals(this.timestamp, transaction.timestamp) &&
         Objects.equals(this.performedby, transaction.performedby);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, sender, receiver, receiverName, amount, timestamp, performedby);
+    return Objects.hash(id, sender, receiver, receiverName, amount, performedby);
   }
 
   @Override
@@ -203,7 +180,6 @@ public class Transaction   {
     sb.append("    receiver: ").append(toIndentedString(receiver)).append("\n");
     sb.append("    receiverName: ").append(toIndentedString(receiverName)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("    performedby: ").append(toIndentedString(performedby)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -5,24 +5,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.MinimalUser;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ExtendedUser
+ * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
-public class ExtendedUser extends MinimalUser  {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
+public class User   {
   @JsonProperty("email")
   private String email = null;
 
   @JsonProperty("password")
   private String password = null;
 
-  public ExtendedUser email(String email) {
+  @JsonProperty("userId")
+  private Integer userId = null;
+
+  @JsonProperty("username")
+  private String username = null;
+
+  public User email(String email) {
     this.email = email;
     return this;
   }
@@ -41,7 +46,7 @@ public class ExtendedUser extends MinimalUser  {
     this.email = email;
   }
 
-  public ExtendedUser password(String password) {
+  public User password(String password) {
     this.password = password;
     return this;
   }
@@ -60,6 +65,44 @@ public class ExtendedUser extends MinimalUser  {
     this.password = password;
   }
 
+  public User userId(Integer userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  /**
+   * Get userId
+   * @return userId
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Integer getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
+
+  public User username(String username) {
+    this.username = username;
+    return this;
+  }
+
+  /**
+   * Get username
+   * @return username
+  **/
+  @ApiModelProperty(value = "")
+  
+    public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -69,24 +112,27 @@ public class ExtendedUser extends MinimalUser  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExtendedUser extendedUser = (ExtendedUser) o;
-    return Objects.equals(this.email, extendedUser.email) &&
-        Objects.equals(this.password, extendedUser.password) &&
-        super.equals(o);
+    User user = (User) o;
+    return Objects.equals(this.email, user.email) &&
+        Objects.equals(this.password, user.password) &&
+        Objects.equals(this.userId, user.userId) &&
+        Objects.equals(this.username, user.username);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, password, super.hashCode());
+    return Objects.hash(email, password, userId, username);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExtendedUser {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("class User {\n");
+    
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("}");
     return sb.toString();
   }

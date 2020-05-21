@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.MinimalUser;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,7 +14,7 @@ import javax.validation.constraints.*;
  * AccountObject
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class AccountObject   {
   @JsonProperty("IBAN")
   private String IBAN = null;
@@ -23,8 +22,8 @@ public class AccountObject   {
   @JsonProperty("amount")
   private Integer amount = null;
 
-  @JsonProperty("owner")
-  private MinimalUser owner = null;
+  @JsonProperty("ownerId")
+  private Integer ownerId = null;
 
   /**
    * Gets or Sets type
@@ -95,6 +94,12 @@ public class AccountObject   {
   @JsonProperty("transactionLimit")
   private Double transactionLimit = null;
 
+  @JsonProperty("dayLimit")
+  private Integer dayLimit = null;
+
+  @JsonProperty("absolutelimit")
+  private Integer absolutelimit = null;
+
   public AccountObject IBAN(String IBAN) {
     this.IBAN = IBAN;
     return this;
@@ -133,24 +138,23 @@ public class AccountObject   {
     this.amount = amount;
   }
 
-  public AccountObject owner(MinimalUser owner) {
-    this.owner = owner;
+  public AccountObject ownerId(Integer ownerId) {
+    this.ownerId = ownerId;
     return this;
   }
 
   /**
-   * Get owner
-   * @return owner
+   * Get ownerId
+   * @return ownerId
   **/
   @ApiModelProperty(value = "")
   
-    @Valid
-    public MinimalUser getOwner() {
-    return owner;
+    public Integer getOwnerId() {
+    return ownerId;
   }
 
-  public void setOwner(MinimalUser owner) {
-    this.owner = owner;
+  public void setOwnerId(Integer ownerId) {
+    this.ownerId = ownerId;
   }
 
   public AccountObject type(TypeEnum type) {
@@ -210,6 +214,44 @@ public class AccountObject   {
     this.transactionLimit = transactionLimit;
   }
 
+  public AccountObject dayLimit(Integer dayLimit) {
+    this.dayLimit = dayLimit;
+    return this;
+  }
+
+  /**
+   * Get dayLimit
+   * @return dayLimit
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Integer getDayLimit() {
+    return dayLimit;
+  }
+
+  public void setDayLimit(Integer dayLimit) {
+    this.dayLimit = dayLimit;
+  }
+
+  public AccountObject absolutelimit(Integer absolutelimit) {
+    this.absolutelimit = absolutelimit;
+    return this;
+  }
+
+  /**
+   * Get absolutelimit
+   * @return absolutelimit
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Integer getAbsolutelimit() {
+    return absolutelimit;
+  }
+
+  public void setAbsolutelimit(Integer absolutelimit) {
+    this.absolutelimit = absolutelimit;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -222,15 +264,17 @@ public class AccountObject   {
     AccountObject accountObject = (AccountObject) o;
     return Objects.equals(this.IBAN, accountObject.IBAN) &&
         Objects.equals(this.amount, accountObject.amount) &&
-        Objects.equals(this.owner, accountObject.owner) &&
+        Objects.equals(this.ownerId, accountObject.ownerId) &&
         Objects.equals(this.type, accountObject.type) &&
         Objects.equals(this.status, accountObject.status) &&
-        Objects.equals(this.transactionLimit, accountObject.transactionLimit);
+        Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
+        Objects.equals(this.dayLimit, accountObject.dayLimit) &&
+        Objects.equals(this.absolutelimit, accountObject.absolutelimit);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(IBAN, amount, owner, type, status, transactionLimit);
+    return Objects.hash(IBAN, amount, ownerId, type, status, transactionLimit, dayLimit, absolutelimit);
   }
 
   @Override
@@ -240,10 +284,12 @@ public class AccountObject   {
     
     sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    owner: ").append(toIndentedString(owner)).append("\n");
+    sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    transactionLimit: ").append(toIndentedString(transactionLimit)).append("\n");
+    sb.append("    dayLimit: ").append(toIndentedString(dayLimit)).append("\n");
+    sb.append("    absolutelimit: ").append(toIndentedString(absolutelimit)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -6,7 +6,6 @@
 package io.swagger.api;
 
 import io.swagger.model.Transaction;
-import io.swagger.model.TransactionResults;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,29 +23,32 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "transactions", description = "the transactions API")
 public interface TransactionsApi {
 
-    @ApiOperation(value = "transfer money.", nickname = "createTransaction", notes = "transfer money to a specified account.", authorizations = {
+    @ApiOperation(value = "transfer money.", nickname = "createTransaction", notes = "transfer money to a specified account.", response = Transaction.class, authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Transactions", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful creation") })
+        @ApiResponse(code = 200, message = "successful creation", response = Transaction.class) })
     @RequestMapping(value = "/transactions",
+        produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
+    ResponseEntity<Transaction> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
 );
 
 
-    @ApiOperation(value = "Get transactions.", nickname = "getTransactions", notes = "get transactions with the ability to get specific ones using filters.", response = TransactionResults.class, authorizations = {
+    @ApiOperation(value = "Get transactions.", nickname = "getTransactions", notes = "get transactions with the ability to get specific ones using filters.", response = Transaction.class, responseContainer = "List", authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Transactions", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation.", response = TransactionResults.class) })
+        @ApiResponse(code = 200, message = "successful operation.", response = Transaction.class, responseContainer = "List") })
     @RequestMapping(value = "/transactions",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<TransactionResults> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String IBAN
+    ResponseEntity<List<Transaction>> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String IBAN
+,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+,@ApiParam(value = "returns transaction(s) based on the reciever's name") @Valid @RequestParam(value = "reciever", required = false) String reciever
 ,@ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 );
 

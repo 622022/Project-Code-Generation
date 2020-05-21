@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "accounts", description = "the accounts API")
 public interface AccountsApi {
 
@@ -50,25 +50,29 @@ public interface AccountsApi {
 );
 
 
-    @ApiOperation(value = "Get accounts with their details", nickname = "getAllAccounts", notes = "Return account details", response = AccountObject.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get accounts with their details", nickname = "getAllAccounts", notes = "Get accounts with their details", response = AccountObject.class, responseContainer = "List", authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Accounts", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Account details", response = AccountObject.class, responseContainer = "List") })
     @RequestMapping(value = "/accounts",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "Limit the number of accounts to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
+    ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
+,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) String accountOwner
+,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
+,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 );
 
 
-    @ApiOperation(value = "returns an account", nickname = "getSpecificAccount", notes = "Return account details", response = AccountObject.class, authorizations = {
+    @ApiOperation(value = "get a specific account using IBAN.", nickname = "getSpecificAccount", notes = "Return account details", response = AccountObject.class, authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Accounts", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Account details", response = AccountObject.class) })
     @RequestMapping(value = "/accounts/{IBAN}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "get a specific account using IBAN.",required=true) @PathVariable("IBAN") String IBAN
+    ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN
 );
 
 }

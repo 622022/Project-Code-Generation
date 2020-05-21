@@ -7,8 +7,9 @@ package io.swagger.api;
 
 import io.swagger.model.AccountObject;
 import io.swagger.model.Body;
-import io.swagger.model.ExtendedUser;
-import io.swagger.model.UserResults;
+import io.swagger.model.InlineResponse200;
+import io.swagger.model.InlineResponse2001;
+import io.swagger.model.User;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,20 +27,32 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-17T12:46:50.867Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
-    @ApiOperation(value = "creates an account", nickname = "createUser", notes = "Creates an account for the user", response = AccountObject.class, authorizations = {
+    @ApiOperation(value = "creates an account", nickname = "createAccount", notes = "Creates an account for the user", response = AccountObject.class, authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Accounts", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the account that has been made for the user", response = AccountObject.class) })
+        @ApiResponse(code = 200, message = "the account that has been made for the user.", response = AccountObject.class) })
     @RequestMapping(value = "/users/{userId}/accounts",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<AccountObject> createUser(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") String userId
+    ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") String userId
 ,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
+);
+
+
+    @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = InlineResponse2001.class, authorizations = {
+        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "the user.", response = InlineResponse2001.class) })
+    @RequestMapping(value = "/users",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 );
 
 
@@ -53,16 +66,16 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Update user info.", nickname = "editUser", notes = "User(customer,employee) can update users.", response = ExtendedUser.class, authorizations = {
+    @ApiOperation(value = "Update user info.", nickname = "editUser", notes = "User(customer,employee) can update users.", response = User.class, authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the user info has been edited", response = ExtendedUser.class) })
+        @ApiResponse(code = 200, message = "the user info has been edited", response = User.class) })
     @RequestMapping(value = "/users/{userid}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ExtendedUser> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
-,@ApiParam(value = ""  )  @Valid @RequestBody ExtendedUser body
+    ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
+,@ApiParam(value = ""  )  @Valid @RequestBody User body
 );
 
 
@@ -77,14 +90,15 @@ public interface UsersApi {
 );
 
 
-    @ApiOperation(value = "Get users", nickname = "getAllUsers", notes = "Return all users", response = UserResults.class, authorizations = {
+    @ApiOperation(value = "Get users", nickname = "getAllUsers", notes = "Return all users", response = InlineResponse200.class, responseContainer = "List", authorizations = {
         @Authorization(value = "bearerAuth")    }, tags={ "Users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Users list.", response = UserResults.class) })
+        @ApiResponse(code = 200, message = "Users list.", response = InlineResponse200.class, responseContainer = "List") })
     @RequestMapping(value = "/users",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<UserResults> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
+    ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
+,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
 );
 
 }
