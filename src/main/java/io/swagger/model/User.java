@@ -15,11 +15,6 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class User   {
-  @JsonProperty("email")
-  private String email = null;
-
-  @JsonProperty("password")
-  private String password = null;
 
   @JsonProperty("userId")
   private Integer userId = null;
@@ -27,9 +22,22 @@ public class User   {
   @JsonProperty("username")
   private String username = null;
 
+  @JsonProperty("password")
+  private String password = null;
+
+  @JsonProperty("email")
+  private String email = null;
+
   public User email(String email) {
     this.email = email;
     return this;
+  }
+
+  public User(Integer userId, String username, String password,  String email) {
+    this.userId = userId;
+    this.username = username;
+    this.password = password;
+    this.email = email;
   }
 
   /**
