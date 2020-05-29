@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ import java.util.Map;
 @Controller
 public class UsersApiController implements UsersApi {
 
+    @Autowired
     private UserService userService;
 
     private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
@@ -114,7 +116,7 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<List<AccountObject>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-//    public ResponseEntity<List<InlineResponse200>>
+//    public ResponseEntity<List<InlineResponse200>> // swagger generated
     public ResponseEntity<List<User>>  getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
 ) {
@@ -129,14 +131,7 @@ public class UsersApiController implements UsersApi {
 //        }
 //        return new ResponseEntity<List<InlineResponse200>>(HttpStatus.NOT_IMPLEMENTED);
 
-//        List<User> userList = new ArrayList<>();
-////
-////        for (int i = 1; i < 6; i++) {
-////            User user = new User(i, "username_" + i, "password_" + i, "email_" + i);
-////            userList.add(user);
-////        }
-
-        return new ResponseEntity<List<User>>(userService.getAllUseras(), HttpStatus.OK);
+        return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 }

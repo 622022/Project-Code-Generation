@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -14,7 +16,12 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
+@Entity
 public class User   {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guitar_seq")
+  @SequenceGenerator(name = "guitar_seq", initialValue = 1231)
 
   @JsonProperty("userId")
   private Integer userId = null;
@@ -33,7 +40,10 @@ public class User   {
     return this;
   }
 
-  public User(Integer userId, String username, String password,  String email) {
+  public User() {
+  }
+
+  public User(Integer userId, String username, String password, String email) {
     this.userId = userId;
     this.username = username;
     this.password = password;
