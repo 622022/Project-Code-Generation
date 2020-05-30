@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -15,7 +17,10 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
+@Entity
 public class AccountObject   {
+
+  @Id
   @JsonProperty("IBAN")
   private String IBAN = null;
 
@@ -24,6 +29,20 @@ public class AccountObject   {
 
   @JsonProperty("ownerId")
   private Integer ownerId = null;
+
+  public AccountObject() {
+  }
+
+  public AccountObject(String IBAN, Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
+    this.IBAN = IBAN;
+    this.amount = amount;
+    this.ownerId = ownerId;
+    this.type = type;
+    this.status = status;
+    this.transactionLimit = transactionLimit;
+    this.dayLimit = dayLimit;
+    this.absolutelimit = absolutelimit;
+  }
 
   /**
    * Gets or Sets type

@@ -18,7 +18,7 @@ public class InlineResponse200   {
   @JsonProperty("userid")
   private Integer userid = null;
 
-  public InlineResponse200 userid(Integer userid) {
+  public InlineResponse200 userId(Integer userid) {
     this.userid = userid;
     return this;
   }

@@ -20,9 +20,6 @@ import javax.validation.constraints.*;
 public class User   {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guitar_seq")
-  @SequenceGenerator(name = "guitar_seq", initialValue = 1231)
-
   @JsonProperty("userId")
   private Integer userId = null;
 
