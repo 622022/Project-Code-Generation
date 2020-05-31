@@ -33,9 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         {
             String principle = (String)authentication.getPrincipal();
 
-            if (!repository.findById(principle)){
+            if (!repository.findById(principle).isPresent()){
             throw new BadCredentialsException("API key not found");
-            }
+           }
             authentication.setAuthenticated(true);
             return authentication;
         }
