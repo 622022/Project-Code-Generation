@@ -16,4 +16,5 @@ public class ApiKey {
     @Id
     private String key;
 
+
 }

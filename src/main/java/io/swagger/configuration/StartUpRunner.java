@@ -48,8 +48,10 @@ public class StartUpRunner implements ApplicationRunner {
         accountRepository.findAll().forEach(System.out::println);
 //        userRepository.findAll().forEach(System.out::println);
 
-        //why is userId string?
-        apiKeyRepository.save(new InlineResponse2002("U200","User","44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
+
+        apiKeyRepository.save(new ApiKey("44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
         apiKeyRepository.findAll().forEach(System.out::println);
+//        apiKeyRepository.save(new InlineResponse2002("U200","User","44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
+//        apiKeyRepository.findAll().forEach(System.out::println);
     }
 }
