@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.repository = repository;
     }
 
-    @Value("${bank.api-key.header-name}")
+    @Value("X-AUTHTOKEN")
     private String headerName;
 
     @Override
@@ -46,8 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(filter)
-                .authorizeRequests()
+                .addFilter(filter).authorizeRequests()
                 .anyRequest().authenticated();
     }
 }
