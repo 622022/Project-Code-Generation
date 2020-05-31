@@ -1,8 +1,11 @@
 package io.swagger.configuration;
 
 import io.swagger.dao.AccountRepository;
+import io.swagger.dao.ApiKeyRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.model.AccountObject;
+import io.swagger.model.ApiKey;
+import io.swagger.model.InlineResponse2002;
 import io.swagger.model.User;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,10 +19,12 @@ public class StartUpRunner implements ApplicationRunner {
 
     private AccountRepository accountRepository;
     private UserRepository userRepository;
+    private ApiKeyRepository apiKeyRepository;
 
-    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository) {
+    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, ApiKeyRepository apiKeyRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
+        this.apiKeyRepository = apiKeyRepository;
     }
 
     @Override
@@ -42,5 +47,9 @@ public class StartUpRunner implements ApplicationRunner {
 
         accountRepository.findAll().forEach(System.out::println);
 //        userRepository.findAll().forEach(System.out::println);
+
+        //why is userId string?
+        apiKeyRepository.save(new InlineResponse2002("U200","User","44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
+        apiKeyRepository.findAll().forEach(System.out::println);
     }
 }

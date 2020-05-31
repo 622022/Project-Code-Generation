@@ -24,6 +24,12 @@ public class InlineResponse2002   {
   @JsonProperty("tokenValue")
   private String tokenValue = null;
 
+  public InlineResponse2002(String userId, String tokenType, String tokenValue) {
+    this.userId = userId;
+    this.tokenType = tokenType;
+    this.tokenValue = tokenValue;
+  }
+
   public InlineResponse2002 userId(String userId) {
     this.userId = userId;
     return this;
