@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class StartUpRunner implements ApplicationRunner {
@@ -48,8 +49,16 @@ public class StartUpRunner implements ApplicationRunner {
         accountRepository.findAll().forEach(System.out::println);
 //        userRepository.findAll().forEach(System.out::println);
 
+        /*
+    Generate random API Keys
+     */
+        for (int i = 0; i < 5; i++) {
+            UUID uuid = UUID.randomUUID();
+            apiKeyRepository.save(new ApiKey(uuid.toString()));
+        }
 
-        apiKeyRepository.save(new ApiKey("44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
+//        apiKeyRepository.findAll().forEach(System.out::println);
+//        apiKeyRepository.save(new ApiKey("44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
         apiKeyRepository.findAll().forEach(System.out::println);
 //        apiKeyRepository.save(new InlineResponse2002("U200","User","44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
 //        apiKeyRepository.findAll().forEach(System.out::println);

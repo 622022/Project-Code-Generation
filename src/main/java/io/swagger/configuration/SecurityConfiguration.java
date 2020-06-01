@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.repository = repository;
     }
 
-    @Value("X-AUTHTOKEN")
+    @Value("bearerAuth")
     private String headerName;
 
     @Override
@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         );
 
         http
-                .antMatcher("/bankApi/**")
+                .antMatcher("/users/**")
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
