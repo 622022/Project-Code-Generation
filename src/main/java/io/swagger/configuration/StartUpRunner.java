@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -37,17 +38,26 @@ public class StartUpRunner implements ApplicationRunner {
             User user = new User(i, "username_" + i, "password_" + i, "email_" + i);
             userList.add(user);
 
-            AccountObject account = new AccountObject("NL02ABNA0123456789___ " + i, i * 1000, i, AccountObject.TypeEnum.SAVING,
-                    AccountObject.StatusEnum.ACTIVE, i * 500.00, i * 200, i * 600);
-            accountList.add(account);
-            accountList.add(account);
+//            AccountObject account = new AccountObject("NL02ABNA0123456789___ " + i, i * 1000, i, AccountObject.TypeEnum.SAVING,
+//                    AccountObject.StatusEnum.ACTIVE, i * 500.00, i * 200, i * 600);
+//            accountList.add(account);
         }
 
         userList.forEach( user -> userRepository.save(user) );
-        accountList.forEach( accountObject -> accountRepository.save(accountObject) );
+        //accountList.forEach( accountObject -> accountRepository.save(accountObject) );
 
-        accountRepository.findAll().forEach(System.out::println);
+     //   accountRepository.findAll().forEach(System.out::println);
 //        userRepository.findAll().forEach(System.out::println);
+
+        userRepository.findAll()
+                .forEach(System.out::println);
+
+        userList.forEach( user ->  accountRepository.save(
+                new AccountObject("NL02ABNA0123456789___ ", 1000, user.getUserId(), user, AccountObject.TypeEnum.SAVING,
+                        AccountObject.StatusEnum.ACTIVE, 500.00, 200, 600)
+        ));
+        accountRepository.findAll().forEach(System.out::println);
+
 
         /*
     Generate random API Keys

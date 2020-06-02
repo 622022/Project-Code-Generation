@@ -32,6 +32,9 @@ public class User   {
   @JsonProperty("email")
   private String email = null;
 
+  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+  private AccountObject accountObject;
+
   public User email(String email) {
     this.email = email;
     return this;
