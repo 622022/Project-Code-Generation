@@ -3,6 +3,7 @@ package io.swagger.service;
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.model.AccountObject;
+import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.User;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,16 @@ public class UserService {
         });
 
         return accountList;
+    }
+
+    public AccountObject createAccount(int userId, Body jsonInput) {
+        AccountObject newAccount = new AccountObject();
+        newAccount.setIBAN("NL02ABNA0123456789" + userId * 3);
+        newAccount.setOwnerId(userId);
+        newAccount.setType(AccountObject.TypeEnum.fromValue(jsonInput.getAccountType()));
+        accountRepository.save(newAccount);
+
+        return newAccount;
     }
 
 }

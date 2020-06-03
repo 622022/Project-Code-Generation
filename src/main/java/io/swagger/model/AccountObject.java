@@ -30,22 +30,10 @@ public class AccountObject   {
   @JsonProperty("ownerId")
   private Integer ownerId = null;
 
-  @OneToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne(cascade = {CascadeType.ALL})
   private User user;
 
   public AccountObject() {
-  }
-
-  public AccountObject(String IBAN, Integer amount, Integer ownerId, User user, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
-    this.IBAN = IBAN;
-    this.amount = amount;
-    this.ownerId = ownerId;
-    this.user = user;
-    this.type = type;
-    this.status = status;
-    this.transactionLimit = transactionLimit;
-    this.dayLimit = dayLimit;
-    this.absolutelimit = absolutelimit;
   }
 
   public AccountObject(String IBAN, Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {

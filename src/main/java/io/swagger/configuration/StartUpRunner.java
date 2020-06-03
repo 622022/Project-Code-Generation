@@ -11,10 +11,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class StartUpRunner implements ApplicationRunner {
@@ -32,30 +29,27 @@ public class StartUpRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         List<User> userList = new ArrayList<>();
-        List<AccountObject> accountList = new ArrayList<>();
 
-        for (int i = 10; i < 16; i++) {
+        for (int i = 11; i < 16; i++) {
             User user = new User(i, "username_" + i, "password_" + i, "email_" + i);
             userList.add(user);
-
-//            AccountObject account = new AccountObject("NL02ABNA0123456789___ " + i, i * 1000, i, AccountObject.TypeEnum.SAVING,
-//                    AccountObject.StatusEnum.ACTIVE, i * 500.00, i * 200, i * 600);
-//            accountList.add(account);
         }
-
         userList.forEach( user -> userRepository.save(user) );
-        //accountList.forEach( accountObject -> accountRepository.save(accountObject) );
+//        accountList.forEach( accountObject -> accountRepository.save(accountObject) );
 
-     //   accountRepository.findAll().forEach(System.out::println);
-//        userRepository.findAll().forEach(System.out::println);
+        userRepository
+                .findAll()
+                .forEach(user -> accountRepository.save(new AccountObject("NL02ABNA0123456789" + user.getUserId(), 1000,
+                                user.getUserId(), AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE, 500.00,
+                                200, 600)
+                        ));
+        userRepository
+                .findAll()
+                .forEach(user -> accountRepository.save(new AccountObject("NL02ABNA0123456789" + user.getUserId()*2, 1000*2,
+                        user.getUserId(), AccountObject.TypeEnum.CHECKING, AccountObject.StatusEnum.ACTIVE, 500.00*2,
+                        200*2, 600*2)
+                ));
 
-        userRepository.findAll()
-                .forEach(System.out::println);
-
-        userList.forEach( user ->  accountRepository.save(
-                new AccountObject("NL02ABNA0123456789___ ", 1000, user.getUserId(), user, AccountObject.TypeEnum.SAVING,
-                        AccountObject.StatusEnum.ACTIVE, 500.00, 200, 600)
-        ));
         accountRepository.findAll().forEach(System.out::println);
 
 

@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -17,6 +19,7 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User   {
 
   @Id
@@ -32,8 +35,8 @@ public class User   {
   @JsonProperty("email")
   private String email = null;
 
-  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-  private AccountObject accountObject;
+//  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+//  private AccountObject accountObject;
 
   public User email(String email) {
     this.email = email;
