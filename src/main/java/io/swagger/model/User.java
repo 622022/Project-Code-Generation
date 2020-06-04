@@ -23,6 +23,7 @@ import javax.validation.constraints.*;
 public class User   {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonProperty("userId")
   private Integer userId = null;
 
@@ -35,9 +36,6 @@ public class User   {
   @JsonProperty("email")
   private String email = null;
 
-//  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-//  private AccountObject accountObject;
-
   public User email(String email) {
     this.email = email;
     return this;
@@ -46,8 +44,7 @@ public class User   {
   public User() {
   }
 
-  public User(Integer userId, String username, String password, String email) {
-    this.userId = userId;
+  public User(String username, String password, String email) {
     this.username = username;
     this.password = password;
     this.email = email;

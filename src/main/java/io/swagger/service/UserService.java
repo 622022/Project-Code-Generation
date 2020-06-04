@@ -38,13 +38,13 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Integer id) {
-      userRepository.deleteById(id);
+    public void deleteUser(Integer userId) {
+      userRepository.deleteById(userId);
     }
 
-    public User editUser(User updatedUser) {
+    public User editUser(Integer userId, User updatedUser) {
         userRepository.save(updatedUser); // update existing user
-        return updatedUser;
+        return userRepository.findById(userId).get(); // return updated user
     }
 
     public List<AccountObject> getAccountsByUserId(Integer userId) {
@@ -60,10 +60,9 @@ public class UserService {
     }
 
     public AccountObject createAccount(int userId, Body jsonInput) {
-        AccountObject newAccount = new AccountObject();
-        newAccount.setIBAN("NL02ABNA0123456789" + userId * 3);
-        newAccount.setOwnerId(userId);
-        newAccount.setType(AccountObject.TypeEnum.fromValue(jsonInput.getAccountType()));
+        AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getAccountType());
+
+        AccountObject newAccount = new AccountObject(userId, accountType);
         accountRepository.save(newAccount);
 
         return newAccount;
