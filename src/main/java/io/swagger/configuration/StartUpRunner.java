@@ -31,7 +31,7 @@ public class StartUpRunner implements ApplicationRunner {
         List<User> userList = new ArrayList<>();
 
         for (int i = 11; i < 16; i++) {
-            User user = new User(i, "username_" + i, "password_" + i, "email_" + i);
+            User user = new User("username_" + i, "password_" + i, "email_" + i);
             userList.add(user);
         }
         userList.forEach( user -> userRepository.save(user) );
@@ -39,13 +39,13 @@ public class StartUpRunner implements ApplicationRunner {
 
         userRepository
                 .findAll()
-                .forEach(user -> accountRepository.save(new AccountObject("NL02ABNA0123456789" + user.getUserId(), 1000,
+                .forEach(user -> accountRepository.save(new AccountObject(1000,
                                 user.getUserId(), AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE, 500.00,
                                 200, 600)
                         ));
         userRepository
                 .findAll()
-                .forEach(user -> accountRepository.save(new AccountObject("NL02ABNA0123456789" + user.getUserId()*2, 1000*2,
+                .forEach(user -> accountRepository.save(new AccountObject(1000*2,
                         user.getUserId(), AccountObject.TypeEnum.CHECKING, AccountObject.StatusEnum.ACTIVE, 500.00*2,
                         200*2, 600*2)
                 ));

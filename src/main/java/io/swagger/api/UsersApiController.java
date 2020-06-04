@@ -60,7 +60,6 @@ public class UsersApiController implements UsersApi {
 //                return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-
         return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.OK);
     }
 
@@ -90,7 +89,7 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    public ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
+    public ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userId
 ,@ApiParam(value = ""  )  @Valid @RequestBody User body
 ) {
 //        String accept = request.getHeader("Accept");
@@ -102,7 +101,7 @@ public class UsersApiController implements UsersApi {
 //                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-        return new ResponseEntity<User>(userService.editUser(body), HttpStatus.OK);
+        return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
     }
 
     public ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts",required=true) @PathVariable("userId") Integer userId

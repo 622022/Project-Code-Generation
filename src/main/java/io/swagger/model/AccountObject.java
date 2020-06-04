@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+import java.util.Random;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -21,7 +23,7 @@ import javax.validation.constraints.*;
 public class AccountObject   {
 
   @Id
-  @JsonProperty("IBAN")
+  @JsonProperty("iban")
   private String IBAN = null;
 
   @JsonProperty("amount")
@@ -36,8 +38,20 @@ public class AccountObject   {
   public AccountObject() {
   }
 
-  public AccountObject(String IBAN, Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
-    this.IBAN = IBAN;
+  public AccountObject(Integer ownerId, TypeEnum type) { // most fields are ints
+    this.IBAN = generateIban();
+    this.ownerId = ownerId;
+    this.type = type;
+    this.amount = 0;
+    this.status = StatusEnum.ACTIVE;
+    this.transactionLimit = 0.0d;
+    this.dayLimit = 0;
+    this.absolutelimit = 0;
+
+  }
+
+  public AccountObject(Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
+    this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
     this.type = type;
@@ -46,6 +60,22 @@ public class AccountObject   {
     this.dayLimit = dayLimit;
     this.absolutelimit = absolutelimit;
   }
+
+  /**
+   * Generate IBAN
+   */
+  public String generateIban() {
+    Random rand = new Random();
+    String iBan = "NL16ABNA";
+
+    for (int i = 0; i < 10; i++)
+    {
+      int accountNumber = rand.nextInt(10) + 0;
+      iBan += Integer.toString(accountNumber);
+    }
+    return  iBan;
+  }
+
 
   /**
    * Gets or Sets type
