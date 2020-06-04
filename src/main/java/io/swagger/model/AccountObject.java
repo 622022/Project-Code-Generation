@@ -21,7 +21,7 @@ import javax.validation.constraints.*;
 public class AccountObject   {
 
   @Id
-  @JsonProperty("IBAN")
+  @JsonProperty("iban")
   private String IBAN = null;
 
   @JsonProperty("amount")

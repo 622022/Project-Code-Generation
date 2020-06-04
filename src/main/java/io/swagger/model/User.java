@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User   {
+public class  User   {
 
   @Id
   @JsonProperty("userId")
