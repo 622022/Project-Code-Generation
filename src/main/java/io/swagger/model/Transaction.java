@@ -6,24 +6,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Transaction
  */
-@Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class Transaction   {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonProperty("id")
   private Integer id = null;
 
@@ -40,22 +31,11 @@ public class Transaction   {
   private Double amount = null;
 
   @JsonProperty("Performedby")
-  private Role performedby = null;
+  private Integer performedby = null;
 
   public Transaction id(Integer id) {
     this.id = id;
     return this;
-  }
-
-  public Transaction() {
-  }
-
-  public Transaction(String sender, String receiver, String receiverName, Double amount, Role performedby) {
-    this.sender = sender;
-    this.receiver = receiver;
-    this.receiverName = receiverName;
-    this.amount = amount;
-    this.performedby = performedby;
   }
 
   /**
@@ -148,7 +128,7 @@ public class Transaction   {
     this.amount = amount;
   }
 
-  public Transaction performedby(Role performedby) {
+  public Transaction performedby(Integer performedby) {
     this.performedby = performedby;
     return this;
   }
@@ -159,11 +139,11 @@ public class Transaction   {
   **/
   @ApiModelProperty(value = "")
   
-    public Role getPerformedby() {
+    public Integer getPerformedby() {
     return performedby;
   }
 
-  public void setPerformedby(Role performedby) {
+  public void setPerformedby(Integer performedby) {
     this.performedby = performedby;
   }
 

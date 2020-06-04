@@ -2,9 +2,11 @@ package io.swagger.configuration;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.ApiKeyRepository;
-import io.swagger.dao.TransactionRepository;
 import io.swagger.dao.UserRepository;
-import io.swagger.model.*;
+import io.swagger.model.AccountObject;
+import io.swagger.model.ApiKey;
+import io.swagger.model.InlineResponse2002;
+import io.swagger.model.User;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -17,25 +19,22 @@ public class StartUpRunner implements ApplicationRunner {
     private AccountRepository accountRepository;
     private UserRepository userRepository;
     private ApiKeyRepository apiKeyRepository;
-    private TransactionRepository transactionRepository;
 
-    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, ApiKeyRepository apiKeyRepository, TransactionRepository transactionRepository) {
+    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, ApiKeyRepository apiKeyRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.apiKeyRepository = apiKeyRepository;
-        this.transactionRepository = transactionRepository;
     }
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         List<User> userList = new ArrayList<>();
-        List<Transaction> transactionList = new ArrayList<>();
 
             User user = new User("username_" + i, "password_" + i, "email_" + i);
             userList.add(user);
         }
         userList.forEach( user -> userRepository.save(user) );
-        transactionList.forEach( transaction -> transactionRepository.save(transaction) );
+//        accountList.forEach( accountObject -> accountRepository.save(accountObject) );
 
         userRepository
                 .findAll()
@@ -50,7 +49,7 @@ public class StartUpRunner implements ApplicationRunner {
                         200*2, 600*2)
                 ));
 
-        transactionRepository.findAll().forEach(System.out::println);
+        accountRepository.findAll().forEach(System.out::println);
 
 
         /*
