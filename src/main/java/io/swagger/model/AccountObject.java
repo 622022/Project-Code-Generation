@@ -61,6 +61,9 @@ public class AccountObject   {
     this.absolutelimit = absolutelimit;
   }
 
+  public AccountObject(String s, int i, Integer userId, TypeEnum checking, StatusEnum active, double v, int i1, int i2) {
+  }
+
   /**
    * Generate IBAN
    */
@@ -82,7 +85,7 @@ public class AccountObject   {
    */
   public enum TypeEnum {
     CHECKING("Checking"),
-    
+
     SAVING("Saving");
 
     private String value;
@@ -115,7 +118,7 @@ public class AccountObject   {
    */
   public enum StatusEnum {
     ACTIVE("Active"),
-    
+
     CLOSED("Closed");
 
     private String value;
@@ -160,10 +163,10 @@ public class AccountObject   {
   /**
    * Get IBAN
    * @return IBAN
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getIBAN() {
+
+  public String getIBAN() {
     return IBAN;
   }
 
@@ -179,10 +182,10 @@ public class AccountObject   {
   /**
    * Get amount
    * @return amount
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getAmount() {
+
+  public Integer getAmount() {
     return amount;
   }
 
@@ -198,10 +201,10 @@ public class AccountObject   {
   /**
    * Get ownerId
    * @return ownerId
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getOwnerId() {
+
+  public Integer getOwnerId() {
     return ownerId;
   }
 
@@ -217,10 +220,10 @@ public class AccountObject   {
   /**
    * Get type
    * @return type
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public TypeEnum getType() {
+
+  public TypeEnum getType() {
     return type;
   }
 
@@ -236,10 +239,10 @@ public class AccountObject   {
   /**
    * Get status
    * @return status
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public StatusEnum getStatus() {
+
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -255,10 +258,10 @@ public class AccountObject   {
   /**
    * Get transactionLimit
    * @return transactionLimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Double getTransactionLimit() {
+
+  public Double getTransactionLimit() {
     return transactionLimit;
   }
 
@@ -274,10 +277,10 @@ public class AccountObject   {
   /**
    * Get dayLimit
    * @return dayLimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getDayLimit() {
+
+  public Integer getDayLimit() {
     return dayLimit;
   }
 
@@ -293,10 +296,10 @@ public class AccountObject   {
   /**
    * Get absolutelimit
    * @return absolutelimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getAbsolutelimit() {
+
+  public Integer getAbsolutelimit() {
     return absolutelimit;
   }
 
@@ -315,13 +318,13 @@ public class AccountObject   {
     }
     AccountObject accountObject = (AccountObject) o;
     return Objects.equals(this.IBAN, accountObject.IBAN) &&
-        Objects.equals(this.amount, accountObject.amount) &&
-        Objects.equals(this.ownerId, accountObject.ownerId) &&
-        Objects.equals(this.type, accountObject.type) &&
-        Objects.equals(this.status, accountObject.status) &&
-        Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
-        Objects.equals(this.dayLimit, accountObject.dayLimit) &&
-        Objects.equals(this.absolutelimit, accountObject.absolutelimit);
+            Objects.equals(this.amount, accountObject.amount) &&
+            Objects.equals(this.ownerId, accountObject.ownerId) &&
+            Objects.equals(this.type, accountObject.type) &&
+            Objects.equals(this.status, accountObject.status) &&
+            Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
+            Objects.equals(this.dayLimit, accountObject.dayLimit) &&
+            Objects.equals(this.absolutelimit, accountObject.absolutelimit);
   }
 
   @Override
@@ -333,7 +336,7 @@ public class AccountObject   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AccountObject {\n");
-    
+
     sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");

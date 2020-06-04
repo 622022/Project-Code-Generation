@@ -23,7 +23,6 @@ import javax.validation.constraints.*;
 public class User   {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonProperty("userId")
   private Integer userId = null;
 
@@ -36,6 +35,9 @@ public class User   {
   @JsonProperty("email")
   private String email = null;
 
+//  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+//  private AccountObject accountObject;
+
   public User email(String email) {
     this.email = email;
     return this;
@@ -44,7 +46,8 @@ public class User   {
   public User() {
   }
 
-  public User(String username, String password, String email) {
+  public User(Integer userId, String username, String password, String email) {
+    this.userId = userId;
     this.username = username;
     this.password = password;
     this.email = email;
@@ -53,10 +56,10 @@ public class User   {
   /**
    * Get email
    * @return email
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getEmail() {
+
+  public String getEmail() {
     return email;
   }
 
@@ -72,10 +75,10 @@ public class User   {
   /**
    * Get password
    * @return password
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getPassword() {
+
+  public String getPassword() {
     return password;
   }
 
@@ -91,10 +94,10 @@ public class User   {
   /**
    * Get userId
    * @return userId
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getUserId() {
+
+  public Integer getUserId() {
     return userId;
   }
 
@@ -110,10 +113,10 @@ public class User   {
   /**
    * Get username
    * @return username
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getUsername() {
+
+  public String getUsername() {
     return username;
   }
 
@@ -132,9 +135,9 @@ public class User   {
     }
     User user = (User) o;
     return Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password) &&
-        Objects.equals(this.userId, user.userId) &&
-        Objects.equals(this.username, user.username);
+            Objects.equals(this.password, user.password) &&
+            Objects.equals(this.userId, user.userId) &&
+            Objects.equals(this.username, user.username);
   }
 
   @Override
@@ -146,7 +149,7 @@ public class User   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
-    
+
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
