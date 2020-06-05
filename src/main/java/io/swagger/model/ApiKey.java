@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,6 +16,7 @@ public class ApiKey {
 
     @Id
     private String key;
+
 
 
 }
