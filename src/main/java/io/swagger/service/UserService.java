@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserService implements IFilter{
 
     private  AccountRepository accountRepository;
     private UserRepository userRepository;
@@ -69,4 +69,32 @@ public class UserService {
         return newAccount;
     }
 
+    @Override
+    public void filterOffset(Integer offset) {
+    }
+
+    @Override
+    public void filterLimit(Integer limit) {
+    }
+
+    @Override
+    public void filterUser(Integer id) {
+
+    }
+
+    @Override
+    public void filterType(String type) {
+    }
+
+    @Override
+    public void filterStatus(String status) {
+    }
+
+    @Override
+    public void filterReceiver(String receiverName) {
+    }
+
+    @Override
+    public void filterIBAN(String IBAN) {
+    }
 }

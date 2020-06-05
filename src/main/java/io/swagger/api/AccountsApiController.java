@@ -65,12 +65,16 @@ public class AccountsApiController implements AccountsApi {
         return new ResponseEntity<AccountObject>(accountService.editAccount(IBAN, body), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
+    public ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="0") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
 ,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) String accountOwner
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 ) {
+        if (limit>0)
+        {
+            return new ResponseEntity<List<AccountObject>>(accountService.getAllAccounts(limit), HttpStatus.OK);
+        }
 //        String accept = request.getHeader("Accept");
 //        if (accept != null && accept.contains("application/json")) {
 //            try {
@@ -80,6 +84,7 @@ public class AccountsApiController implements AccountsApi {
 //                return new ResponseEntity<List<AccountObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
+
         return new ResponseEntity<List<AccountObject>>(accountService.getAllAccounts(), HttpStatus.OK); // return all accounts
     }
 

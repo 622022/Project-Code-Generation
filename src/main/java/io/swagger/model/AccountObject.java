@@ -24,6 +24,7 @@ public class AccountObject   {
   @JsonProperty("iban")
   private String IBAN = null;
 
+
   @JsonProperty("amount")
   private Integer amount = null;
 
