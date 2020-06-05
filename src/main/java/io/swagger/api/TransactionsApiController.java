@@ -54,7 +54,7 @@ public class TransactionsApiController implements TransactionsApi {
 //                return new ResponseEntity<Transaction>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-        return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
+            return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
     }
 
     public ResponseEntity<List<Transaction>> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String IBAN

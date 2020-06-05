@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -67,14 +68,11 @@ public class AccountsApiController implements AccountsApi {
 
     public ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="0") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) String accountOwner
+,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 ) {
-        if (limit>0)
-        {
-            return new ResponseEntity<List<AccountObject>>(accountService.getAllAccounts(limit), HttpStatus.OK);
-        }
+
 //        String accept = request.getHeader("Accept");
 //        if (accept != null && accept.contains("application/json")) {
 //            try {
@@ -84,8 +82,8 @@ public class AccountsApiController implements AccountsApi {
 //                return new ResponseEntity<List<AccountObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-
-        return new ResponseEntity<List<AccountObject>>(accountService.getAllAccounts(), HttpStatus.OK); // return all accounts
+        Filter filter= new Filter(limit,offset==null?0:offset,accountOwner==null?0:accountOwner,type==null?"":type,status==null?"":status);
+        return new ResponseEntity<List<AccountObject>>((List<AccountObject>) accountService.getAllAccounts(filter), HttpStatus.OK); // return all accounts
     }
 
     public ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN

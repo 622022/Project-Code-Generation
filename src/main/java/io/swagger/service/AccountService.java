@@ -1,43 +1,29 @@
 package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
+import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountService implements IFilter{
+public class AccountService {
     private AccountRepository accountRepository;
-    private List<AccountObject> response;
+    private Iterable<AccountObject> response;
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    public List<AccountObject> getAllAccounts() {
+    public Iterable<AccountObject> getAllAccounts(Filter filter) {
 
-        List<AccountObject> accounts = new ArrayList<>();
-        accountRepository.findAll().forEach( accountObject -> {
-            accounts.add(accountObject); // add all accounts to list
-        });
-         this .response= accounts;
-        return response;
+        fillResponse(filter);
+        return this.response;
     }
-    //overload method.
-    public List<AccountObject> getAllAccounts(Integer limit) {
-        List<AccountObject> accounts = new ArrayList<>();
-        accountRepository.findAll().forEach( accountObject -> {
-            accounts.add(accountObject) ; // add all accounts to list
-        });
-        if (limit>accounts.size())
-        {
-           return getAllAccounts();
-        }
-        List<AccountObject>  limitedAccounts= accounts.subList(0,limit);
-        return limitedAccounts;
-    }
+
 
     public AccountObject getSpecificAccount(String iBan) {
         AccountObject specificAccount = accountRepository.findById(iBan).get(); // get specific account
@@ -54,43 +40,36 @@ public class AccountService implements IFilter{
 
         return accountRepository.findById(iBan).get(); // return updated account
     }
-
-    @Override
-    public void filterOffset(Integer offset) {
-         this.response= this.response.subList(offset,response.size());
+    private void fillResponse(Filter filter){
+        if (filter.accountOwnerId!=null)
+        {
+            this.response= accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId) ;// add all accounts to list
+        }
+        if (filter.type!=null)
+        {
+            this.response= accountRepository.getAccountObjectByType(filter.type) ;
+        }
+        if (filter.status!=null){
+            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
+        }
+        if (filter.limit!=null){
+            this.response=accountRepository.findAll();
+            List<AccountObject> result = new ArrayList<AccountObject>();
+            this.response.forEach(result::add);
+           result= result.subList(0,filter.limit);
+            this.response=result;
+        }
+        if (filter.offset!=null){
+            this.response=accountRepository.findAll();
+            List<AccountObject> result = new ArrayList<AccountObject>();
+            this.response.forEach(result::add);
+            result= result.subList(filter.offset,result.size());
+            this.response=result;
+        }
+        if (this.response==null)
+        {
+            this.response= accountRepository.findAll();
+        }
     }
 
-    @Override
-    public void filterLimit(Integer limit) {
-         this.response=this.response.subList(0,limit);
-    }
-
-    @Override
-    public void filterUser(Integer id) {
-        this.response= this.response.stream()
-                .filter(p -> p.getOwnerId() == id).collect(Collectors.toList());
-    }
-
-    @Override
-    public void filterType(String type) {
-        this.response= this.response.stream()
-                .filter(p -> p.getType().toString() == type).collect(Collectors.toList());
-    }
-
-    @Override
-    public void filterStatus(String status) {
-        this.response= this.response.stream()
-                .filter(p -> p.getStatus().toString() == status).collect(Collectors.toList());
-    }
-
-    @Override
-    public void filterReceiver(String receiverName) {
-       //doesn't have implementation here
-    }
-
-    @Override
-    public void filterIBAN(String IBAN) {
-        this.response= this.response.stream()
-                .filter(p -> p.getIBAN() == IBAN).collect(Collectors.toList());
-    }
 }

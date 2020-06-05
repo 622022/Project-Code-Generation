@@ -1,6 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.model.AccountObject;
+import io.swagger.filter.Filter;
 import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.InlineResponse2001;
@@ -130,7 +131,7 @@ public class UsersApiController implements UsersApi {
 //                return new ResponseEntity<List<InlineResponse200>>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-        return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(new Filter(limit==null?0:limit, offset==null?0:offset)), HttpStatus.OK);
     }
 
 }

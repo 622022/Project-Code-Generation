@@ -59,7 +59,7 @@ public interface AccountsApi {
         method = RequestMethod.GET)
     ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) String accountOwner
+,@ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 );

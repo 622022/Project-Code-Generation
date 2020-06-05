@@ -16,10 +16,8 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction) {
-        Transaction newTransaction = transaction;
-        transactionRepository.save(newTransaction);
-
-        return newTransaction;
+        transactionRepository.save(transaction);
+        return transaction;
     }
 
     public List<Transaction> getTransactions(String iBan) {

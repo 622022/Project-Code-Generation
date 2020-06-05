@@ -2,6 +2,7 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
+import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
 import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
@@ -12,17 +13,18 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserService implements IFilter{
+public class UserService{
 
     private  AccountRepository accountRepository;
     private UserRepository userRepository;
+    private List response;
 
     public UserService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
     }
 
-    public List<InlineResponse200> getAllUsers() {
+    public List<InlineResponse200> getAllUsers(Filter filter) {
         List<InlineResponse200> userIdList = new ArrayList<>();
 
         userRepository.findAll().forEach( user -> {
@@ -31,7 +33,8 @@ public class UserService implements IFilter{
 
             userIdList.add(getUsersResponse);
         });
-        return userIdList;
+         this.response = userIdList;
+        return this.response;
     }
 
     public void createUser(User user) {
@@ -66,33 +69,11 @@ public class UserService implements IFilter{
 
         return newAccount;
     }
-
-    @Override
-    public void filterOffset(Integer offset) {
+    private void filterResponse(Filter filter){
+        if (filter.limit!=null)
+        this.response.subList(0, filter.limit);
+        if (filter.offset!=null)
+        this.response.subList(filter.offset, this.response.size());
     }
 
-    @Override
-    public void filterLimit(Integer limit) {
-    }
-
-    @Override
-    public void filterUser(Integer id) {
-
-    }
-
-    @Override
-    public void filterType(String type) {
-    }
-
-    @Override
-    public void filterStatus(String status) {
-    }
-
-    @Override
-    public void filterReceiver(String receiverName) {
-    }
-
-    @Override
-    public void filterIBAN(String IBAN) {
-    }
 }
