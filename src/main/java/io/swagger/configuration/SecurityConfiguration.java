@@ -1,7 +1,5 @@
 package io.swagger.configuration;
 
-import io.swagger.dao.ApiKeyRepository;
-import io.swagger.filter.ApiKeyAuthFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

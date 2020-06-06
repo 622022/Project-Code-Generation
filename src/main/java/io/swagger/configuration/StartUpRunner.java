@@ -1,7 +1,6 @@
 package io.swagger.configuration;
 
 import io.swagger.dao.AccountRepository;
-import io.swagger.dao.ApiKeyRepository;
 import io.swagger.dao.TransactionRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.model.*;
@@ -16,13 +15,11 @@ public class StartUpRunner implements ApplicationRunner {
 
     private AccountRepository accountRepository;
     private UserRepository userRepository;
-    private ApiKeyRepository apiKeyRepository;
     private TransactionRepository transactionRepository;
 
-    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, ApiKeyRepository apiKeyRepository, TransactionRepository transactionRepository) {
+    public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
-        this.apiKeyRepository = apiKeyRepository;
         this.transactionRepository = transactionRepository;
     }
 
@@ -58,18 +55,5 @@ public class StartUpRunner implements ApplicationRunner {
         transactionRepository.findAll().forEach(System.out::println);
 
 
-        /*
-    Generate random API Keys
-     */
-        for (int i = 0; i < 5; i++) {
-            UUID uuid = UUID.randomUUID();
-            apiKeyRepository.save(new ApiKey(uuid.toString()));
-        }
 
-//        apiKeyRepository.findAll().forEach(System.out::println);
-//        apiKeyRepository.save(new ApiKey("44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
-        apiKeyRepository.findAll().forEach(System.out::println);
-//        apiKeyRepository.save(new InlineResponse2002("U200","User","44272285-2c48-4ee9-9c52-bff1b8bf2bbb"));
-//        apiKeyRepository.findAll().forEach(System.out::println);
-    }
 }
