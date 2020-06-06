@@ -1,6 +1,7 @@
 package io.swagger.configuration;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.swagger.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,8 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter
                 System.out.println("JWT Token has expired");
             }
         } else {
-            logger.warn("JWT Token does not begin
-                    with Bearer String");
+            logger.warn("JWT Token does not begin with Bearer String");
         }
         // Once we get the token validate it.
         if (username != null &&
