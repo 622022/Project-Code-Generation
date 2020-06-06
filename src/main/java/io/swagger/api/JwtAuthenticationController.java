@@ -1,6 +1,9 @@
 package io.swagger.api;
 
 import io.swagger.configuration.JwtTokenUtil;
+import io.swagger.model.JwtRequest;
+import io.swagger.model.JwtResponse;
+import io.swagger.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +30,7 @@ public class JwtAuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
     {
         //authenticate(authenticationRequest.getUsername(),
-        authenticationRequest.getPassword());
+        authenticationRequest.getPassword();
         final UserDetails userDetails =
                 userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         //JwtUserDetails userDetails = new JwtUserDetails();
