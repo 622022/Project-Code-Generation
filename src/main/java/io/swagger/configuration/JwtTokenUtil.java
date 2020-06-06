@@ -22,7 +22,7 @@ public class JwtTokenUtil implements Serializable
     public static final long JWT_TOKEN_VALIDITY = 1000 * 3600;
 
 
-    private String secret="skjbs";
+    private String secret="jwt.secret";
 
     // retrieve username from jwt token
     public String getUsernameFromToken(String token) {
