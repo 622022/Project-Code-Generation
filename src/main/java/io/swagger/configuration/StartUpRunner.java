@@ -36,6 +36,11 @@ public class StartUpRunner implements ApplicationRunner {
                     500.00 * i, Role.EMPLOYEE);
             transactionList.add(transaction);
         }
+        //ANOTHER TESTING LOOP TO CHECK ROLES
+        for (int x = 7; x < 10; x++) {
+            User user1 = new User(x, "username_" + x, "password_" + x, "email_" + x,Role.CUSTOMER);
+            userList.add(user1);
+        }
         userList.forEach( user -> userRepository.save(user) );
         transactionList.forEach( transaction -> transactionRepository.save(transaction) );
 
