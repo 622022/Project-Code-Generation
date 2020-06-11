@@ -29,11 +29,11 @@ public class StartUpRunner implements ApplicationRunner {
         List<Transaction> transactionList = new ArrayList<>();
 
         for (int i = 1; i < 6; i++) {
-            User user = new User(i, "username_" + i, "password_" + i, "email_" + i,Role.Employee);
+            User user = new User(i, "username_" + i, "password_" + i, "email_" + i,Role.EMPLOYEE);
             userList.add(user);
 
             Transaction transaction = new Transaction("NL12ING0123456789" + i, "NL02ABNA728391237"+ i, user.getUsername(),
-                    500.00 * i, Role.Employee);
+                    500.00 * i, Role.EMPLOYEE);
             transactionList.add(transaction);
         }
         userList.forEach( user -> userRepository.save(user) );
