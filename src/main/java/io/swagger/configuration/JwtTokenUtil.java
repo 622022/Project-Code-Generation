@@ -3,16 +3,19 @@ package io.swagger.configuration;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.swagger.model.JwtUserDetails;
+import lombok.var;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @ComponentScan
@@ -22,7 +25,13 @@ public class JwtTokenUtil implements Serializable
     public static final long JWT_TOKEN_VALIDITY = 1000 * 3600;
 
 
-    private String secret="jwt.secret";
+    private JwtUserDetails jwtUserDetails;
+
+    private UserDetails userDetails;
+
+
+    @Value("${security.jwt.token.secret-key:secret}")
+    private String secret = "secret";
 
     // retrieve username from jwt token
     public String getUsernameFromToken(String token) {
@@ -54,8 +63,12 @@ public class JwtTokenUtil implements Serializable
     // generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
         String username = userDetails.getUsername();
-        return doGenerateToken(claims, username);
+        return doGenerateToken(claims, username,roles);
     }
 
     // while creating the token -
@@ -63,8 +76,9 @@ public class JwtTokenUtil implements Serializable
     // 2. Sign the JWT using the HS512 algorithm and secret key.
     // 3. According to JWS Compact
     // compaction of the JWT to a URL-safe string
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, String subject, List roles) {
         return Jwts.builder().setClaims(claims).setSubject(subject)
+                .claim("rol", roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();

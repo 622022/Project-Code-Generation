@@ -1,6 +1,7 @@
 package io.swagger.service;
 
 import io.swagger.dao.UserRepository;
+import io.swagger.model.JwtUserDetails;
 import io.swagger.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,13 +35,12 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
 
-    public UserDetails loadUserByUsername(String username, String password) {
+    public JwtUserDetails loadUserByUsername(String username, String password) {
         User user = userRepository.findUserByUsername(username);
 
         if (user.getUsername().equals(username) && user.getPassword().equals(password))
         {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                    new ArrayList<>());
+            return new JwtUserDetails(user);
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }

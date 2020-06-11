@@ -29,7 +29,7 @@ public class StartUpRunner implements ApplicationRunner {
         List<Transaction> transactionList = new ArrayList<>();
 
         for (int i = 1; i < 6; i++) {
-            User user = new User(i, "username_" + i, "password_" + i, "email_" + i);
+            User user = new User(i, "username_" + i, "password_" + i, "email_" + i,Role.Employee);
             userList.add(user);
 
             Transaction transaction = new Transaction("NL12ING0123456789" + i, "NL02ABNA728391237"+ i, user.getUsername(),
@@ -53,6 +53,7 @@ public class StartUpRunner implements ApplicationRunner {
                 ));
 
         transactionRepository.findAll().forEach(System.out::println);
+        userRepository.findAll().forEach(System.out::println);
 
 
 

@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,6 +36,17 @@ public class  User   {
   @JsonProperty("email")
   private String email = null;
 
+  @JsonProperty("role")
+  private Role role = null;
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
 //  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 //  private AccountObject accountObject;
 
@@ -46,11 +58,12 @@ public class  User   {
   public User() {
   }
 
-  public User(Integer userId, String username, String password, String email) {
+  public User(Integer userId, String username, String password, String email, Role role) {
     this.userId = userId;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.role = role;
   }
 
   /**
@@ -154,6 +167,7 @@ public class  User   {
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -168,4 +182,6 @@ public class  User   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+
 }
