@@ -48,17 +48,13 @@ public class TransactionsApiController implements TransactionsApi {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
 )   {
+        Transaction newTransaction = transactionService.createTransaction(body);
 
-          Transaction newTransaction = transactionService.createTransaction(body);
-//        List<Transaction> transactions = transactionService.getTransactions(body.getSender());
-//        Transaction transaction=transactions.get(0);
-////        Transaction transaction= (Transaction) transactionService.getTransactions(body.getSender());
-            if(newTransaction != null)
-            {
-                return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
-            }
+        if(newTransaction != null)
+        {
+            return new ResponseEntity<Transaction>(newTransaction, HttpStatus.OK);
+        }
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")

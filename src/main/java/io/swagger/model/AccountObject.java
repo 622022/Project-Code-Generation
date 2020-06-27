@@ -26,7 +26,6 @@ public class AccountObject   {
   @JsonProperty("iban")
   private String IBAN = null;
 
-
   @JsonProperty("amount")
   private Double amount = null;
 
@@ -46,12 +45,12 @@ public class AccountObject   {
     this.amount = 0d;
     this.status = StatusEnum.ACTIVE;
     this.transactionLimit = 500.0d;
-    this.dayLimit = 5000d;
+    this.dayLimit = 50;
     this.absolutelimit = 20d;
 
   }
 
-  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Double dayLimit, Double absolutelimit) {
+  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Double absolutelimit) {
     this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
@@ -151,7 +150,7 @@ public class AccountObject   {
   private Double transactionLimit = null;
 
   @JsonProperty("dayLimit")
-  private Double dayLimit = null;
+  private Integer dayLimit = null;
 
   @JsonProperty("absolutelimit")
   private Double absolutelimit = null;
@@ -270,7 +269,7 @@ public class AccountObject   {
     this.transactionLimit = transactionLimit;
   }
 
-  public AccountObject dayLimit(Double dayLimit) {
+  public AccountObject dayLimit(Integer dayLimit) {
     this.dayLimit = dayLimit;
     return this;
   }
@@ -281,11 +280,11 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Double getDayLimit() {
+  public Integer getDayLimit() {
     return dayLimit;
   }
 
-  public void setDayLimit(Double dayLimit) {
+  public void setDayLimit(Integer dayLimit) {
     this.dayLimit = dayLimit;
   }
 
@@ -361,9 +360,21 @@ public class AccountObject   {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Double withdrawAmount(Double withdrawAmount)
+  public boolean withdrawAmount(Double withdrawAmount)
   {
-      Double remainingAmount = dayLimit - withdrawAmount;
-      return remainingAmount;
+    boolean succesfulTranscation = false;
+
+    //checking if the user does not exceed his balance, daily transaction limit, per transaction limit and absolute limit
+    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && withdrawAmount < absolutelimit) {
+      setDayLimit(dayLimit -= 1); // adjust daylimit
+      setAmount(amount -= withdrawAmount); // adjust balance
+      succesfulTranscation = true;
+    }
+
+    return succesfulTranscation;
+  }
+
+  public void insertAmount(Double amount) {
+    this.setAmount(this.amount+= amount);
   }
 }

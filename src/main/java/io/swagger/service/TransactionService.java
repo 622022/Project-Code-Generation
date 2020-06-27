@@ -24,45 +24,33 @@ public class TransactionService {
 
 
     public Transaction createTransaction(Transaction transaction) {
+        AccountObject accountSender = accountRepository.getAccountObjectByIBAN(transaction.getSender());
+        AccountObject accountReceiver = accountRepository.getAccountObjectByIBAN(transaction.getReceiver());
 
-        Transaction transaction1 = transaction;
-        String transactionSenderIBAN =transaction.getSender();
-        String transactionReceiverIBAN =transaction.getReceiver();
-        AccountObject accountSender = accountRepository.getAccountObjectByIBAN(transactionSenderIBAN);
-        AccountObject accountReceiver = accountRepository.getAccountObjectByIBAN(transactionReceiverIBAN);
-
-        //checking if the accounts even exist
-        if(accountSender != null && accountReceiver != null)
+        //checking if the accounts even exist & checking if they're not the same accounts
+        if(accountSender != null && accountReceiver != null && accountSender != accountReceiver)
         {
-           if(accountSender.getOwnerId().equals(accountReceiver.getOwnerId()))
-           {
-               if(accountSender.getStatus() != accountReceiver.getStatus())
-               {
-                   Double transactionLimit = accountSender.getTransactionLimit();
-                   Double dailyLimit = accountSender.withdrawAmount(transaction.getAmount());
-                   Double amount = accountSender.getAmount();
-                   Double absoluteLimit = accountSender.getAbsolutelimit();
+            // checking if accounts is of the same customer
+            if(accountSender.getOwnerId().equals(accountReceiver.getOwnerId()))
+            {
+                boolean successfulTransaction = accountSender.withdrawAmount(transaction.getAmount()); // withdraw from sender
+                accountReceiver.insertAmount(transaction.getAmount()); // add funds to receiver account
 
-                   //checking if the user has enough funds to send money
-                   if(amount > transaction.getAmount() )
-                   {
-                       //checking if the user does not exceed his daily transaction limit, per transaction limit and absolute limit
-                       if(transactionLimit > transaction.getAmount() && dailyLimit>0 && transaction.getAmount() < absoluteLimit)
-                       {
-                           accountSender.setDayLimit(dailyLimit);
-                           transactionRepository.save(transaction1);
-                           accountService.editAccount(transactionSenderIBAN,accountSender);
-                           return transaction1;
+                //check if transaction was successful
+                if(successfulTransaction == true)
+                {
+                    transactionRepository.save(transaction);
+                    accountService.editAccount(transaction.getSender(),accountSender);
+                    accountService.editAccount(transaction.getReceiver(),accountReceiver);
 
-                       }
-                   }
-               }
-           }
-
+                    System.out.println("==============test============");
+                    System.out.println(accountSender.toString());
+                    System.out.println(accountReceiver.toString());
+                    return transaction;
+                }
+            }
         }
-
         return null;
-
     }
 
     public List<Transaction> getTransactions(String iBan) {

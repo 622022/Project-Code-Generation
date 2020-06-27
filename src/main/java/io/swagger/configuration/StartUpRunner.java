@@ -49,13 +49,13 @@ public class StartUpRunner implements ApplicationRunner {
                 .findAll()
                 .forEach(user -> accountRepository.save(new AccountObject( 1000d,
                         user.getUserId(), AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE, 500.00,
-                        200d, 600d)
+                        2, 600d)
                 ));
         userRepository
                 .findAll()
                 .forEach(user -> accountRepository.save(new AccountObject( 1000*2d,
                         user.getUserId(), AccountObject.TypeEnum.CHECKING, AccountObject.StatusEnum.ACTIVE, 500.00*2,
-                        200*2d, 600*2d)
+                        200*2, 600*2d)
                 ));
 
         transactionRepository.findAll().forEach(System.out::println);
