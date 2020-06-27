@@ -60,7 +60,5 @@ public class StartUpRunner implements ApplicationRunner {
         transactionRepository.findAll().forEach(System.out::println);
         userRepository.findAll().forEach(System.out::println);
 
-
-
     }
 }

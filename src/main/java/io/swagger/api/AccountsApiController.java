@@ -54,15 +54,6 @@ public class AccountsApiController implements AccountsApi {
     public ResponseEntity<AccountObject> editAccount(@ApiParam(value = "" ,required=true )  @Valid @RequestBody AccountObject body
 ,@ApiParam(value = "the IBAN of the account.",required=true) @PathVariable("IBAN") String IBAN
 ) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<AccountObject>(objectMapper.readValue("{\n  \"amount\" : 0,\n  \"dayLimit\" : 5,\n  \"IBAN\" : \"IBAN\",\n  \"absolutelimit\" : 5,\n  \"transactionLimit\" : 1.4658129805029452,\n  \"ownerId\" : 6,\n  \"type\" : \"Checking\",\n  \"status\" : \"Active\"\n}", AccountObject.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
         return new ResponseEntity<AccountObject>(accountService.editAccount(IBAN, body), HttpStatus.OK);
     }
 
@@ -73,30 +64,14 @@ public class AccountsApiController implements AccountsApi {
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 ) {
 
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<List<AccountObject>>(objectMapper.readValue("[ {\n  \"amount\" : 0,\n  \"dayLimit\" : 5,\n  \"IBAN\" : \"IBAN\",\n  \"absolutelimit\" : 5,\n  \"transactionLimit\" : 1.4658129805029452,\n  \"ownerId\" : 6,\n  \"type\" : \"Checking\",\n  \"status\" : \"Active\"\n}, {\n  \"amount\" : 0,\n  \"dayLimit\" : 5,\n  \"IBAN\" : \"IBAN\",\n  \"absolutelimit\" : 5,\n  \"transactionLimit\" : 1.4658129805029452,\n  \"ownerId\" : 6,\n  \"type\" : \"Checking\",\n  \"status\" : \"Active\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<List<AccountObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
+
         Filter filter= new Filter(limit,offset==null?0:offset,accountOwner==null?0:accountOwner,type==null?"":type,status==null?"":status);
         return new ResponseEntity<List<AccountObject>>((List<AccountObject>) accountService.getAllAccounts(filter), HttpStatus.OK); // return all accounts
     }
 
     public ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN
 ) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<AccountObject>(objectMapper.readValue("{\n  \"amount\" : 0,\n  \"dayLimit\" : 5,\n  \"IBAN\" : \"IBAN\",\n  \"absolutelimit\" : 5,\n  \"transactionLimit\" : 1.4658129805029452,\n  \"ownerId\" : 6,\n  \"type\" : \"Checking\",\n  \"status\" : \"Active\"\n}", AccountObject.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
+
         return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
     }
 

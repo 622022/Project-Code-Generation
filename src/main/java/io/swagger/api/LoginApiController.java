@@ -60,22 +60,14 @@ public class LoginApiController implements LoginApi {
 
     public ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
 )   {
-        //authenticate(authenticationRequest.getUsername(),
         body.getPassword();
         User user =userRepository.findUserByUsername(body.getUsername());
 
         final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(body.getUsername(), body.getPassword());
 
-
-        //JwtUserDetails userDetails = new JwtUserDetails();
-        //userDetails.setUsername(authenticationRequest.getUsername());
-
-
         final String token = jwtTokenUtil.generateToken(userDetails);
-//        final String finalToken = new JwtResponse(token);
         InlineResponse2002 response2002 = new InlineResponse2002(user.getUserId().toString(),"Bearer",token);
         return new ResponseEntity<InlineResponse2002>(response2002,HttpStatus.OK);
-//        return ResponseEntity.ok(new JwtResponse(token));
     }
 
     private void authenticate(String username, String password) throws Exception {

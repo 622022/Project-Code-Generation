@@ -34,6 +34,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
 
+    //to get a user and put it in for userdetailsservice after checking username and password and comparing it with the repository
     public JwtUserDetails loadUserByUsername(String username, String password) {
         User user = userRepository.findUserByUsername(username);
 
@@ -41,7 +42,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         {
             return new JwtUserDetails(user);
         } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("Username and password combination not found" + username);
         }
     }
 }

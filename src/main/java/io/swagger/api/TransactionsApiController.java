@@ -45,15 +45,6 @@ public class TransactionsApiController implements TransactionsApi {
 
     public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
 ) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<Transaction>(objectMapper.readValue("{\n  \"Sender\" : \"Sender\",\n  \"Amount\" : 6.027456183070403,\n  \"Receiver\" : \"Receiver\",\n  \"Performedby\" : 1,\n  \"id\" : 0,\n  \"ReceiverName\" : \"ReceiverName\"\n}", Transaction.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<Transaction>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
             return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
     }
 
@@ -62,15 +53,7 @@ public class TransactionsApiController implements TransactionsApi {
 ,@ApiParam(value = "returns transaction(s) based on the reciever's name") @Valid @RequestParam(value = "reciever", required = false) String reciever
 ,@ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<List<Transaction>>(objectMapper.readValue("[ {\n  \"Sender\" : \"Sender\",\n  \"Amount\" : 6.027456183070403,\n  \"Receiver\" : \"Receiver\",\n  \"Performedby\" : 1,\n  \"id\" : 0,\n  \"ReceiverName\" : \"ReceiverName\"\n}, {\n  \"Sender\" : \"Sender\",\n  \"Amount\" : 6.027456183070403,\n  \"Receiver\" : \"Receiver\",\n  \"Performedby\" : 1,\n  \"id\" : 0,\n  \"ReceiverName\" : \"ReceiverName\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
+
         return new ResponseEntity<List<Transaction>>(transactionService.getTransactions(IBAN), HttpStatus.OK);
     }
 
