@@ -28,7 +28,7 @@ public class AccountObject   {
 
 
   @JsonProperty("amount")
-  private Integer amount = null;
+  private Double amount = null;
 
   @JsonProperty("ownerId")
   private Integer ownerId = null;
@@ -43,15 +43,15 @@ public class AccountObject   {
     this.IBAN = generateIban();
     this.ownerId = ownerId;
     this.type = type;
-    this.amount = 0;
+    this.amount = 0d;
     this.status = StatusEnum.ACTIVE;
-    this.transactionLimit = 0.0d;
-    this.dayLimit = 0;
-    this.absolutelimit = 0;
+    this.transactionLimit = 500.0d;
+    this.dayLimit = 5000d;
+    this.absolutelimit = 20d;
 
   }
 
-  public AccountObject(Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
+  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Double dayLimit, Double absolutelimit) {
     this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
@@ -151,10 +151,10 @@ public class AccountObject   {
   private Double transactionLimit = null;
 
   @JsonProperty("dayLimit")
-  private Integer dayLimit = null;
+  private Double dayLimit = null;
 
   @JsonProperty("absolutelimit")
-  private Integer absolutelimit = null;
+  private Double absolutelimit = null;
 
   public AccountObject IBAN(String IBAN) {
     this.IBAN = IBAN;
@@ -175,7 +175,7 @@ public class AccountObject   {
     this.IBAN = IBAN;
   }
 
-  public AccountObject amount(Integer amount) {
+  public AccountObject amount(Double amount) {
     this.amount = amount;
     return this;
   }
@@ -186,11 +186,11 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getAmount() {
+  public Double getAmount() {
     return amount;
   }
 
-  public void setAmount(Integer amount) {
+  public void setAmount(Double amount) {
     this.amount = amount;
   }
 
@@ -270,7 +270,7 @@ public class AccountObject   {
     this.transactionLimit = transactionLimit;
   }
 
-  public AccountObject dayLimit(Integer dayLimit) {
+  public AccountObject dayLimit(Double dayLimit) {
     this.dayLimit = dayLimit;
     return this;
   }
@@ -281,15 +281,15 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getDayLimit() {
+  public Double getDayLimit() {
     return dayLimit;
   }
 
-  public void setDayLimit(Integer dayLimit) {
+  public void setDayLimit(Double dayLimit) {
     this.dayLimit = dayLimit;
   }
 
-  public AccountObject absolutelimit(Integer absolutelimit) {
+  public AccountObject absolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
     return this;
   }
@@ -300,11 +300,11 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getAbsolutelimit() {
+  public Double getAbsolutelimit() {
     return absolutelimit;
   }
 
-  public void setAbsolutelimit(Integer absolutelimit) {
+  public void setAbsolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
   }
 
@@ -359,5 +359,11 @@ public class AccountObject   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Double withdrawAmount(Double withdrawAmount)
+  {
+      Double remainingAmount = dayLimit - withdrawAmount;
+      return remainingAmount;
   }
 }

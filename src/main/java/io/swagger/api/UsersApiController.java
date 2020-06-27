@@ -50,7 +50,7 @@ public class UsersApiController implements UsersApi {
         this.request = request;
     }
 
-    @PreAuthorize("hasAnyAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") Integer userId
 ,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
 )   {
@@ -95,7 +95,7 @@ public class UsersApiController implements UsersApi {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-) {
+)   {
 
         return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(new Filter(limit==null?0:limit, offset==null?0:offset)), HttpStatus.OK);
     }

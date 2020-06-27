@@ -3,6 +3,7 @@ package io.swagger.api;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.service.AccountService;
 import io.swagger.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,17 @@ public class TransactionsApiController implements TransactionsApi {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
 )   {
-            return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
+
+          Transaction newTransaction = transactionService.createTransaction(body);
+//        List<Transaction> transactions = transactionService.getTransactions(body.getSender());
+//        Transaction transaction=transactions.get(0);
+////        Transaction transaction= (Transaction) transactionService.getTransactions(body.getSender());
+            if(newTransaction != null)
+            {
+                return new ResponseEntity<Transaction>(transactionService.createTransaction(body), HttpStatus.OK);
+            }
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
