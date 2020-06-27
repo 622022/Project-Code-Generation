@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,13 +50,15 @@ public class UsersApiController implements UsersApi {
         this.request = request;
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE')")
     public ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") Integer userId
 ,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
-) {
+)   {
 
         return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 ) {
 
@@ -67,25 +70,29 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<InlineResponse2001>(createdUserResponse, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
-) {
+)   {
         String accept = request.getHeader("Accept");
         userService.deleteUser(userid); // delete user from database
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userId
 ,@ApiParam(value = ""  )  @Valid @RequestBody User body
-) {
+)   {
         return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts",required=true) @PathVariable("userId") Integer userId
-) {
+)   {
 
         return new ResponseEntity<List<AccountObject>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
 ) {
