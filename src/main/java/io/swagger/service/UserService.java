@@ -72,6 +72,8 @@ public class UserService{
     public User editUser(Integer userId, User updatedUser) {
         try{
             updatedUser.setUserId(userId);
+            User oldUser=userRepository.findById(userId).get();
+            updatedUser.setRole(oldUser.getRole());
             userRepository.save(updatedUser); // update existing user
             return userRepository.findById(userId).get();
         }catch (Exception e)
