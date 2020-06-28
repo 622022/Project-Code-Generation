@@ -69,8 +69,11 @@ public class AccountsApiController implements AccountsApi {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN
 )   {
-
-        return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
+        AccountObject accountObject= accountService.getSpecificAccount(IBAN);
+        if (accountObject.getIBAN()!=null) {
+            return new ResponseEntity<AccountObject>(accountObject, HttpStatus.OK); // get specific account
+        }
+        return new ResponseEntity<AccountObject>(accountObject, HttpStatus.NO_CONTENT); // if account dose not exist
     }
 
 }

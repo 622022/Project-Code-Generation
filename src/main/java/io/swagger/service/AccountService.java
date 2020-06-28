@@ -31,7 +31,7 @@ public class AccountService {
             return  specificAccount;
        }
         catch(Exception error){
-           String s = "s";
+
             System.out.println(error.getMessage());
         }
         return new AccountObject();
@@ -43,6 +43,7 @@ public class AccountService {
     }
 
     public AccountObject editAccount(String iBan, AccountObject updatedAccountObject) {
+        updatedAccountObject.setIBAN(iBan);
         accountRepository.save(updatedAccountObject); // update existing account
 
         return accountRepository.findById(iBan).get(); // return updated account

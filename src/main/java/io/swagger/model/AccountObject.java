@@ -1,18 +1,17 @@
 package io.swagger.model;
 
-import java.util.Objects;
-import java.util.Random;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * AccountObject
@@ -35,7 +34,10 @@ public class AccountObject   {
   @ManyToOne(cascade = {CascadeType.ALL})
   private User user;
 
-  public AccountObject() {
+public AccountObject(){
+
+}
+  public AccountObject(int i, int ownerId, TypeEnum saving, StatusEnum active, double transactionLimit, int dayLimit, int i1) {
   }
 
   public AccountObject(Integer ownerId, TypeEnum type) { // most fields are ints

@@ -4,7 +4,6 @@ C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\se
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\configuration\JwtAuthenticationEntryPoint.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\dao\TransactionRepository.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\RFC3339DateFormat.java
-C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\HelloWorldController.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\ApiException.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\model\Transaction.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\AccountsApiController.java
@@ -27,7 +26,6 @@ C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\da
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\configuration\SwaggerDocumentationConfig.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\model\InlineResponse200.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\ApiOriginFilter.java
-C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\JwtAuthenticationController.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\service\AccountService.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\api\TransactionsApi.java
 C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\main\java\io\swagger\configuration\StartUpRunner.java
