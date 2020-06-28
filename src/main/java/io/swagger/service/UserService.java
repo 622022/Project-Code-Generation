@@ -7,10 +7,10 @@ import io.swagger.model.AccountObject;
 import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService{
@@ -37,7 +37,7 @@ public class UserService{
         return this.response;
     }
 
-    public void createUser(User user) {
+        public void createUser(User user) {
         userRepository.save(user);
     }
 
