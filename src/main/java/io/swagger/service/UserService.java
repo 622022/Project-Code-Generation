@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class UserService{
@@ -18,6 +19,8 @@ public class UserService{
     private  AccountRepository accountRepository;
     private UserRepository userRepository;
     private List response;
+    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
+
 
     public UserService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
@@ -26,49 +29,89 @@ public class UserService{
 
     public List<InlineResponse200> getAllUsers(Filter filter) {
         List<InlineResponse200> userIdList = new ArrayList<>();
+        try{
+            userRepository.findAll().forEach( user -> {
+                InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
+                getUsersResponse.userId(user.getUserId());
 
-        userRepository.findAll().forEach( user -> {
-            InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
-            getUsersResponse.userId(user.getUserId());
-
-            userIdList.add(getUsersResponse);
-        });
-         this.response = userIdList;
+                userIdList.add(getUsersResponse);
+            });
+            this.response = userIdList;
+            return this.response;
+        }catch (Exception e)
+        {
+            LOGGER.warning("Can not get users"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
         return this.response;
     }
 
-        public void createUser(User user) {
-        userRepository.save(user);
+    public void createUser(User user) {
+        try{
+            userRepository.save(user);
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not create user"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void deleteUser(Integer userId) {
-      userRepository.deleteById(userId);
+        try{
+            userRepository.deleteById(userId);
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not delete user"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public User editUser(Integer userId, User updatedUser) {
-        updatedUser.setUserId(userId);
-        userRepository.save(updatedUser); // update existing user
+        try{
+            updatedUser.setUserId(userId);
+            userRepository.save(updatedUser); // update existing user
+            return userRepository.findById(userId).get();
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not edit user"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
         return userRepository.findById(userId).get();
     }
 
     public List<AccountObject> getAccountsByUserId(Integer userId) {
         List<AccountObject> accountList = new ArrayList<>();
+        try{
+            accountRepository.findAll().forEach( accountObject -> {
+                if (userId == accountObject.getOwnerId()) {
+                    accountList.add(accountObject);
+                }
+            });
 
-        accountRepository.findAll().forEach( accountObject -> {
-            if (userId == accountObject.getOwnerId()) {
-                accountList.add(accountObject);
-            }
-        });
-
+            return accountList;
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not get users"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
         return accountList;
     }
 
     public AccountObject createAccount(int userId, Body jsonInput) {
-        AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getAccountType());
-        AccountObject newAccount = new AccountObject(userId, accountType);
-        accountRepository.save(newAccount);
+        try{
+            AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getAccountType());
+            AccountObject newAccount = new AccountObject(userId, accountType);
+            accountRepository.save(newAccount);
 
-        return newAccount;
+            return newAccount;
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not create user"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new AccountObject();
     }
     private void filterResponse(Filter filter){
         if (filter.limit!=null)

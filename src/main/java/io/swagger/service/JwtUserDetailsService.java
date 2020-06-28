@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -19,6 +20,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     {
         this.userRepository = userRepository;
     }
+    private static final Logger LOGGER = Logger.getLogger(JwtUserDetailsService.class.getName());
+
 
     @Override
     public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException
@@ -29,6 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         {
             return new JwtUserDetails(user1);
         } else {
+            LOGGER.warning("User not found with username: " + username);
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
     }
@@ -42,6 +46,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         {
             return new JwtUserDetails(user);
         } else {
+            LOGGER.warning("User not found with username: " + username);
             throw new UsernameNotFoundException("Username and password combination not found" + username);
         }
     }

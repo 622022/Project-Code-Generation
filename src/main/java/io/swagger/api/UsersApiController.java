@@ -42,43 +42,81 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") Integer userId
 ,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
 )   {
-
-        return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.OK);
+        try{
+            return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.OK);
+        }catch (Exception e)
+        {
+            log.warn("Account creation failed");
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<AccountObject>(HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
 ) {
-
-        userService.createUser(body); // saves new user in database
-
         InlineResponse2001 createdUserResponse = new InlineResponse2001(); // new user created response
-        createdUserResponse.userId(body.getUserId()); // assigns new user ID to response
 
-        return new ResponseEntity<InlineResponse2001>(createdUserResponse, HttpStatus.CREATED);
+        try{
+            userService.createUser(body); // saves new user in database
+
+            createdUserResponse.userId(body.getUserId()); // assigns new user ID to response
+
+            return new ResponseEntity<InlineResponse2001>(createdUserResponse, HttpStatus.CREATED);
+        }catch (Exception e)
+        {
+            log.warn("User creation failed");
+            System.out.println(e.getMessage());
+        }
+
+        return new ResponseEntity<InlineResponse2001>(HttpStatus.NO_CONTENT);
 
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
 )   {
-        String accept = request.getHeader("Accept");
-        userService.deleteUser(userid); // delete user from database
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        try{
+            String accept = request.getHeader("Accept");
+            userService.deleteUser(userid); // delete user from database
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }catch (Exception e)
+        {
+            log.warn("User deletion failed"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userId
 ,@ApiParam(value = ""  )  @Valid @RequestBody User body
 )   {
-        return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
+        try{
+            return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
+
+        }catch (Exception e)
+        {
+            log.warn("User editing failed");
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts",required=true) @PathVariable("userId") Integer userId
 )   {
+        try{
+            return new ResponseEntity<List<AccountObject>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
 
-        return new ResponseEntity<List<AccountObject>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
+        }catch (Exception e)
+        {
+            log.warn("User getting failed");
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<List<AccountObject>>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
@@ -86,7 +124,15 @@ public class UsersApiController implements UsersApi {
 ,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
 )   {
 
-        return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(new Filter(limit==null?0:limit, offset==null?0:offset)), HttpStatus.OK);
+        try{
+            return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(new Filter(limit==null?0:limit, offset==null?0:offset)), HttpStatus.OK);
+
+        }catch (Exception e)
+        {
+            log.warn("Users getting failed");
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<List<InlineResponse200>>(HttpStatus.NOT_FOUND);
     }
 
 }

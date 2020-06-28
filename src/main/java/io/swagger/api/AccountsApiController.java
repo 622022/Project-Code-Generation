@@ -31,6 +31,8 @@ public class AccountsApiController implements AccountsApi {
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(AccountsApiController.class.getName());
+
 
     @org.springframework.beans.factory.annotation.Autowired
     public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -41,16 +43,32 @@ public class AccountsApiController implements AccountsApi {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<Void> deleteAccount(@ApiParam(value = "the user who ownes these accounts",required=true) @PathVariable("IBAN") String IBAN
 )   {
-        String accept = request.getHeader("Accept");
-        accountService.deleteAccount(IBAN); // delete account
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        try{
+            String accept = request.getHeader("Accept");
+            accountService.deleteAccount(IBAN); // delete account
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not delete account"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<AccountObject> editAccount(@ApiParam(value = "" ,required=true )  @Valid @RequestBody AccountObject body
 ,@ApiParam(value = "the IBAN of the account.",required=true) @PathVariable("IBAN") String IBAN
 ) {
-        return new ResponseEntity<AccountObject>(accountService.editAccount(IBAN, body), HttpStatus.OK);
+        try{
+            return new ResponseEntity<AccountObject>(accountService.editAccount(IBAN, body), HttpStatus.OK);
+
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not edit account"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<AccountObject>(HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
@@ -61,16 +79,30 @@ public class AccountsApiController implements AccountsApi {
 ,@ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
 ) {
 
+        try{
+            Filter filter= new Filter(limit,offset==null?0:offset,accountOwner==null?0:accountOwner,type==null?"":type,status==null?"":status);
+            return new ResponseEntity<List<AccountObject>>((List<AccountObject>) accountService.getAllAccounts(filter), HttpStatus.OK); // return all accounts
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not get accounts"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<List<AccountObject>>(HttpStatus.NOT_FOUND);
 
-        Filter filter= new Filter(limit,offset==null?0:offset,accountOwner==null?0:accountOwner,type==null?"":type,status==null?"":status);
-        return new ResponseEntity<List<AccountObject>>((List<AccountObject>) accountService.getAllAccounts(filter), HttpStatus.OK); // return all accounts
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN
 )   {
+        try{
+            return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
 
-        return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not get account"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<AccountObject>(HttpStatus.NOT_FOUND); // get specific account
     }
 
 }
