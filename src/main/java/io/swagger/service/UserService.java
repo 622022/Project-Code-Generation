@@ -47,6 +47,7 @@ public class UserService{
 
     public User editUser(Integer userId, User updatedUser) {
         updatedUser.setUserId(userId);
+        
         userRepository.save(updatedUser); // update existing user
         return userRepository.findById(userId).get();
     }

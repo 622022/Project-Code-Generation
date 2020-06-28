@@ -53,13 +53,14 @@ public class AccountService {
         {
             this.response= accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId) ;// add all accounts to list
         }
+        if (filter.status!=null){
+            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
+        }
         if (filter.type!=null)
         {
             this.response= accountRepository.getAccountObjectByType(filter.type) ;
         }
-        if (filter.status!=null){
-            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
-        }
+
         if (filter.limit!=null){
             this.response=accountRepository.findAll();
             List<AccountObject> result = new ArrayList<AccountObject>();
