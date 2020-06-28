@@ -1,18 +1,12 @@
 package io.swagger.model;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * User
@@ -23,9 +17,12 @@ import javax.validation.constraints.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class  User   {
 
+  //@SequenceGenerator(name = "guitar_seq", initialValue = 1000001, allocationSize = 1)
+  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guitar_seq")
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonProperty("userId")
-  private Integer userId = null;
+  private Integer userId;
 
   @JsonProperty("username")
   private String username = null;
@@ -58,8 +55,8 @@ public class  User   {
   public User() {
   }
 
-  public User(Integer userId, String username, String password, String email, Role role) {
-    this.userId = userId;
+  public User( String username, String password, String email, Role role) {
+
     this.username = username;
     this.password = password;
     this.email = email;

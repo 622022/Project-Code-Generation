@@ -1,13 +1,9 @@
 package io.swagger.api;
 
-import io.swagger.model.AccountObject;
-import io.swagger.filter.Filter;
-import io.swagger.model.Body;
-import io.swagger.model.InlineResponse200;
-import io.swagger.model.InlineResponse2001;
-import io.swagger.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
+import io.swagger.filter.Filter;
+import io.swagger.model.*;
 import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
 public class UsersApiController implements UsersApi {
@@ -52,15 +40,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") Integer userId
 ,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
 ) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("application/json")) {
-//            try {
-//                return new ResponseEntity<AccountObject>(objectMapper.readValue("{\n  \"amount\" : 0,\n  \"dayLimit\" : 5,\n  \"IBAN\" : \"IBAN\",\n  \"absolutelimit\" : 5,\n  \"transactionLimit\" : 1.4658129805029452,\n  \"ownerId\" : 6,\n  \"type\" : \"Checking\",\n  \"status\" : \"Active\"\n}", AccountObject.class), HttpStatus.NOT_IMPLEMENTED);
-//            } catch (IOException e) {
-//                log.error("Couldn't serialize response for content type application/json", e);
-//                return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
+
         return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.OK);
     }
 
@@ -81,6 +61,7 @@ public class UsersApiController implements UsersApi {
         createdUserResponse.userId(body.getUserId()); // assigns new user ID to response
 
         return new ResponseEntity<InlineResponse2001>(createdUserResponse, HttpStatus.CREATED);
+
     }
 
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid

@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/login").permitAll().
+
                 // all other requests need to be authenticated
                 antMatchers("/users").hasAuthority("EMPLOYEE").
                 antMatchers("/users/{userId}/accounts").hasAnyAuthority("EMPLOYEE","CUSTOMER").

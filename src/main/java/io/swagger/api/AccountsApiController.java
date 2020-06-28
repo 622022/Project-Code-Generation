@@ -1,9 +1,9 @@
 package io.swagger.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiParam;
 import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
 import io.swagger.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,20 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
 public class AccountsApiController implements AccountsApi {
@@ -97,7 +90,11 @@ public class AccountsApiController implements AccountsApi {
 //                return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
 //            }
 //        }
-        return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
+        AccountObject accountObject= accountService.getSpecificAccount(IBAN);
+        if (accountObject.getIBAN()!=null) {
+            return new ResponseEntity<AccountObject>(accountObject, HttpStatus.OK); // get specific account
+        }
+        return new ResponseEntity<AccountObject>(accountObject, HttpStatus.NO_CONTENT); // get specific account
     }
 
 }

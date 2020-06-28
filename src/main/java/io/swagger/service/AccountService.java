@@ -3,12 +3,10 @@ package io.swagger.service;
 import io.swagger.dao.AccountRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -18,6 +16,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+
     public Iterable<AccountObject> getAllAccounts(Filter filter) {
 
         fillResponse(filter);
@@ -26,8 +25,16 @@ public class AccountService {
 
 
     public AccountObject getSpecificAccount(String iBan) {
-        AccountObject specificAccount = accountRepository.findById(iBan).get(); // get specific account
-        return specificAccount;
+        AccountObject specificAccount;
+       try {
+           specificAccount= accountRepository.findById(iBan).get(); // get specific account
+            return  specificAccount;
+       }
+        catch(Exception error){
+           String s = "s";
+            System.out.println(error.getMessage());
+        }
+        return new AccountObject();
     }
 
     public void deleteAccount(String iBan)
