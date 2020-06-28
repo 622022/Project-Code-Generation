@@ -7,6 +7,7 @@ import io.swagger.model.AccountObject;
 import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
 import io.swagger.model.User;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -101,7 +102,18 @@ public class UserService{
 
     public AccountObject createAccount(int userId, Body jsonInput) {
         try{
-            AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getAccountType());
+            JSONObject jsonObj = new JSONObject(jsonInput);
+            String type = jsonObj.getString("accountType");
+            AccountObject.TypeEnum accountType = null;
+            if(type.equals(AccountObject.TypeEnum.CHECKING.toString()))
+            {
+                accountType=AccountObject.TypeEnum.CHECKING;
+            }
+            else if (type.equals(AccountObject.TypeEnum.SAVING.toString()))
+            {
+                accountType=AccountObject.TypeEnum.SAVING;
+            }
+            //AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getClass().getName());
             AccountObject newAccount = new AccountObject(userId, accountType);
             accountRepository.save(newAccount);
 
