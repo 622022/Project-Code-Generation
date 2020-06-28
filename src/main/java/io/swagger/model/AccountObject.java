@@ -42,10 +42,10 @@ public class AccountObject   {
     this.IBAN = generateIban();
     this.ownerId = ownerId;
     this.type = type;
-    this.amount = 0d;
+    this.amount = 700d;
     this.status = StatusEnum.ACTIVE;
-    this.transactionLimit = 500.0d;
-    this.dayLimit = 50;
+    this.transactionLimit = 900.0d;
+    this.dayLimit = 10;
     this.absolutelimit = 20d;
 
   }
@@ -61,8 +61,6 @@ public class AccountObject   {
     this.absolutelimit = absolutelimit;
   }
 
-  public AccountObject(String s, int i, Integer userId, TypeEnum checking, StatusEnum active, double v, int i1, int i2) {
-  }
 
   /**
    * Generate IBAN
@@ -363,9 +361,10 @@ public class AccountObject   {
   public boolean withdrawAmount(Double withdrawAmount)
   {
     boolean succesfulTranscation = false;
+    Double remainingAmount = amount-withdrawAmount;
 
     //checking if the user does not exceed his balance, daily transaction limit, per transaction limit and absolute limit
-    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && withdrawAmount < absolutelimit) {
+    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && absolutelimit<=remainingAmount) {
       setDayLimit(dayLimit -= 1); // adjust daylimit
       setAmount(amount -= withdrawAmount); // adjust balance
       succesfulTranscation = true;

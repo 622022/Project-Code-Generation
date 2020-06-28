@@ -67,14 +67,14 @@ public class TransactionService {
     {
         boolean successfulTransaction;
         successfulTransaction = accountSender.withdrawAmount(transaction.getAmount()); // withdraw from sender
-        accountReceiver.insertAmount(transaction.getAmount()); // add funds to receiver account
 
         //check if transaction was successful
         if(successfulTransaction == true)
         {
+            accountReceiver.insertAmount(transaction.getAmount()); // add funds to receiver account
             transactionRepository.save(transaction);
-            accountService.editAccount(transaction.getSender(),accountSender);
-            accountService.editAccount(transaction.getReceiver(),accountReceiver);
+//            accountService.editAccount(transaction.getSender(),accountSender);
+//            accountService.editAccount(transaction.getReceiver(),accountReceiver);
 
             System.out.println("==============test============");
             System.out.println(accountSender.toString());
