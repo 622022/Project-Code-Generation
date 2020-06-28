@@ -23,12 +23,8 @@ import java.util.stream.Collectors;
 public class JwtTokenUtil implements Serializable
 {
 
+    //60 minutes validity is being set here for the token
     public static final long JWT_TOKEN_VALIDITY = 1000 * 3600;
-
-
-    private JwtUserDetails jwtUserDetails;
-
-    private UserDetails userDetails;
 
 
     @Value("${security.jwt.token.secret-key:secret}")

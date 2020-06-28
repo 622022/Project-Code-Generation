@@ -10,8 +10,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class JwtUserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    private String username;
-    private String password;
+
     private final User user;
 
     public JwtUserDetails(User user) {
