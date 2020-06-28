@@ -16,6 +16,7 @@ public class StartUpRunner implements ApplicationRunner {
     private AccountRepository accountRepository;
     private UserRepository userRepository;
     private TransactionRepository transactionRepository;
+    private JwtUserDetails jwtUserDetails;
 
     public StartUpRunner(AccountRepository accountRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
@@ -46,22 +47,24 @@ public class StartUpRunner implements ApplicationRunner {
 
         userRepository
                 .findAll()
-                .forEach(user -> accountRepository.save(new AccountObject( 1000,
+                .forEach(user -> accountRepository.save(new AccountObject( 1000d,
                         user.getUserId(), AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE, 500.00,
-                        200, 600)
+                        2, 6d)
                 ));
         userRepository
                 .findAll()
-                .forEach(user -> accountRepository.save(new AccountObject( 1000*2,
+                .forEach(user -> accountRepository.save(new AccountObject( 1000*2d,
                         user.getUserId(), AccountObject.TypeEnum.CHECKING, AccountObject.StatusEnum.ACTIVE, 500.00*2,
-                        200*2, 600*2)
+                        200*2, 600*2d)
+                ));
+        userRepository
+                .findAll()
+                .forEach(user -> accountRepository.save(new AccountObject(9, AccountObject.TypeEnum.CHECKING)
                 ));
 
         transactionRepository.findAll().forEach(System.out::println);
         userRepository.findAll().forEach(System.out::println);
         accountRepository.findAll().forEach(System.out::println);
-
-
 
     }
 }

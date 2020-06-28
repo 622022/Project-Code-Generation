@@ -26,9 +26,8 @@ public class AccountObject   {
   @JsonProperty("iban")
   private String IBAN = null;
 
-
   @JsonProperty("amount")
-  private Integer amount = null;
+  private Double amount = null;
 
   @JsonProperty("ownerId")
   private Integer ownerId = null;
@@ -43,15 +42,15 @@ public class AccountObject   {
     this.IBAN = generateIban();
     this.ownerId = ownerId;
     this.type = type;
-    this.amount = 0;
+    this.amount = 700d;
     this.status = StatusEnum.ACTIVE;
-    this.transactionLimit = 0.0d;
-    this.dayLimit = 0;
-    this.absolutelimit = 0;
+    this.transactionLimit = 900.0d;
+    this.dayLimit = 10;
+    this.absolutelimit = 20d;
 
   }
 
-  public AccountObject(Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
+  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Double absolutelimit) {
     this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
@@ -62,8 +61,6 @@ public class AccountObject   {
     this.absolutelimit = absolutelimit;
   }
 
-  public AccountObject(String s, int i, Integer userId, TypeEnum checking, StatusEnum active, double v, int i1, int i2) {
-  }
 
   /**
    * Generate IBAN
@@ -154,7 +151,7 @@ public class AccountObject   {
   private Integer dayLimit = null;
 
   @JsonProperty("absolutelimit")
-  private Integer absolutelimit = null;
+  private Double absolutelimit = null;
 
   public AccountObject IBAN(String IBAN) {
     this.IBAN = IBAN;
@@ -175,7 +172,7 @@ public class AccountObject   {
     this.IBAN = IBAN;
   }
 
-  public AccountObject amount(Integer amount) {
+  public AccountObject amount(Double amount) {
     this.amount = amount;
     return this;
   }
@@ -186,11 +183,11 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getAmount() {
+  public Double getAmount() {
     return amount;
   }
 
-  public void setAmount(Integer amount) {
+  public void setAmount(Double amount) {
     this.amount = amount;
   }
 
@@ -289,7 +286,7 @@ public class AccountObject   {
     this.dayLimit = dayLimit;
   }
 
-  public AccountObject absolutelimit(Integer absolutelimit) {
+  public AccountObject absolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
     return this;
   }
@@ -300,11 +297,11 @@ public class AccountObject   {
    **/
   @ApiModelProperty(value = "")
 
-  public Integer getAbsolutelimit() {
+  public Double getAbsolutelimit() {
     return absolutelimit;
   }
 
-  public void setAbsolutelimit(Integer absolutelimit) {
+  public void setAbsolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
   }
 
@@ -359,5 +356,24 @@ public class AccountObject   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public boolean withdrawAmount(Double withdrawAmount)
+  {
+    boolean succesfulTranscation = false;
+    Double remainingAmount = amount-withdrawAmount;
+
+    //checking if the user does not exceed his balance, daily transaction limit, per transaction limit and absolute limit
+    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && absolutelimit<=remainingAmount) {
+      setDayLimit(dayLimit -= 1); // adjust daylimit
+      setAmount(amount -= withdrawAmount); // adjust balance
+      succesfulTranscation = true;
+    }
+
+    return succesfulTranscation;
+  }
+
+  public void insertAmount(Double amount) {
+    this.setAmount(this.amount+= amount);
   }
 }

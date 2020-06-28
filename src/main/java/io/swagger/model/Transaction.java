@@ -1,9 +1,10 @@
 package io.swagger.model;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -11,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Transaction
@@ -41,6 +40,9 @@ public class Transaction   {
 
   @JsonProperty("Performedby")
   private Role performedby = null;
+
+  @JsonProperty("Timestamp")
+  private String timeStamp= new SimpleDateFormat("dd.MM.yyy.HH.mm.ss").format(new Date());
 
   public Transaction id(Integer id) {
     this.id = id;
@@ -89,6 +91,14 @@ public class Transaction   {
 
   public void setSender(String sender) {
     this.sender = sender;
+  }
+
+  public String getTimeStamp() {
+    return timeStamp;
+  }
+
+  public void setTimeStamp(String timeStamp) {
+    this.timeStamp = timeStamp;
   }
 
   public Transaction receiver(String receiver) {
@@ -201,6 +211,7 @@ public class Transaction   {
     sb.append("    receiverName: ").append(toIndentedString(receiverName)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    performedby: ").append(toIndentedString(performedby)).append("\n");
+    sb.append("    timestamp: ").append(toIndentedString(timeStamp)).append("\n");
     sb.append("}");
     return sb.toString();
   }
