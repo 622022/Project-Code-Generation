@@ -25,8 +25,16 @@ public class AccountService {
 
 
     public AccountObject getSpecificAccount(String iBan) {
-        AccountObject specificAccount = accountRepository.findById(iBan).get(); // get specific account
-        return specificAccount;
+        AccountObject specificAccount;
+       try {
+           specificAccount= accountRepository.findById(iBan).get(); // get specific account
+            return  specificAccount;
+       }
+        catch(Exception error){
+           String s = "s";
+            System.out.println(error.getMessage());
+        }
+        return new AccountObject();
     }
 
     public void deleteAccount(String iBan)

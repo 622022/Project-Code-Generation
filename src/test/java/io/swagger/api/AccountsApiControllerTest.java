@@ -1,6 +1,7 @@
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.model.AccountObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,43 @@ class AccountsApiControllerTest {
     private ObjectMapper mapper= new ObjectMapper();
     private String token;
     private MockedUser loginMockedUser;
+    private AccountObject account;
+    private String specifcAccountIban;
+
 
     @BeforeEach
-    public void loginToGetToken()throws Exception{
+    public void loginForToken()throws Exception{
         //here we are performing login to get a token to pass it for authorization
-        loginMockedUser= new MockedUser("username_2","password_2");
-        MvcResult result =
+        loginMockedUser=new MockedUser("username_1","password_1");
+        MvcResult loginResult=
                 this.mvc
                         .perform(MockMvcRequestBuilders.post("/login")
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(this.mapper.writeValueAsString(loginMockedUser)))
                         .andReturn();
+        String responseContent=loginResult.getResponse().getContentAsString();
+        String[] dividedResponse = responseContent.split("\"tokenValue\":\"");
+        String [] clearingToken= dividedResponse[1].split("\"");
+        token = "Bearer "+clearingToken[0];
 
-        String content = result.getResponse().getContentAsString();
-        String[] responseParts=content.split("\"tokenValue\":\"");
-        String t = responseParts[1];
-        String[] clearTheToken=responseParts[1].split("\"");
-        token= "Bearer "+clearTheToken[0];
+        //get a valid existing account is required for some tests
+        MvcResult oneAccountResult=
+                this.mvc
+                        .perform(MockMvcRequestBuilders.get("/accounts")
+                                .header("Authorization",token)
+                                .param("limit","1"))
+                        .andReturn();
+        String ibanResponseContent= oneAccountResult.getResponse().getContentAsString();
+        try {
+            String[] dividedAccountResponse = ibanResponseContent.split(",");
+            specifcAccountIban = dividedAccountResponse[0].split(":\"")[1].substring(0, dividedAccountResponse[0].split(":\"")[1].length() - 1);
+        }
+        catch (Exception ex){
+            System.out.println(String.format("Something went wrong reading the account object: %s",ex.getMessage() ));
+        }
+
+
+
     }
 
     @Test
@@ -48,23 +69,40 @@ class AccountsApiControllerTest {
                         .header("Authorization",token)
                 )
                 .andExpect(status().isOk());
+        MvcResult result= this.mvc
+                        .perform(MockMvcRequestBuilders.get("/accounts")
+                                .header("Authorization",token)
+                        )
+                        .andReturn();
+
     }
 
     @Test
-    public void getSpecificAccountShouldReturn200Response()throws Exception{
+    public void gettingNonExistingAccountReturns204Response()throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/accounts/{IBAN}","NL16ABNA6403737190")
-                        .header("Authorization",token)
-                )
+                .perform(MockMvcRequestBuilders.get("/accounts/NL12ING01234567892")
+                        .header("Authorization",token))
+                .andExpect(status().isNoContent());
+
+    }
+    @Test
+    public void gettingExistingAccountReturns200Response()throws Exception{
+        this.mvc
+                .perform(MockMvcRequestBuilders.get("/accounts/{Iban}",specifcAccountIban)
+                        .header("Authorization",token))
                 .andExpect(status().isOk());
 
     }
 
     @Test
     public void editAccountOfSpecificIbanReturns200Response()throws Exception{
+        //account = new AccountObject(3000,"");
+        //Integer amount, Integer ownerId, AccountObject.TypeEnum type, AccountObject.StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit
         this.mvc
-                .perform(MockMvcRequestBuilders.put("/accounts/{IBAN}","NL16ABNA6403737190")
-                        .header("Authorization",token))
+                .perform(MockMvcRequestBuilders.put("/accounts/{IBAN}",specifcAccountIban)
+                        .header("Authorization",token)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(this.mapper.writeValueAsString(account)))
                 .andExpect(status().isOk());
 
     }
