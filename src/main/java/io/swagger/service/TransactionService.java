@@ -63,7 +63,7 @@ public class TransactionService {
         return transactionList;
     }
 
-    public Transaction makeTransaction(AccountObject accountSender,AccountObject accountReceiver, Transaction transaction)
+    private Transaction makeTransaction(AccountObject accountSender,AccountObject accountReceiver, Transaction transaction)
     {
         boolean successfulTransaction;
         successfulTransaction = accountSender.withdrawAmount(transaction.getAmount()); // withdraw from sender
