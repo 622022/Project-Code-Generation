@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -23,7 +23,7 @@ class AccountsApiControllerTest {
     private ObjectMapper mapper= new ObjectMapper();
     private String token;
     private MockedUser loginMockedUser;
-    private AccountObject account;
+    private AccountObject updatedAccount;
     private String specifcAccountIban;
 
 
@@ -33,7 +33,7 @@ class AccountsApiControllerTest {
         loginMockedUser=new MockedUser("username_1","password_1");
         MvcResult loginResult=
                 this.mvc
-                        .perform(MockMvcRequestBuilders.post("/login")
+                        .perform(post("/login")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(this.mapper.writeValueAsString(loginMockedUser)))
                         .andReturn();
@@ -45,7 +45,7 @@ class AccountsApiControllerTest {
         //get a valid existing account is required for some tests
         MvcResult oneAccountResult=
                 this.mvc
-                        .perform(MockMvcRequestBuilders.get("/accounts")
+                        .perform(get("/accounts")
                                 .header("Authorization",token)
                                 .param("limit","1"))
                         .andReturn();
@@ -65,22 +65,17 @@ class AccountsApiControllerTest {
     @Test
     public void getAllAccountsShouldReturn200Response()throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/accounts")
+                .perform(get("/accounts")
                         .header("Authorization",token)
                 )
                 .andExpect(status().isOk());
-        MvcResult result= this.mvc
-                        .perform(MockMvcRequestBuilders.get("/accounts")
-                                .header("Authorization",token)
-                        )
-                        .andReturn();
 
     }
 
     @Test
     public void gettingNonExistingAccountReturns204Response()throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/accounts/NL12ING01234567892")
+                .perform(get("/accounts/NL12ING01234")
                         .header("Authorization",token))
                 .andExpect(status().isNoContent());
 
@@ -88,7 +83,7 @@ class AccountsApiControllerTest {
     @Test
     public void gettingExistingAccountReturns200Response()throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/accounts/{Iban}",specifcAccountIban)
+                .perform(get("/accounts/{Iban}",specifcAccountIban)
                         .header("Authorization",token))
                 .andExpect(status().isOk());
 
@@ -96,19 +91,24 @@ class AccountsApiControllerTest {
 
     @Test
     public void editAccountOfSpecificIbanReturns200Response()throws Exception{
-        //account = new AccountObject(3000,"");
-        //Integer amount, Integer ownerId, AccountObject.TypeEnum type, AccountObject.StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit
+        updatedAccount = new AccountObject(200,6, AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE,
+                10.10,50,80);
+
         this.mvc
-                .perform(MockMvcRequestBuilders.put("/accounts/{IBAN}",specifcAccountIban)
+                .perform(put("/accounts/{IBAN}",specifcAccountIban)
                         .header("Authorization",token)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(this.mapper.writeValueAsString(account)))
+                        .content(this.mapper.writeValueAsString(updatedAccount)))
                 .andExpect(status().isOk());
 
     }
 
     @Test
     public void deleteAccountReturns200Response()throws Exception{
-
+        this.mvc
+                .perform(delete("/accounts/{IBAN}",specifcAccountIban)
+                        .header("Authorization",token)
+                        )
+                .andExpect((status().isOk()));
     }
 }

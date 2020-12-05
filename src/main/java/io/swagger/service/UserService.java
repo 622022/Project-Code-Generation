@@ -70,6 +70,7 @@ public class UserService{
     }
 
     public User editUser(Integer userId, User updatedUser) {
+
         try{
             updatedUser.setUserId(userId);
             User oldUser=userRepository.findById(userId).get();
@@ -81,6 +82,7 @@ public class UserService{
             LOGGER.warning("Could not edit user"+e.getMessage());
             System.out.println(e.getMessage());
         }
+
         return userRepository.findById(userId).get();
     }
 

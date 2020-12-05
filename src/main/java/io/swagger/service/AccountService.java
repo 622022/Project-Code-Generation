@@ -42,7 +42,9 @@ public class AccountService {
             return  specificAccount;
        }
         catch(Exception error){
+
             LOGGER.warning("Failed to get accounts"+error.getMessage());
+
             System.out.println(error.getMessage());
         }
         return new AccountObject();
@@ -60,6 +62,7 @@ public class AccountService {
     }
 
     public AccountObject editAccount(String iBan, AccountObject updatedAccountObject) {
+
         try{
             accountRepository.save(updatedAccountObject); // update existing account
 
@@ -71,19 +74,21 @@ public class AccountService {
         }
         return new AccountObject();
 
+
     }
     private void fillResponse(Filter filter){
         if (filter.accountOwnerId!=null)
         {
             this.response= accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId) ;// add all accounts to list
         }
+        if (filter.status!=null){
+            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
+        }
         if (filter.type!=null)
         {
             this.response= accountRepository.getAccountObjectByType(filter.type) ;
         }
-        if (filter.status!=null){
-            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
-        }
+
         if (filter.limit!=null){
             this.response=accountRepository.findAll();
             List<AccountObject> result = new ArrayList<AccountObject>();

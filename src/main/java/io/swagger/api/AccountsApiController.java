@@ -94,6 +94,7 @@ public class AccountsApiController implements AccountsApi {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.",required=true) @PathVariable("IBAN") String IBAN
 )   {
+
         try{
             return new ResponseEntity<AccountObject>(accountService.getSpecificAccount(IBAN), HttpStatus.OK); // get specific account
 
@@ -103,6 +104,7 @@ public class AccountsApiController implements AccountsApi {
             System.out.println(e.getMessage());
         }
         return new ResponseEntity<AccountObject>(HttpStatus.NOT_FOUND); // get specific account
+
     }
 
 }

@@ -1,2 +1,4 @@
-C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\service\UserServiceTest.java
-C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\model\UserTest.java
+C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\api\AccountsApiControllerTest.java
+C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\api\LoginApiControllerTest.java
+C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\api\TransactionsApiControllerTest.java
+C:\Users\shuke\source\GITHUB\Project-Code-Generation\src\test\java\io\swagger\api\UsersApiControllerTest.java

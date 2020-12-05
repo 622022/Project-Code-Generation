@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -40,7 +40,7 @@ class UsersApiControllerTest {
         loginMockedUser= new MockedUser("username_1","password_1");
         MvcResult result =
                 this.mvc
-                        .perform(MockMvcRequestBuilders.post("/login")
+                        .perform(post("/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(loginMockedUser)))
                 .andReturn();
@@ -58,7 +58,7 @@ class UsersApiControllerTest {
 
         //ObjectMapper mapper = new ObjectMapper();
         this.mvc
-                .perform(MockMvcRequestBuilders.post("/users")
+                .perform(post("/users")
                         .header("Authorization",token)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(user)))
@@ -71,7 +71,7 @@ class UsersApiControllerTest {
     @Test
     public void deletingUserShouldReturnOK() throws Exception {
      this.mvc
-            .perform(MockMvcRequestBuilders.delete("/users/{userid}","8")
+            .perform(delete("/users/{userid}","8")
                     .header("Authorization",token)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
 
@@ -82,7 +82,7 @@ class UsersApiControllerTest {
     @Test
     public void editingUserInformationShouldReturn200OK() throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.put("/users/{userid}","7")
+                .perform(put("/users/{userid}","7")
                         .header("Authorization",token)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(user)))
@@ -92,7 +92,7 @@ class UsersApiControllerTest {
     @Test
     public void getUserAccountByIdShouldReturn200Response()throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/users/{userid}/accounts","7")
+                .perform(get("/users/{userid}/accounts","7")
                         .header("Authorization",token)
                 )
 
@@ -102,7 +102,7 @@ class UsersApiControllerTest {
     @Test
     public void getAllUsersReturn200Response() throws Exception{
         this.mvc
-                .perform(MockMvcRequestBuilders.get("/users")
+                .perform(get("/users")
                 .header("Authorization",token)
                         )
                 .andExpect(status().isOk());
@@ -112,15 +112,12 @@ class UsersApiControllerTest {
     public void creatingAccountForSpecificUserReturns200Response()throws Exception{
         accountType= new MockedAccountType("Saving");
         this.mvc
-                .perform(MockMvcRequestBuilders.post("/users/{userid}/accounts","7")
+                .perform(post("/users/{userid}/accounts","7")
                 .header ("Authorization",token)
                 .contentType((MediaType.APPLICATION_JSON))
                 .content(this.mapper.writeValueAsString(accountType)))
                 .andExpect(status().isOk());
     }
-
-
-
 
 }
  class MockedAccountType{
