@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.AccountService;
 import io.swagger.service.TransactionService;
+import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class TransactionsApiController implements TransactionsApi {
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(TransactionsApiController.class.getName());
+
 
     @org.springframework.beans.factory.annotation.Autowired
     public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -48,13 +51,20 @@ public class TransactionsApiController implements TransactionsApi {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Transaction body
 )   {
-        Transaction newTransaction = transactionService.createTransaction(body);
+        try{
+            Transaction newTransaction = transactionService.createTransaction(body);
 
-        if(newTransaction != null)
+            if(newTransaction != null)
+            {
+                return new ResponseEntity<Transaction>(newTransaction, HttpStatus.OK);
+            }
+        }catch (Exception e)
         {
-            return new ResponseEntity<Transaction>(newTransaction, HttpStatus.OK);
+            LOGGER.warning("Could not create Transactions");
+            System.out.println(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
@@ -64,7 +74,15 @@ public class TransactionsApiController implements TransactionsApi {
 ,@ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
 ) {
 
-        return new ResponseEntity<List<Transaction>>(transactionService.getTransactions(IBAN), HttpStatus.OK);
+        try{
+            return new ResponseEntity<List<Transaction>>(transactionService.getTransactions(IBAN), HttpStatus.OK);
+
+        }catch (Exception e)
+        {
+            LOGGER.warning("Could not get Transactions");
+            System.out.println(e.getMessage());
+        }
+        return new ResponseEntity<List<Transaction>>(HttpStatus.NOT_FOUND);
     }
 
 }

@@ -84,9 +84,9 @@ public AccountObject(){
    * Gets or Sets type
    */
   public enum TypeEnum {
-    CHECKING("Checking"),
+    CHECKING("CHECKING"),
 
-    SAVING("Saving");
+    SAVING("SAVING");
 
     private String value;
 

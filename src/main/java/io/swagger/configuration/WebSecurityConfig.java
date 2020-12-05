@@ -67,17 +67,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .frameOptions()
                 .deny()
                 .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/login").permitAll().
+
                 // all other requests need to be authenticated which is being done using @PreAuthorize
 //                antMatchers("/users").hasAuthority("EMPLOYEE").
 //                antMatchers("/users/{userId}/accounts").hasAnyAuthority("EMPLOYEE","CUSTOMER").
 //                antMatchers(HttpMethod.GET,"/accounts/{IBAN}").hasAuthority("EMPLOYEE").
-                anyRequest().authenticated().and().
+                anyRequest().authenticated().and()
+                .formLogin()
+                .loginPage("/index.html").permitAll()
+                .defaultSuccessUrl("/index.html", true);
                 // making sure we use stateless session; session won't be used to
                 // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         // Adding a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

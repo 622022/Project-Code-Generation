@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class AccountService {
@@ -15,12 +16,22 @@ public class AccountService {
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
+    private static final Logger LOGGER = Logger.getLogger(AccountService.class.getName());
+
 
 
     public Iterable<AccountObject> getAllAccounts(Filter filter) {
-
-        fillResponse(filter);
+        try{
+            fillResponse(filter);
+            return this.response;
+        }
+        catch (Exception e)
+        {
+            LOGGER.warning("Failed to get accounts"+e.getMessage());
+            e.getMessage();
+        }
         return this.response;
+
     }
 
 
@@ -32,6 +43,8 @@ public class AccountService {
        }
         catch(Exception error){
 
+            LOGGER.warning("Failed to get accounts"+error.getMessage());
+
             System.out.println(error.getMessage());
         }
         return new AccountObject();
@@ -39,14 +52,29 @@ public class AccountService {
 
     public void deleteAccount(String iBan)
     {
-        accountRepository.deleteById(iBan);
+        try {
+            accountRepository.deleteById(iBan);
+        } catch (Exception e) {
+            LOGGER.warning("Failed to delete account"+e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     public AccountObject editAccount(String iBan, AccountObject updatedAccountObject) {
-        updatedAccountObject.setIBAN(iBan);
-        accountRepository.save(updatedAccountObject); // update existing account
 
-        return accountRepository.findById(iBan).get(); // return updated account
+        try{
+            accountRepository.save(updatedAccountObject); // update existing account
+
+            return accountRepository.findById(iBan).get(); // return updated account
+        }catch (Exception e)
+        {
+            LOGGER.warning("Failed to edit account"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
+        return new AccountObject();
+
+
     }
     private void fillResponse(Filter filter){
         if (filter.accountOwnerId!=null)
