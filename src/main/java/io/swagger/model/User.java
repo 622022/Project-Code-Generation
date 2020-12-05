@@ -1,17 +1,12 @@
 package io.swagger.model;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * User
@@ -20,11 +15,14 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User   {
+public class  User   {
 
+  //@SequenceGenerator(name = "guitar_seq", initialValue = 1000001, allocationSize = 1)
+  //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guitar_seq")
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @JsonProperty("userId")
-  private Integer userId = null;
+  private Integer userId;
 
   @JsonProperty("username")
   private String username = null;
@@ -34,6 +32,17 @@ public class User   {
 
   @JsonProperty("email")
   private String email = null;
+
+  @JsonProperty("role")
+  private Role role = null;
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
 
 //  @OneToOne(mappedBy = "accountObject", fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 //  private AccountObject accountObject;
@@ -46,20 +55,21 @@ public class User   {
   public User() {
   }
 
-  public User(Integer userId, String username, String password, String email) {
-    this.userId = userId;
+  public User( String username, String password, String email, Role role) {
+
     this.username = username;
     this.password = password;
     this.email = email;
+    this.role = role;
   }
 
   /**
    * Get email
    * @return email
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getEmail() {
+
+  public String getEmail() {
     return email;
   }
 
@@ -75,10 +85,10 @@ public class User   {
   /**
    * Get password
    * @return password
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getPassword() {
+
+  public String getPassword() {
     return password;
   }
 
@@ -94,10 +104,10 @@ public class User   {
   /**
    * Get userId
    * @return userId
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getUserId() {
+
+  public Integer getUserId() {
     return userId;
   }
 
@@ -113,10 +123,10 @@ public class User   {
   /**
    * Get username
    * @return username
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getUsername() {
+
+  public String getUsername() {
     return username;
   }
 
@@ -135,9 +145,9 @@ public class User   {
     }
     User user = (User) o;
     return Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password) &&
-        Objects.equals(this.userId, user.userId) &&
-        Objects.equals(this.username, user.username);
+            Objects.equals(this.password, user.password) &&
+            Objects.equals(this.userId, user.userId) &&
+            Objects.equals(this.username, user.username);
   }
 
   @Override
@@ -149,11 +159,12 @@ public class User   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
-    
+
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -168,4 +179,6 @@ public class User   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+
 }

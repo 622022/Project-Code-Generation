@@ -1,16 +1,17 @@
 package io.swagger.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * AccountObject
@@ -21,11 +22,11 @@ import javax.validation.constraints.*;
 public class AccountObject   {
 
   @Id
-  @JsonProperty("IBAN")
+  @JsonProperty("iban")
   private String IBAN = null;
 
   @JsonProperty("amount")
-  private Integer amount = null;
+  private Double amount = null;
 
   @JsonProperty("ownerId")
   private Integer ownerId = null;
@@ -33,11 +34,26 @@ public class AccountObject   {
   @ManyToOne(cascade = {CascadeType.ALL})
   private User user;
 
-  public AccountObject() {
+public AccountObject(){
+
+}
+  public AccountObject(int i, int ownerId, TypeEnum saving, StatusEnum active, double transactionLimit, int dayLimit, int i1) {
   }
 
-  public AccountObject(String IBAN, Integer amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Integer absolutelimit) {
-    this.IBAN = IBAN;
+  public AccountObject(Integer ownerId, TypeEnum type) { // most fields are ints
+    this.IBAN = generateIban();
+    this.ownerId = ownerId;
+    this.type = type;
+    this.amount = 700d;
+    this.status = StatusEnum.ACTIVE;
+    this.transactionLimit = 900.0d;
+    this.dayLimit = 10;
+    this.absolutelimit = 20d;
+
+  }
+
+  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Double absolutelimit) {
+    this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
     this.type = type;
@@ -47,13 +63,30 @@ public class AccountObject   {
     this.absolutelimit = absolutelimit;
   }
 
+
+  /**
+   * Generate IBAN
+   */
+  public String generateIban() {
+    Random rand = new Random();
+    String iBan = "NL16ABNA";
+
+    for (int i = 0; i < 10; i++)
+    {
+      int accountNumber = rand.nextInt(10) + 0;
+      iBan += Integer.toString(accountNumber);
+    }
+    return  iBan;
+  }
+
+
   /**
    * Gets or Sets type
    */
   public enum TypeEnum {
-    CHECKING("Checking"),
-    
-    SAVING("Saving");
+    CHECKING("CHECKING"),
+
+    SAVING("SAVING");
 
     private String value;
 
@@ -85,7 +118,7 @@ public class AccountObject   {
    */
   public enum StatusEnum {
     ACTIVE("Active"),
-    
+
     CLOSED("Closed");
 
     private String value;
@@ -120,7 +153,7 @@ public class AccountObject   {
   private Integer dayLimit = null;
 
   @JsonProperty("absolutelimit")
-  private Integer absolutelimit = null;
+  private Double absolutelimit = null;
 
   public AccountObject IBAN(String IBAN) {
     this.IBAN = IBAN;
@@ -130,10 +163,10 @@ public class AccountObject   {
   /**
    * Get IBAN
    * @return IBAN
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public String getIBAN() {
+
+  public String getIBAN() {
     return IBAN;
   }
 
@@ -141,7 +174,7 @@ public class AccountObject   {
     this.IBAN = IBAN;
   }
 
-  public AccountObject amount(Integer amount) {
+  public AccountObject amount(Double amount) {
     this.amount = amount;
     return this;
   }
@@ -149,14 +182,14 @@ public class AccountObject   {
   /**
    * Get amount
    * @return amount
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getAmount() {
+
+  public Double getAmount() {
     return amount;
   }
 
-  public void setAmount(Integer amount) {
+  public void setAmount(Double amount) {
     this.amount = amount;
   }
 
@@ -168,10 +201,10 @@ public class AccountObject   {
   /**
    * Get ownerId
    * @return ownerId
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getOwnerId() {
+
+  public Integer getOwnerId() {
     return ownerId;
   }
 
@@ -187,10 +220,10 @@ public class AccountObject   {
   /**
    * Get type
    * @return type
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public TypeEnum getType() {
+
+  public TypeEnum getType() {
     return type;
   }
 
@@ -206,10 +239,10 @@ public class AccountObject   {
   /**
    * Get status
    * @return status
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public StatusEnum getStatus() {
+
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -225,10 +258,10 @@ public class AccountObject   {
   /**
    * Get transactionLimit
    * @return transactionLimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Double getTransactionLimit() {
+
+  public Double getTransactionLimit() {
     return transactionLimit;
   }
 
@@ -244,10 +277,10 @@ public class AccountObject   {
   /**
    * Get dayLimit
    * @return dayLimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getDayLimit() {
+
+  public Integer getDayLimit() {
     return dayLimit;
   }
 
@@ -255,7 +288,7 @@ public class AccountObject   {
     this.dayLimit = dayLimit;
   }
 
-  public AccountObject absolutelimit(Integer absolutelimit) {
+  public AccountObject absolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
     return this;
   }
@@ -263,14 +296,14 @@ public class AccountObject   {
   /**
    * Get absolutelimit
    * @return absolutelimit
-  **/
+   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getAbsolutelimit() {
+
+  public Double getAbsolutelimit() {
     return absolutelimit;
   }
 
-  public void setAbsolutelimit(Integer absolutelimit) {
+  public void setAbsolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
   }
 
@@ -285,13 +318,13 @@ public class AccountObject   {
     }
     AccountObject accountObject = (AccountObject) o;
     return Objects.equals(this.IBAN, accountObject.IBAN) &&
-        Objects.equals(this.amount, accountObject.amount) &&
-        Objects.equals(this.ownerId, accountObject.ownerId) &&
-        Objects.equals(this.type, accountObject.type) &&
-        Objects.equals(this.status, accountObject.status) &&
-        Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
-        Objects.equals(this.dayLimit, accountObject.dayLimit) &&
-        Objects.equals(this.absolutelimit, accountObject.absolutelimit);
+            Objects.equals(this.amount, accountObject.amount) &&
+            Objects.equals(this.ownerId, accountObject.ownerId) &&
+            Objects.equals(this.type, accountObject.type) &&
+            Objects.equals(this.status, accountObject.status) &&
+            Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
+            Objects.equals(this.dayLimit, accountObject.dayLimit) &&
+            Objects.equals(this.absolutelimit, accountObject.absolutelimit);
   }
 
   @Override
@@ -303,7 +336,7 @@ public class AccountObject   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AccountObject {\n");
-    
+
     sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");
@@ -325,5 +358,24 @@ public class AccountObject   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public boolean withdrawAmount(Double withdrawAmount)
+  {
+    boolean succesfulTranscation = false;
+    Double remainingAmount = amount-withdrawAmount;
+
+    //checking if the user does not exceed his balance, daily transaction limit, per transaction limit and absolute limit
+    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && absolutelimit<=remainingAmount) {
+      setDayLimit(dayLimit -= 1); // adjust daylimit
+      setAmount(amount -= withdrawAmount); // adjust balance
+      succesfulTranscation = true;
+    }
+
+    return succesfulTranscation;
+  }
+
+  public void insertAmount(Double amount) {
+    this.setAmount(this.amount+= amount);
   }
 }
