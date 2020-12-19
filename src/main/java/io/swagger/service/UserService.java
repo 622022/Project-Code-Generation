@@ -5,6 +5,7 @@ import io.swagger.dao.UserRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
 import io.swagger.model.Body;
+import io.swagger.model.InlineResponse200;
 import io.swagger.model.User;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class UserService {
         try {
                 userRepository.findAll().forEach(user -> {
                 InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
-                getUsersResponse.userId(user.getUserId());
+                getUsersResponse.userId(user.getUserId().toString());
                 userIdList.add(getUsersResponse);
             });
             return userIdList;
