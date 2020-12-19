@@ -27,78 +27,79 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "users", description = "the users API")
-public interface UsersApi {
+public interface IUsersApi {
 
     @ApiOperation(value = "creates an account", nickname = "createAccount", notes = "Creates an account for the user", response = AccountObject.class, authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the account that has been made for the user.", response = AccountObject.class) })
+            @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "the account that has been made for the user.", response = AccountObject.class)})
     @RequestMapping(value = "/users/{userId}/accounts",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts",required=true) @PathVariable("userId") Integer userId
-,@ApiParam(value = "The account to create."  )  @Valid @RequestBody Body body
-);
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
+            , @ApiParam(value = "The account to create.") @Valid @RequestBody Body body
+    );
 
 
     @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = InlineResponse2001.class, authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the user.", response = InlineResponse2001.class) })
+            @Authorization(value = "bearerAuth")}, tags = {"Users",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "the user.", response = InlineResponse2001.class)})
     @RequestMapping(value = "/users",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = ""  )  @Valid @RequestBody User body
-);
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    );
 
 
     @ApiOperation(value = "Delete a user by id.", nickname = "deleteUser", notes = "Delete a specific user.", authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the user has been deleted") })
+            @Authorization(value = "bearerAuth")}, tags = {"Users",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "the user has been deleted")})
     @RequestMapping(value = "/users/{userid}",
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
-);
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
+    );
 
 
     @ApiOperation(value = "Update user info.", nickname = "editUser", notes = "User(customer,employee) can update users.", response = User.class, authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "the user info has been edited", response = User.class) })
+            @Authorization(value = "bearerAuth")}, tags = {"Users",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "the user info has been edited", response = User.class)})
     @RequestMapping(value = "/users/{userid}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.PUT)
-    ResponseEntity<User> editUser(@ApiParam(value = "",required=true) @PathVariable("userid") Integer userid
-,@ApiParam(value = ""  )  @Valid @RequestBody User body
-);
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<User> editUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
+            , @ApiParam(value = "") @Valid @RequestBody User body
+    );
 
 
     @ApiOperation(value = "Get accounts for a specific user.", nickname = "getAccountsByUserId", notes = "", response = AccountObject.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A list of all users accounts", response = AccountObject.class, responseContainer = "List") })
+            @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "A list of all users accounts", response = AccountObject.class, responseContainer = "List")})
     @RequestMapping(value = "/users/{userId}/accounts",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts",required=true) @PathVariable("userId") Integer userId
-);
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
+    );
 
 
     @ApiOperation(value = "Get users", nickname = "getAllUsers", notes = "Return all users", response = InlineResponse200.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Users list.", response = InlineResponse200.class, responseContainer = "List") })
+            @Authorization(value = "bearerAuth")}, tags = {"Users",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Users list.", response = InlineResponse200.class, responseContainer = "List")})
     @RequestMapping(value = "/users",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue="20") Integer limit
-,@ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-);
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+    );
 
 }

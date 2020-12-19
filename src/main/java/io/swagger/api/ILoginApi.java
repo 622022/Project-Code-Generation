@@ -24,19 +24,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "login", description = "the login API")
-public interface LoginApi {
+public interface ILoginApi {
 
     @ApiOperation(value = "login", nickname = "loginUser", notes = "login give you an access by sending you bearerToken", response = InlineResponse2002.class, authorizations = {
-        @Authorization(value = "bearerAuth")    }, tags={ "Users", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Bearer token", response = InlineResponse2002.class) })
+            @Authorization(value = "bearerAuth")}, tags = {"Users",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Bearer token", response = InlineResponse2002.class)})
     @RequestMapping(value = "/login",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
-);
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = "") @Valid @RequestBody Body1 body
+    );
 
 }

@@ -15,22 +15,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
 @RestController
 @CrossOrigin
-public class LoginApiController implements LoginApi {
+public class LoginApiController implements ILoginApi {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -45,7 +40,7 @@ public class LoginApiController implements LoginApi {
 
     private UserRepository userRepository;
 
-    private static final Logger log = LoggerFactory.getLogger(LoginApiController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginApiController.class);
 
     private final ObjectMapper objectMapper;
 
@@ -55,21 +50,22 @@ public class LoginApiController implements LoginApi {
     public LoginApiController(ObjectMapper objectMapper, HttpServletRequest request, UserRepository userRepository) {
         this.objectMapper = objectMapper;
         this.request = request;
-        this.userRepository=userRepository;
+        this.userRepository = userRepository;
     }
 
-    public ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
-)   {
+    public ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = "") @Valid @RequestBody Body1 body
+    ) {
         body.getPassword();
         User user = userRepository.findUserByUsername(body.getUsername());
 
         final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(body.getUsername(), body.getPassword());
-
         final String token = jwtTokenUtil.generateToken(userDetails);
-        InlineResponse2002 response2002 = new InlineResponse2002(user.getUserId().toString(),"Bearer",token);
-        return new ResponseEntity<InlineResponse2002>(response2002,HttpStatus.OK);
+        InlineResponse2002 response2002 = new InlineResponse2002(userDetails.getUser().getUserId().toString(), "Bearer", token);
+        return new ResponseEntity<InlineResponse2002>(response2002, HttpStatus.OK);
     }
 
+    //this is not being used
+    // we should make sure if we need this method and how can we use it
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
