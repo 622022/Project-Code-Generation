@@ -1,5 +1,6 @@
 package io.swagger.dao;
 
+import io.swagger.model.AccountObject;
 import io.swagger.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findUserByUsername(String username);
+    Iterable<User> queryUserByLimit(int limit);
+    Iterable<User> queryUserByOffSet(int limit);
 
 }

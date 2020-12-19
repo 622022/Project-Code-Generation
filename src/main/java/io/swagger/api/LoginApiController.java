@@ -61,7 +61,7 @@ public class LoginApiController implements LoginApi {
     public ResponseEntity<InlineResponse2002> loginUser(@ApiParam(value = ""  )  @Valid @RequestBody Body1 body
 )   {
         body.getPassword();
-        User user =userRepository.findUserByUsername(body.getUsername());
+        User user = userRepository.findUserByUsername(body.getUsername());
 
         final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(body.getUsername(), body.getPassword());
 

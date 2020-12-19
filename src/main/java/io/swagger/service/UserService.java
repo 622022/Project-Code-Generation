@@ -29,16 +29,17 @@ public class UserService{
     }
 
     public List<InlineResponse200> getAllUsers(Filter filter) {
+        Iterable<User> users = userRepository.queryUserByLimit(filter.limit);
+
         List<InlineResponse200> userIdList = new ArrayList<>();
         try{
-            userRepository.findAll().forEach( user -> {
+            users.forEach( user -> {
                 InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
                 getUsersResponse.userId(user.getUserId());
 
                 userIdList.add(getUsersResponse);
             });
-            this.response = userIdList;
-            return this.response;
+            return userIdList;
         }catch (Exception e)
         {
             LOGGER.warning("Can not get users"+e.getMessage());
@@ -129,11 +130,4 @@ public class UserService{
         }
         return new AccountObject();
     }
-    private void filterResponse(Filter filter){
-        if (filter.limit!=null)
-        this.response.subList(0, filter.limit);
-        if (filter.offset!=null)
-        this.response.subList(filter.offset, this.response.size());
-    }
-
 }
