@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "77fb2b3a-12f7-422c-a11c-7a5e0ce3b812",
+		"name": "CodeGeneration-app",
+		"description": "Group3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All accounts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/accounts",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "active",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This request get all accounts and supports all filtering methods described on swagger"
+			},
+			"response": []
+		},
+		{
+			"name": "Login customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"username_1\",\n\t\"password\" : \"password_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/login",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"login"
+					]
+				},
+				"description": "This request logs a user in and returns a bearer-token"
+			},
+			"response": []
+		},
+		{
+			"name": "Login employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"username_1\",\n\t\"password\" : \"password_1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/login",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"login"
+					]
+				},
+				"description": "This request logs a user in and returns a bearer-token"
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": null,
+							"disabled": true
+						}
+					]
+				},
+				"description": "This get the ids of registered users"
+			},
+			"response": []
+		},
+		{
+			"name": "transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8xIiwiZXhwIjoxNTkxNTYyODIwLCJpYXQiOjE1OTE1NTkyMjB9.VgX-IXF0foQArHSFpfxyl5Ma-eBrWlGpt7oWtAgRRN9fm_FN0mdxJTk4iSn9GE1hTq9a0i-lg8XMgTkkeqo9dw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/transactions?IBAN=NL02ABNA7283912375",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "IBAN",
+							"value": "NL02ABNA7283912375"
+						}
+					]
+				},
+				"description": "this request gets all transactions"
+			},
+			"response": []
+		},
+		{
+			"name": "Create account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8xIiwiZXhwIjoxNTkxNTYyODIwLCJpYXQiOjE1OTE1NTkyMjB9.VgX-IXF0foQArHSFpfxyl5Ma-eBrWlGpt7oWtAgRRN9fm_FN0mdxJTk4iSn9GE1hTq9a0i-lg8XMgTkkeqo9dw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\t\"accountType\" : \"CHECKING\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users/1/accounts",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users",
+						"1",
+						"accounts"
+					]
+				},
+				"description": "this creates and account"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8xIiwiZXhwIjoxNTkxNTYyODIwLCJpYXQiOjE1OTE1NTkyMjB9.VgX-IXF0foQArHSFpfxyl5Ma-eBrWlGpt7oWtAgRRN9fm_FN0mdxJTk4iSn9GE1hTq9a0i-lg8XMgTkkeqo9dw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\" : \"abdul@gmail.com\" ,\n\t\"password\" : \"123\",\n\t\"username\" : \"abdul\",\n\t\"userId\" : \"65\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users"
+					]
+				},
+				"description": "This end point creates a User"
+			},
+			"response": []
+		},
+		{
+			"name": "Edit account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8xIiwiZXhwIjoxNTkxNTYyODIwLCJpYXQiOjE1OTE1NTkyMjB9.VgX-IXF0foQArHSFpfxyl5Ma-eBrWlGpt7oWtAgRRN9fm_FN0mdxJTk4iSn9GE1hTq9a0i-lg8XMgTkkeqo9dw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"iban\": \"NL16ABNA9747361887\",\n  \"amount\": 0,\n  \"ownerId\": 1,\n  \"type\": \"Checking\",\n  \"status\": \"Active\",\n  \"transactionLimit\": 0,\n  \"dayLimit\": 0,\n  \"absolutelimit\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/accounts/NL16ABNA9747361887",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"accounts",
+						"NL16ABNA9747361887"
+					]
+				},
+				"description": "this request edits an existing account"
+			},
+			"response": []
+		},
+		{
+			"name": "edit User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"username_1\",\n  \"password\": \"password_1\",\n  \"userId\": 99,\n  \"username\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users/1",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users",
+						"1"
+					]
+				},
+				"description": "this request edits a registered user"
+			},
+			"response": []
+		},
+		{
+			"name": "Get a specific account ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/accounts/NL16ABNA8617418066",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"accounts",
+						"NL16ABNA8617418066"
+					]
+				},
+				"description": "Get a specific account using IBAN"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/accounts/NL16ABNA8617418066",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"accounts",
+						"NL16ABNA8617418066"
+					]
+				},
+				"description": "using IBAN"
+			},
+			"response": []
+		},
+		{
+			"name": "Make transactions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"Sender\": \"NL16ABNA4017275214\",\n  \"Receiver\": \"NL16ABNA7201168070\",\n  \"ReceiverName\": \"John\",\n  \"Amount\": 100.00,\n  \"Performedby\": \"EMPLOYEE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/transactions",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"transactions"
+					]
+				},
+				"description": "creates a transaction"
+			},
+			"response": []
+		},
+		{
+			"name": "get specific account by userid",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users/3/accounts",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users",
+						"3",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZV8yIiwiZXhwIjoxNTkzMzc4ODIxLCJpYXQiOjE1OTMzNzUyMjEsInJvbCI6WyJFTVBMT1lFRSJdfQ.Brfb8xregv-0q9xNrwy80u-0vjr_rk-yNWDJaslhomBgsWJTr4V1PdMoUafbgPDi4afj5DmYD3lMkKHdGp5Mkw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://codegeneration-app.herokuapp.com/v1/bankApi/users/1",
+					"protocol": "https",
+					"host": [
+						"codegeneration-app",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"bankApi",
+						"users",
+						"1"
+					]
+				},
+				"description": "deletes a user"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"protocolProfileBehavior": {}
+}

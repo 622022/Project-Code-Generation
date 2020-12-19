@@ -10,7 +10,6 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class JwtUserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-
     private final User user;
 
     public JwtUserDetails(User user) {
@@ -20,7 +19,7 @@ public class JwtUserDetails implements org.springframework.security.core.userdet
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority( user.getRole().toString()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
         return grantedAuthorities;
     }
 
@@ -54,5 +53,8 @@ public class JwtUserDetails implements org.springframework.security.core.userdet
         return true;
     }
 
+    public User getUser() {
+        return user;
+    }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "accounts", description = "the accounts API")
-public interface AccountsApi {
+public interface IAccountsApi {
 
     @ApiOperation(value = "Delete an account.", nickname = "deleteAccount", notes = "delete an account based on IBAN.", authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})

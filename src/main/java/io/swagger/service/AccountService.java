@@ -4,7 +4,6 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.AccountObject;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -12,101 +11,84 @@ import java.util.logging.Logger;
 @Service
 public class AccountService {
     private AccountRepository accountRepository;
-    private Iterable<AccountObject> response;
+
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
-    private static final Logger LOGGER = Logger.getLogger(AccountService.class.getName());
 
+    private static final Logger logger = Logger.getLogger(AccountService.class.getName());
 
 
     public Iterable<AccountObject> getAllAccounts(Filter filter) {
-        try{
-            fillResponse(filter);
-            return this.response;
-        }
-        catch (Exception e)
-        {
-            LOGGER.warning("Failed to get accounts"+e.getMessage());
+        Iterable<AccountObject> accounts = new ArrayList<>();
+        try {
+            accounts= fillResponse(filter);
+        } catch (Exception e) {
+            logger.warning("Failed to get accounts " + e.getMessage());
             e.getMessage();
         }
-        return this.response;
-
+        return accounts;
     }
 
 
     public AccountObject getSpecificAccount(String iBan) {
         AccountObject specificAccount;
-       try {
-           specificAccount= accountRepository.findById(iBan).get(); // get specific account
-            return  specificAccount;
-       }
-        catch(Exception error){
-
-            LOGGER.warning("Failed to get accounts"+error.getMessage());
-
-            System.out.println(error.getMessage());
+        try {
+            specificAccount = accountRepository.findById(iBan).get();
+            return specificAccount;
+        } catch (Exception e) {
+            logger.warning("Failed to get accounts " + e.getMessage());
         }
         return new AccountObject();
     }
 
-    public void deleteAccount(String iBan)
-    {
+    public void deleteAccount(String iBan) {
         try {
             accountRepository.deleteById(iBan);
         } catch (Exception e) {
-            LOGGER.warning("Failed to delete account"+e.getMessage());
-            e.printStackTrace();
+            logger.warning("Failed to delete account " + e.getMessage());
         }
-
     }
 
     public AccountObject editAccount(String iBan, AccountObject updatedAccountObject) {
-
-        try{
-            accountRepository.save(updatedAccountObject); // update existing account
-
-            return accountRepository.findById(iBan).get(); // return updated account
-        }catch (Exception e)
-        {
-            LOGGER.warning("Failed to edit account"+e.getMessage());
-            System.out.println(e.getMessage());
+        try {
+            accountRepository.save(updatedAccountObject);
+            return accountRepository.findById(iBan).get();
+        } catch (Exception e) {
+            logger.warning("Failed to edit account " + e.getMessage());
         }
         return new AccountObject();
-
-
     }
-    private void fillResponse(Filter filter){
-        if (filter.accountOwnerId!=null)
-        {
-            this.response= accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId) ;// add all accounts to list
-        }
-        if (filter.status!=null){
-            this.response= accountRepository.getAccountObjectByStatus(filter.status) ;
-        }
-        if (filter.type!=null)
-        {
-            this.response= accountRepository.getAccountObjectByType(filter.type) ;
-        }
 
-        if (filter.limit!=null){
-            this.response=accountRepository.findAll();
+    private Iterable<AccountObject> fillResponse(Filter filter) {
+        Iterable<AccountObject> accounts = new ArrayList<>();
+        if (filter.accountOwnerId != null) {
+            accounts = accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId);
+        }
+        if (filter.status != null) {
+            accounts = accountRepository.getAccountObjectByStatus(filter.status);
+        }
+        if (filter.type != null) {
+            accounts = accountRepository.getAccountObjectByType(filter.type);
+        }
+        if (filter.limit != null) {
+            accounts = accountRepository.findAll();
             List<AccountObject> result = new ArrayList<AccountObject>();
-            this.response.forEach(result::add);
-           result= result.subList(0,filter.limit);
-            this.response=result;
+            accounts.forEach(result::add);
+            result = result.subList(0, filter.limit);
+            accounts = result;
         }
-        if (filter.offset!=null){
-            this.response=accountRepository.findAll();
+        if (filter.offset != null) {
+            accounts = accountRepository.findAll();
             List<AccountObject> result = new ArrayList<AccountObject>();
-            this.response.forEach(result::add);
-            result= result.subList(filter.offset,result.size());
-            this.response=result;
+            accounts.forEach(result::add);
+            result = result.subList(filter.offset, result.size());
+            accounts = result;
         }
-        if (this.response==null)
-        {
-            this.response= accountRepository.findAll();
+        if (accounts == null) {
+            accounts = accountRepository.findAll();
         }
+        return accounts;
     }
 
 }
