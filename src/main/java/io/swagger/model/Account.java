@@ -19,7 +19,7 @@ import java.util.Random;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Entity
-public class AccountObject   {
+public class Account {
 
   @Id
   @JsonProperty("iban")
@@ -34,13 +34,13 @@ public class AccountObject   {
   @ManyToOne(cascade = {CascadeType.ALL})
   private User user;
 
-public AccountObject(){
+public Account(){
 
 }
-  public AccountObject(int i, int ownerId, TypeEnum saving, StatusEnum active, double transactionLimit, int dayLimit, int i1) {
+  public Account(int i, int ownerId, TypeEnum saving, StatusEnum active, double transactionLimit, int dayLimit, int i1) {
   }
 
-  public AccountObject(Integer ownerId, TypeEnum type) { // most fields are ints
+  public Account(Integer ownerId, TypeEnum type) { // most fields are ints
     this.IBAN = generateIban();
     this.ownerId = ownerId;
     this.type = type;
@@ -52,7 +52,7 @@ public AccountObject(){
 
   }
 
-  public AccountObject(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Double absolutelimit) {
+  public Account(Double amount, Integer ownerId, TypeEnum type, StatusEnum status, Double transactionLimit, Integer dayLimit, Double absolutelimit) {
     this.IBAN = generateIban();
     this.amount = amount;
     this.ownerId = ownerId;
@@ -155,7 +155,7 @@ public AccountObject(){
   @JsonProperty("absolutelimit")
   private Double absolutelimit = null;
 
-  public AccountObject IBAN(String IBAN) {
+  public Account IBAN(String IBAN) {
     this.IBAN = IBAN;
     return this;
   }
@@ -174,7 +174,7 @@ public AccountObject(){
     this.IBAN = IBAN;
   }
 
-  public AccountObject amount(Double amount) {
+  public Account amount(Double amount) {
     this.amount = amount;
     return this;
   }
@@ -193,7 +193,7 @@ public AccountObject(){
     this.amount = amount;
   }
 
-  public AccountObject ownerId(Integer ownerId) {
+  public Account ownerId(Integer ownerId) {
     this.ownerId = ownerId;
     return this;
   }
@@ -212,7 +212,7 @@ public AccountObject(){
     this.ownerId = ownerId;
   }
 
-  public AccountObject type(TypeEnum type) {
+  public Account type(TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -231,7 +231,7 @@ public AccountObject(){
     this.type = type;
   }
 
-  public AccountObject status(StatusEnum status) {
+  public Account status(StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -250,7 +250,7 @@ public AccountObject(){
     this.status = status;
   }
 
-  public AccountObject transactionLimit(Double transactionLimit) {
+  public Account transactionLimit(Double transactionLimit) {
     this.transactionLimit = transactionLimit;
     return this;
   }
@@ -269,7 +269,7 @@ public AccountObject(){
     this.transactionLimit = transactionLimit;
   }
 
-  public AccountObject dayLimit(Integer dayLimit) {
+  public Account dayLimit(Integer dayLimit) {
     this.dayLimit = dayLimit;
     return this;
   }
@@ -288,7 +288,7 @@ public AccountObject(){
     this.dayLimit = dayLimit;
   }
 
-  public AccountObject absolutelimit(Double absolutelimit) {
+  public Account absolutelimit(Double absolutelimit) {
     this.absolutelimit = absolutelimit;
     return this;
   }
@@ -316,15 +316,15 @@ public AccountObject(){
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AccountObject accountObject = (AccountObject) o;
-    return Objects.equals(this.IBAN, accountObject.IBAN) &&
-            Objects.equals(this.amount, accountObject.amount) &&
-            Objects.equals(this.ownerId, accountObject.ownerId) &&
-            Objects.equals(this.type, accountObject.type) &&
-            Objects.equals(this.status, accountObject.status) &&
-            Objects.equals(this.transactionLimit, accountObject.transactionLimit) &&
-            Objects.equals(this.dayLimit, accountObject.dayLimit) &&
-            Objects.equals(this.absolutelimit, accountObject.absolutelimit);
+    Account account = (Account) o;
+    return Objects.equals(this.IBAN, account.IBAN) &&
+            Objects.equals(this.amount, account.amount) &&
+            Objects.equals(this.ownerId, account.ownerId) &&
+            Objects.equals(this.type, account.type) &&
+            Objects.equals(this.status, account.status) &&
+            Objects.equals(this.transactionLimit, account.transactionLimit) &&
+            Objects.equals(this.dayLimit, account.dayLimit) &&
+            Objects.equals(this.absolutelimit, account.absolutelimit);
   }
 
   @Override

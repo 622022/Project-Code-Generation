@@ -40,28 +40,28 @@ public class UsersApiController implements IUsersApi {
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
+    public ResponseEntity<Account> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
             , @ApiParam(value = "The account to create.") @Valid @RequestBody Body body
     ) {
         try {
-            return new ResponseEntity<AccountObject>(userService.createAccount(userId, body), HttpStatus.CREATED);
+            return new ResponseEntity<Account>(userService.createAccount(userId, body), HttpStatus.CREATED);
         } catch (Exception e) {
             log.warn("Account creation failed");
-            return new ResponseEntity<AccountObject>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    public ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "") @Valid @RequestBody User body
     ) {
-        InlineResponse2001 createdUserResponse = new InlineResponse2001();
+        InlineResponse200 createdUserResponse = new InlineResponse200();
         try {
             userService.createUser(body);
-            createdUserResponse.userId(body.getUserId());
-            return new ResponseEntity<InlineResponse2001>(createdUserResponse, HttpStatus.CREATED);
+            createdUserResponse.userId(body.getUserId().toString());
+            return new ResponseEntity<InlineResponse200>(createdUserResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             log.warn("User creation failed");
-            return new ResponseEntity<InlineResponse2001>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<InlineResponse200>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -90,13 +90,13 @@ public class UsersApiController implements IUsersApi {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
-    public ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
+    public ResponseEntity<List<Account>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
     ) {
         try {
-            return new ResponseEntity<List<AccountObject>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
+            return new ResponseEntity<List<Account>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
         } catch (Exception e) {
             log.warn("User getting failed");
-            return new ResponseEntity<List<AccountObject>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<Account>>(HttpStatus.NOT_FOUND);
         }
     }
 
