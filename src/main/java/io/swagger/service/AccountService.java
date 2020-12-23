@@ -2,7 +2,7 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.filter.Filter;
-import io.swagger.model.AccountObject;
+import io.swagger.model.Account;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ public class AccountService {
     private static final Logger logger = Logger.getLogger(AccountService.class.getName());
 
 
-    public Iterable<AccountObject> getAllAccounts(Filter filter) {
-        Iterable<AccountObject> accounts = new ArrayList<>();
+    public Iterable<Account> getAllAccounts(Filter filter) {
+        Iterable<Account> accounts = new ArrayList<>();
         try {
             accounts= fillResponse(filter);
         } catch (Exception e) {
@@ -31,15 +31,15 @@ public class AccountService {
     }
 
 
-    public AccountObject getSpecificAccount(String iBan) {
-        AccountObject specificAccount;
+    public Account getSpecificAccount(String iBan) {
+        Account specificAccount;
         try {
             specificAccount = accountRepository.findById(iBan).get();
             return specificAccount;
         } catch (Exception e) {
             logger.warning("Failed to get accounts " + e.getMessage());
         }
-        return new AccountObject();
+        return new Account();
     }
 
     public void deleteAccount(String iBan) {
@@ -50,18 +50,18 @@ public class AccountService {
         }
     }
 
-    public AccountObject editAccount(String iBan, AccountObject updatedAccountObject) {
+    public Account editAccount(String iBan, Account updatedAccount) {
         try {
-            accountRepository.save(updatedAccountObject);
+            accountRepository.save(updatedAccount);
             return accountRepository.findById(iBan).get();
         } catch (Exception e) {
             logger.warning("Failed to edit account " + e.getMessage());
         }
-        return new AccountObject();
+        return new Account();
     }
 
-    private Iterable<AccountObject> fillResponse(Filter filter) {
-        Iterable<AccountObject> accounts = new ArrayList<>();
+    private Iterable<Account> fillResponse(Filter filter) {
+        Iterable<Account> accounts = new ArrayList<>();
         if (filter.accountOwnerId != null) {
             accounts = accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId);
         }
@@ -73,14 +73,14 @@ public class AccountService {
         }
         if (filter.limit != null) {
             accounts = accountRepository.findAll();
-            List<AccountObject> result = new ArrayList<AccountObject>();
+            List<Account> result = new ArrayList<Account>();
             accounts.forEach(result::add);
             result = result.subList(0, filter.limit);
             accounts = result;
         }
         if (filter.offset != null) {
             accounts = accountRepository.findAll();
-            List<AccountObject> result = new ArrayList<AccountObject>();
+            List<Account> result = new ArrayList<Account>();
             accounts.forEach(result::add);
             result = result.subList(filter.offset, result.size());
             accounts = result;

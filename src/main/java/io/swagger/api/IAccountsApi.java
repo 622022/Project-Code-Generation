@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.annotations.*;
-import io.swagger.model.AccountObject;
+import io.swagger.model.Account;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,27 +22,27 @@ public interface IAccountsApi {
     );
 
 
-    @ApiOperation(value = "Edit an account.", nickname = "editAccount", notes = "Edit an account based on IBAN.", response = AccountObject.class, authorizations = {
+    @ApiOperation(value = "Edit an account.", nickname = "editAccount", notes = "Edit an account based on IBAN.", response = Account.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "the account has been edited.", response = AccountObject.class)})
+            @ApiResponse(code = 200, message = "the account has been edited.", response = Account.class)})
     @RequestMapping(value = "/accounts/{IBAN}",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<AccountObject> editAccount(@ApiParam(value = "", required = true) @Valid @RequestBody AccountObject body
+    ResponseEntity<Account> editAccount(@ApiParam(value = "", required = true) @Valid @RequestBody Account body
             , @ApiParam(value = "the IBAN of the account.", required = true) @PathVariable("IBAN") String IBAN
     );
 
 
-    @ApiOperation(value = "Get accounts with their details", nickname = "getAllAccounts", notes = "Get accounts with their details", response = AccountObject.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get accounts with their details", nickname = "getAllAccounts", notes = "Get accounts with their details", response = Account.class, responseContainer = "List", authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Account details", response = AccountObject.class, responseContainer = "List")})
+            @ApiResponse(code = 200, message = "Account details", response = Account.class, responseContainer = "List")})
     @RequestMapping(value = "/accounts",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<AccountObject>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    ResponseEntity<List<Account>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
             , @ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
             , @ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
@@ -50,14 +50,14 @@ public interface IAccountsApi {
     );
 
 
-    @ApiOperation(value = "get a specific account using IBAN.", nickname = "getSpecificAccount", notes = "Return account details", response = AccountObject.class, authorizations = {
+    @ApiOperation(value = "get a specific account using IBAN.", nickname = "getSpecificAccount", notes = "Return account details", response = Account.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Account details", response = AccountObject.class)})
+            @ApiResponse(code = 200, message = "Account details", response = Account.class)})
     @RequestMapping(value = "/accounts/{IBAN}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<AccountObject> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String IBAN
+    ResponseEntity<Account> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String IBAN
     );
 
 }

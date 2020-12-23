@@ -5,55 +5,47 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.AccountObject;
+import io.swagger.model.Account;
 import io.swagger.model.Body;
 import io.swagger.model.InlineResponse200;
-import io.swagger.model.InlineResponse2001;
 import io.swagger.model.User;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "users", description = "the users API")
 public interface IUsersApi {
 
-    @ApiOperation(value = "creates an account", nickname = "createAccount", notes = "Creates an account for the user", response = AccountObject.class, authorizations = {
+    @ApiOperation(value = "creates an account", nickname = "createAccount", notes = "Creates an account for the user", response = Account.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "the account that has been made for the user.", response = AccountObject.class)})
+            @ApiResponse(code = 200, message = "the account that has been made for the user.", response = Account.class)})
     @RequestMapping(value = "/users/{userId}/accounts",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<AccountObject> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
+    ResponseEntity<Account> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
             , @ApiParam(value = "The account to create.") @Valid @RequestBody Body body
     );
 
 
-    @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = InlineResponse2001.class, authorizations = {
+    @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = InlineResponse200.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Users",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "the user.", response = InlineResponse2001.class)})
+            @ApiResponse(code = 200, message = "the user.", response = InlineResponse200.class)})
     @RequestMapping(value = "/users",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<InlineResponse2001> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "") @Valid @RequestBody User body
     );
 
 
@@ -80,14 +72,14 @@ public interface IUsersApi {
     );
 
 
-    @ApiOperation(value = "Get accounts for a specific user.", nickname = "getAccountsByUserId", notes = "", response = AccountObject.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get accounts for a specific user.", nickname = "getAccountsByUserId", notes = "", response = Account.class, responseContainer = "List", authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Accounts",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "A list of all users accounts", response = AccountObject.class, responseContainer = "List")})
+            @ApiResponse(code = 200, message = "A list of all users accounts", response = Account.class, responseContainer = "List")})
     @RequestMapping(value = "/users/{userId}/accounts",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<AccountObject>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
+    ResponseEntity<List<Account>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
     );
 
 

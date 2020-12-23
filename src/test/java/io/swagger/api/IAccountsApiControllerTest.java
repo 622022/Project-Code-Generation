@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.AccountObject;
+import io.swagger.model.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class IAccountsApiControllerTest {
     private ObjectMapper mapper= new ObjectMapper();
     private String token;
     private MockedUser loginMockedUser;
-    private AccountObject updatedAccount;
+    private Account updatedAccount;
     private String specifcAccountIban;
 
 
@@ -91,7 +91,7 @@ class IAccountsApiControllerTest {
 
     @Test
     public void editAccountOfSpecificIbanReturns200Response()throws Exception{
-        updatedAccount = new AccountObject(200,6, AccountObject.TypeEnum.SAVING, AccountObject.StatusEnum.ACTIVE,
+        updatedAccount = new Account(200,6, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
                 10.10,50,80);
 
         this.mvc
