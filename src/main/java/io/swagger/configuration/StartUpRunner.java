@@ -60,10 +60,6 @@ public class StartUpRunner implements ApplicationRunner {
                             user.getUserId(), Account.TypeEnum.CHECKING, Account.StatusEnum.ACTIVE, 500.00*2,
                             200*2, 600*2d)
                     ));
-            userRepository
-                    .findAll()
-                    .forEach(user -> accountRepository.save(new Account(9, Account.TypeEnum.CHECKING)
-                    ));
 
             transactionRepository.findAll().forEach(System.out::println);
             userRepository.findAll().forEach(System.out::println);

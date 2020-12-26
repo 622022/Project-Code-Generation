@@ -32,8 +32,6 @@ public class TransactionsApiController implements ITransactionsApi {
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(TransactionsApiController.class.getName());
-
 
     @org.springframework.beans.factory.annotation.Autowired
     public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -42,24 +40,19 @@ public class TransactionsApiController implements ITransactionsApi {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
-    public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body
+    public ResponseEntity createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body
     ) {
         try {
-            Transaction newTransaction = transactionService.createTransaction(body);
-            if (newTransaction != null) {
-                return new ResponseEntity<Transaction>(newTransaction, HttpStatus.OK);
-            }
-
-            throw new NotFoundException("Transaction not found");
-        } catch (Exception e) {
-            if (e.getClass().getName().toLowerCase().equals("notfoundexception")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-
-            LOGGER.warning("Could not create Transactions");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            transactionService.createTransaction(body);
+            return new ResponseEntity(HttpStatus.CREATED);
         }
-
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.error("Could not create Transactions - " + e.getMessage());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
@@ -78,7 +71,7 @@ public class TransactionsApiController implements ITransactionsApi {
             }
 
         } catch (Exception e) {
-            LOGGER.warning(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
