@@ -26,16 +26,12 @@ public class TransactionService {
 
     public List<Transaction> getTransactions(String iBan) {
         List<Transaction> transactionList = new ArrayList<>();
-        try {
-            transactionRepository.findAll().forEach(transaction -> {
-                if (transaction.getSender().equals(iBan) || transaction.getReceiver().equals(iBan)) {
-                    transactionList.add(transaction);
-                }
-            });
-            return transactionList;
-        } catch (Exception e) {
-            logger.warning("Could not get Transactions." + e.getMessage());
-        }
+
+        transactionRepository.findAll().forEach(transaction -> {
+            if (transaction.getSender().equals(iBan) || transaction.getReceiver().equals(iBan)) {
+                transactionList.add(transaction);
+            }
+        });
         return transactionList;
     }
 

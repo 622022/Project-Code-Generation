@@ -1,10 +1,10 @@
 package io.swagger.api;
 
+import io.swagger.model.ApiError;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.TransactionService;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +47,11 @@ public class TransactionsApiController implements ITransactionsApi {
             return new ResponseEntity(HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            log.error("Could not create Transactions - " + e.getMessage());
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Could not create transactions - " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,17 +64,17 @@ public class TransactionsApiController implements ITransactionsApi {
 
         try {
             List<Transaction> transactions = transactionService.getTransactions(IBAN);
+
             if (transactions.isEmpty()) {
-                return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
+                log.error("Could not find transactions");
+                return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND, "Could not find transactions"), HttpStatus.NOT_FOUND);
             }
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
         }
-
+        catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
