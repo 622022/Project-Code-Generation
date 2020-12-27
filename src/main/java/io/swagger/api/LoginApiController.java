@@ -53,15 +53,15 @@ public class LoginApiController implements ILoginApi {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<InlineResponse200> loginUser(@ApiParam(value = "") @Valid @RequestBody Body1 body
+    public ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails loginDetails
     ) {
-        body.getPassword();
-        User user = userRepository.findUserByUsername(body.getUsername());
+        loginDetails.getPassword();
+        User user = userRepository.findUserByUsername(loginDetails.getUsername());
 
-        final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(body.getUsername(), body.getPassword());
+        final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        InlineResponse200 response2002 = new InlineResponse200(userDetails.getUser().getUserId().toString(), "Bearer", token);
-        return new ResponseEntity<InlineResponse200>(response2002, HttpStatus.OK);
+        UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
+        return new ResponseEntity<UserCredentials>(userCredentials, HttpStatus.OK);
     }
 
     //this is not being used

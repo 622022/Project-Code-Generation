@@ -4,10 +4,8 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
-import io.swagger.model.Body;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.UserCredentials;
 import io.swagger.model.User;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,12 +25,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<InlineResponse200> getAllUsers(Filter filter) {
-        List<InlineResponse200> userIdList = new ArrayList<>();
+    public List<UserCredentials> getAllUsers(Filter filter) {
+        List<UserCredentials> userIdList = new ArrayList<>();
 
         try {
                 userRepository.findAll().forEach(user -> {
-                InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
+                UserCredentials getUsersResponse = new UserCredentials(); // create get users response
                 getUsersResponse.userId(user.getUserId().toString());
                 userIdList.add(getUsersResponse);
             });
@@ -96,27 +94,30 @@ public class UserService {
         }
     }
 
-    public Account createAccount(int userId, Body jsonInput) {
-        try {
-            JSONObject jsonObj = new JSONObject(jsonInput);
-            String type = jsonObj.getString("accountType");
+    public Account createAccount(int userId, String requestType) {
             Account.TypeEnum accountType = null;
 
-            if (type.equals(Account.TypeEnum.CHECKING.toString())) {
+            if (requestType.equals(Account.TypeEnum.CHECKING.toString()))
+            {
                 accountType = Account.TypeEnum.CHECKING;
-            } else if (type.equals(Account.TypeEnum.SAVING.toString())) {
+            }
+            else if (requestType.equals(Account.TypeEnum.SAVING.toString()))
+            {
                 accountType = Account.TypeEnum.SAVING;
             }
+            else {
+                logger.warning("Invalid account type");
+                throw new IllegalArgumentException("Invalid account type");
+            }
 
-            //AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getClass().getName());
+            if (!userRepository.existsById(userId))
+            {
+                logger.warning("User does not exist");
+                throw new IllegalArgumentException("User does not exist");
+            }
+
             Account newAccount = new Account(userId, accountType);
             accountRepository.save(newAccount);
-
             return newAccount;
-        }
-        catch (Exception e) {
-            logger.warning("Could not create user" + e.getMessage());
-            return new Account();
-        }
     }
 }
