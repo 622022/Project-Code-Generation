@@ -46,43 +46,47 @@ public class TransactionsApiController implements ITransactionsApi {
     public ResponseEntity<JsonResponse> createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body
     ) {
         try {
-            Transaction newTransaction = transactionService.createTransaction(body);
-            JsonResponse response = new JsonResponse(newTransaction , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
-            if (newTransaction != null) {
-                throw new NotFoundException("Transaction not found");
-            }
-            return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            if (e.getClass().getName().toLowerCase().equals("notfoundexception")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+            transactionService.createTransaction(body);
+            JsonResponse response = new JsonResponse(null , new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
 
-            LOGGER.warning("Could not create Transactions");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
-
+        catch (IllegalArgumentException e) {
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOGGER.warning("CreateTransaction: " + e.getMessage());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
-    public ResponseEntity<List<Transaction>> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String IBAN
+    public ResponseEntity<JsonResponse> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String iBan
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
             , @ApiParam(value = "returns transaction(s) based on the reciever's name") @Valid @RequestParam(value = "reciever", required = false) String reciever
             , @ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
     ) {
-
         try {
-            List<Transaction> transactions = transactionService.getTransactions(IBAN);
+            List<Transaction> transactions = transactionService.getTransactions(iBan);
             if (transactions.isEmpty()) {
-                return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
+                return new ResponseEntity<JsonResponse>(HttpStatus.NO_CONTENT);
             }
 
-        } catch (Exception e) {
-            LOGGER.warning(e.getMessage());
-            return new ResponseEntity<List<Transaction>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            JsonResponse response = new JsonResponse(null , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
 
+        }
+        catch (IllegalArgumentException e) {
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOGGER.warning("GetTransaction: " + e.getMessage());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

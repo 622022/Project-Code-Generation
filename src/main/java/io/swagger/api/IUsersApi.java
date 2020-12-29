@@ -6,6 +6,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Account;
+import io.swagger.model.JsonResponse;
 import io.swagger.model.UserCredentials;
 import io.swagger.model.User;
 import io.swagger.annotations.*;
@@ -31,7 +32,7 @@ public interface IUsersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<Account> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
+    ResponseEntity<JsonResponse> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
             , @Valid @RequestParam(value = "accountType", required = true) String accountType
     );
 
@@ -44,7 +45,7 @@ public interface IUsersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<UserCredentials> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    ResponseEntity<JsonResponse> createUser(@ApiParam(value = "") @Valid @RequestBody User body
     );
 
 
@@ -54,7 +55,7 @@ public interface IUsersApi {
             @ApiResponse(code = 200, message = "the user has been deleted")})
     @RequestMapping(value = "/users/{userid}",
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
+    ResponseEntity<JsonResponse> deleteUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
     );
 
 
@@ -66,7 +67,7 @@ public interface IUsersApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<User> editUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
+    ResponseEntity<JsonResponse> editUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
             , @ApiParam(value = "") @Valid @RequestBody User body
     );
 
@@ -78,7 +79,7 @@ public interface IUsersApi {
     @RequestMapping(value = "/users/{userId}/accounts",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<Account>> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
+    ResponseEntity<JsonResponse> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
     );
 
 
@@ -89,7 +90,7 @@ public interface IUsersApi {
     @RequestMapping(value = "/users",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<UserCredentials>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    ResponseEntity<JsonResponse> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
     );
 
