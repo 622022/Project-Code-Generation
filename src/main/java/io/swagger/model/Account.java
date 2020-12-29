@@ -357,23 +357,4 @@ public Account(){
     }
     return o.toString().replace("\n", "\n    ");
   }
-
-  public boolean withdrawAmount(Double withdrawAmount)
-  {
-    boolean succesfulTranscation = false;
-    Double remainingAmount = amount-withdrawAmount;
-
-    //checking if the user does not exceed his balance, daily transaction limit, per transaction limit and absolute limit
-    if(amount > withdrawAmount && transactionLimit > withdrawAmount && dayLimit > 0 && absolutelimit<=remainingAmount) {
-      setDayLimit(dayLimit -= 1); // adjust daylimit
-      setAmount(amount -= withdrawAmount); // adjust balance
-      succesfulTranscation = true;
-    }
-
-    return succesfulTranscation;
-  }
-
-  public void insertAmount(Double amount) {
-    this.setAmount(this.amount+= amount);
-  }
 }

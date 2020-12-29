@@ -2,7 +2,7 @@ package io.swagger.model;
 
 import org.springframework.http.HttpStatus;
 
-public class  ApiError {
+public class ApiError {
     private HttpStatus httpStatus;
     private String message;
 
