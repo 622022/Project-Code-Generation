@@ -27,8 +27,8 @@ public class TransactionService {
     public Transaction createTransaction(Transaction transaction) {
         try {
             //this ensures that only the accounts that are within the repository are used otherwise they will be null
-            Account accountSender = accountRepository.getAccountObjectByIBAN(transaction.getSender());
-            Account accountReceiver = accountRepository.getAccountObjectByIBAN(transaction.getReceiver());
+            Account accountSender = accountRepository.getAccountByIBAN(transaction.getSender());
+            Account accountReceiver = accountRepository.getAccountByIBAN(transaction.getReceiver());
 
             //checking if the accounts even exist & checking if they're not the same accounts
             if (accountSender != null && accountReceiver != null && accountSender != accountReceiver) {

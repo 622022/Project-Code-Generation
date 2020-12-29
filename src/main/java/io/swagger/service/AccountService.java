@@ -32,44 +32,51 @@ public class AccountService {
 
 
     public Account getSpecificAccount(String iBan) {
-        Account specificAccount;
-        try {
-            specificAccount = accountRepository.findById(iBan).get();
-            return specificAccount;
-        } catch (Exception e) {
-            logger.warning("Failed to get accounts " + e.getMessage());
+        if (iBan.equals(""))
+        {
+            logger.warning("Invalid IBAN provided.");
+            throw new IllegalArgumentException("Invalid IBAN provided.");
         }
-        return new Account();
+
+        Account account = accountRepository.findById(iBan).get();
+        if (account == null)
+        {
+            logger.warning("Account "+ iBan + " does not exist.");
+            throw new IllegalArgumentException("Account "+ iBan + " does not exist.");
+        }
+        return account;
     }
 
     public void deleteAccount(String iBan) {
-        try {
+        if (accountRepository.existsById(iBan))
+        {
             accountRepository.deleteById(iBan);
-        } catch (Exception e) {
-            logger.warning("Failed to delete account " + e.getMessage());
+        } else {
+            logger.warning("Failed to delete account:  " + iBan + " does not exist.");
+            throw new IllegalArgumentException("Failed to delete account: " + iBan + " does not exist.");
         }
     }
 
     public Account editAccount(String iBan, Account updatedAccount) {
-        try {
-            accountRepository.save(updatedAccount);
-            return accountRepository.findById(iBan).get();
-        } catch (Exception e) {
-            logger.warning("Failed to edit account " + e.getMessage());
+        if (iBan.equals("") || updatedAccount == null)
+        {
+            logger.warning("Invalid IBAN or account provided.");
+            throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
-        return new Account();
+        accountRepository.save(updatedAccount);
+        return accountRepository.findById(iBan).get();
     }
 
     private Iterable<Account> fillResponse(Filter filter) {
         Iterable<Account> accounts = new ArrayList<>();
         if (filter.accountOwnerId != null) {
-            accounts = accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId);
+            accounts = accountRepository.getAccountsByOwnerId(filter.accountOwnerId);
         }
         if (filter.status != null) {
-            accounts = accountRepository.getAccountObjectByStatus(filter.status);
+            accounts = accountRepository.getAccountsByStatus(filter.status);
         }
         if (filter.type != null) {
-            accounts = accountRepository.getAccountObjectByType(filter.type);
+            accounts = accountRepository.getAccountsByType(filter.type);
         }
         if (filter.limit != null) {
             accounts = accountRepository.findAll();

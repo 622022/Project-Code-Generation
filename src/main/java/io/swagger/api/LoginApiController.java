@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,13 +56,22 @@ public class LoginApiController implements ILoginApi {
 
     public ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails loginDetails
     ) {
-        loginDetails.getPassword();
-        User user = userRepository.findUserByUsername(loginDetails.getUsername());
+        try {
+            final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
+            final String token = jwtTokenUtil.generateToken(userDetails);
 
-        final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
-        return new ResponseEntity<UserCredentials>(userCredentials, HttpStatus.OK);
+            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
+            return new ResponseEntity<UserCredentials>(userCredentials, HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch(UsernameNotFoundException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     //this is not being used

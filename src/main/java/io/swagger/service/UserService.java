@@ -43,65 +43,63 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        try {
-            userRepository.save(user);
+        if (user == null)
+        {
+            logger.warning("User can not be null");
+            throw new IllegalArgumentException("User can not be null.");
         }
-        catch (Exception e) {
-            logger.warning("Could not create user" + e.getMessage());
-        }
+        userRepository.save(user);
     }
 
     public void deleteUser(Integer userId) {
-        try {
-            userRepository.deleteById(userId);
+        if (!userRepository.existsById(userId))
+        {
+            logger.warning("User: " + userId + " does not exist");
+            throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
-        catch (Exception e) {
-            logger.warning("Could not delete user" + e.getMessage());
-        }
+        userRepository.deleteById(userId);
     }
 
     public User editUser(Integer userId, User updatedUser) {
-
-        try {
-            updatedUser.setUserId(userId);
-            User oldUser = userRepository.findById(userId).get();
-
-            updatedUser.setRole(oldUser.getRole());
-            userRepository.save(updatedUser); // update existing user
-
-            return userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).get();
+        if (user == null) {
+            logger.warning("User: " + userId + " does not exist");
+            throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
-        catch (Exception e) {
-            logger.warning("Could not edit user" + e.getMessage());
-            return userRepository.findById(userId).get();
-        }
+
+        updatedUser.setUserId(userId);
+        updatedUser.setRole(user.getRole());
+        userRepository.save(updatedUser); // update existing user
+
+        return userRepository.findById(userId).get();
     }
 
     public List<Account> getAccountsByUserId(Integer userId) {
         List<Account> accountList = new ArrayList<>();
 
-        try {
-            accountRepository.findAll().forEach(accountObject -> {
-                if (userId == accountObject.getOwnerId()) {
-                    accountList.add(accountObject);
-                }
-            });
-            return accountList;
+        if (userId == null) {
+            logger.warning("Invalid user provided.");
+            throw new IllegalArgumentException("Invalid user provided.");
         }
-        catch (Exception e) {
-            logger.warning("Could not get users" + e.getMessage());
-            return accountList;
-        }
+        accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+/*
+        accountRepository.findAll().forEach(accountObject -> {
+            if (userId == accountObject.getOwnerId()) {
+                accountList.add(accountObject);
+            }
+        });
+*/
+        return accountList;
     }
 
-    public Account createAccount(int userId, String requestType) {
+    public Account createAccount(int userId, String typeAccount) {
             Account.TypeEnum accountType = null;
 
-            if (requestType.equals(Account.TypeEnum.CHECKING.toString()))
+            if (typeAccount.equals(Account.TypeEnum.CHECKING.toString()))
             {
                 accountType = Account.TypeEnum.CHECKING;
             }
-            else if (requestType.equals(Account.TypeEnum.SAVING.toString()))
+            else if (typeAccount.equals(Account.TypeEnum.SAVING.toString()))
             {
                 accountType = Account.TypeEnum.SAVING;
             }

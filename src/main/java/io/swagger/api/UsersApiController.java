@@ -45,23 +45,32 @@ public class UsersApiController implements IUsersApi {
     ) {
         try {
             return new ResponseEntity<Account>(userService.createAccount(userId, accountType), HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.warn("Account creation failed");
-            return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not create account. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<UserCredentials> createUser(@ApiParam(value = "") @Valid @RequestBody User user
     ) {
-        UserCredentials createdUserResponse = new UserCredentials();
         try {
+            UserCredentials createdUserResponse = new UserCredentials();
             userService.createUser(user);
             createdUserResponse.userId(user.getUserId().toString());
+
             return new ResponseEntity<UserCredentials>(createdUserResponse, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.warn("User creation failed");
-            return new ResponseEntity<UserCredentials>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not create user. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,21 +80,29 @@ public class UsersApiController implements IUsersApi {
         try {
             userService.deleteUser(userId); // delete user from database
             return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User deletion failed" + e.getMessage());
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not delete user. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<User> editUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userId
-            , @ApiParam(value = "") @Valid @RequestBody User body
+            , @ApiParam(value = "") @Valid @RequestBody User user
     ) {
         try {
-            return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User editing failed");
-            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<User>(userService.editUser(userId, user), HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not update user. " +  e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -94,9 +111,13 @@ public class UsersApiController implements IUsersApi {
     ) {
         try {
             return new ResponseEntity<List<Account>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User getting failed");
-            return new ResponseEntity<List<Account>>(HttpStatus.NOT_FOUND);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not find accounts");
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND, e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
