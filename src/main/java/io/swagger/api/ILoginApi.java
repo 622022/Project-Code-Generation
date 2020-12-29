@@ -5,8 +5,8 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Body1;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.LoginDetails;
+import io.swagger.model.UserCredentials;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,15 +19,15 @@ import javax.validation.Valid;
 @Api(value = "login", description = "the login API")
 public interface ILoginApi {
 
-    @ApiOperation(value = "login", nickname = "loginUser", notes = "login give you an access by sending you bearerToken", response = InlineResponse200.class, authorizations = {
+    @ApiOperation(value = "login", nickname = "loginUser", notes = "login give you an access by sending you bearerToken", response = UserCredentials.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Users",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Bearer token", response = InlineResponse200.class)})
+            @ApiResponse(code = 200, message = "Bearer token", response = UserCredentials.class)})
     @RequestMapping(value = "/login",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> loginUser(@ApiParam(value = "") @Valid @RequestBody Body1 body
+    ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails body
     );
 
 }

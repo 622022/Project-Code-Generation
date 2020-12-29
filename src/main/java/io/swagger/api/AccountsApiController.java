@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
 import io.swagger.model.JSONResponse;
+import io.swagger.model.ApiError;
 import io.swagger.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
@@ -38,30 +39,35 @@ public class AccountsApiController implements IAccountsApi {
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<Void> deleteAccount(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("IBAN") String IBAN
+    public ResponseEntity<Void> deleteAccount(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            String accept = request.getHeader("Accept");
-            accountService.deleteAccount(IBAN); // delete account
+            accountService.deleteAccount(iBan); // delete account
             return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.warning("Could not delete account" + e.getMessage());
-            return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
         }
-
-
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOGGER.warning("Could not delete account. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<Account> editAccount(@ApiParam(value = "The account to be updated of specific user", required = true) @Valid @RequestBody Account body
-            , @ApiParam(value = "the IBAN of the account.", required = true) @PathVariable("IBAN") String IBAN
+    public ResponseEntity<Account> editAccount(@ApiParam(value = "The account to be updated of specific user", required = true) @Valid @RequestBody Account account
+            , @ApiParam(value = "the IBAN of the account.", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            return new ResponseEntity<Account>(accountService.editAccount(IBAN, body), HttpStatus.OK);
+            return new ResponseEntity<Account>(accountService.editAccount(iBan, account), HttpStatus.OK);
 
-        } catch (Exception e) {
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
             LOGGER.warning("Could not edit account" + e.getMessage());
-            return new ResponseEntity<Account>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -94,13 +100,17 @@ public class AccountsApiController implements IAccountsApi {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
-    public ResponseEntity<Account> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String IBAN
+    public ResponseEntity<Account> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            return new ResponseEntity<Account>(accountService.getSpecificAccount(IBAN), HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.warning("Could not get account" + e.getMessage());
-            return new ResponseEntity<Account>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<Account>(accountService.getSpecificAccount(iBan), HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            LOGGER.warning("Could not find account " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND, e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 }

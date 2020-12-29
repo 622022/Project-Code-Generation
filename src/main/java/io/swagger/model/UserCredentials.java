@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * InlineResponse200
+ * UserCredentials
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
-public class InlineResponse200 {
+public class UserCredentials {
   @JsonProperty("userId")
   private String userId = null;
 
@@ -20,28 +20,18 @@ public class InlineResponse200 {
   @JsonProperty("tokenValue")
   private String tokenValue = null;
 
-  @JsonProperty("userRole")
-  private Role userRole = null;
-
-  public InlineResponse200(String userId, String tokenType, String tokenValue) {
+  public UserCredentials(String userId, String tokenType, String tokenValue) {
     this.userId = userId;
     this.tokenType = tokenType;
     this.tokenValue = tokenValue;
   }
 
-  public InlineResponse200 userId(String userId) {
+  public UserCredentials userId(String userId) {
     this.userId = userId;
     return this;
   }
 
-  public InlineResponse200() {
-  }
-
-  public InlineResponse200(String userId, String tokenType, String tokenValue, Role userRole) {
-    this.userId = userId;
-    this.tokenType = tokenType;
-    this.tokenValue = tokenValue;
-    this.userRole = userRole;
+  public UserCredentials() {
   }
 
   /**
@@ -58,7 +48,7 @@ public class InlineResponse200 {
     this.userId = userId;
   }
 
-  public InlineResponse200 tokenType(String tokenType) {
+  public UserCredentials tokenType(String tokenType) {
     this.tokenType = tokenType;
     return this;
   }
@@ -77,7 +67,7 @@ public class InlineResponse200 {
     this.tokenType = tokenType;
   }
 
-  public InlineResponse200 tokenValue(String tokenValue) {
+  public UserCredentials tokenValue(String tokenValue) {
     this.tokenValue = tokenValue;
     return this;
   }
@@ -105,10 +95,10 @@ public class InlineResponse200 {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InlineResponse200 inlineResponse200 = (InlineResponse200) o;
-    return Objects.equals(this.userId, inlineResponse200.userId) &&
-        Objects.equals(this.tokenType, inlineResponse200.tokenType) &&
-        Objects.equals(this.tokenValue, inlineResponse200.tokenValue);
+    UserCredentials userCredentials = (UserCredentials) o;
+    return Objects.equals(this.userId, userCredentials.userId) &&
+        Objects.equals(this.tokenType, userCredentials.tokenType) &&
+        Objects.equals(this.tokenValue, userCredentials.tokenValue);
   }
 
   @Override
@@ -119,7 +109,7 @@ public class InlineResponse200 {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class InlineResponse200 {\n");
+    sb.append("class UserCredentials {\n");
     
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    tokenType: ").append(toIndentedString(tokenType)).append("\n");

@@ -4,10 +4,8 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
-import io.swagger.model.Body;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.UserCredentials;
 import io.swagger.model.User;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,12 +25,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<InlineResponse200> getAllUsers(Filter filter) {
-        List<InlineResponse200> userIdList = new ArrayList<>();
+    public List<UserCredentials> getAllUsers(Filter filter) {
+        List<UserCredentials> userIdList = new ArrayList<>();
 
         try {
                 userRepository.findAll().forEach(user -> {
-                InlineResponse200 getUsersResponse = new InlineResponse200(); // create get users response
+                UserCredentials getUsersResponse = new UserCredentials(); // create get users response
                 getUsersResponse.userId(user.getUserId().toString());
                 userIdList.add(getUsersResponse);
             });
@@ -45,78 +43,79 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        try {
-            userRepository.save(user);
+        if (user == null)
+        {
+            logger.warning("User can not be null");
+            throw new IllegalArgumentException("User can not be null.");
         }
-        catch (Exception e) {
-            logger.warning("Could not create user" + e.getMessage());
-        }
+        userRepository.save(user);
     }
 
     public void deleteUser(Integer userId) {
-        try {
-            userRepository.deleteById(userId);
+        if (!userRepository.existsById(userId))
+        {
+            logger.warning("User: " + userId + " does not exist");
+            throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
-        catch (Exception e) {
-            logger.warning("Could not delete user" + e.getMessage());
-        }
+        userRepository.deleteById(userId);
     }
 
     public User editUser(Integer userId, User updatedUser) {
-
-        try {
-            updatedUser.setUserId(userId);
-            User oldUser = userRepository.findById(userId).get();
-
-            updatedUser.setRole(oldUser.getRole());
-            userRepository.save(updatedUser); // update existing user
-
-            return userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).get();
+        if (user == null) {
+            logger.warning("User: " + userId + " does not exist");
+            throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
-        catch (Exception e) {
-            logger.warning("Could not edit user" + e.getMessage());
-            return userRepository.findById(userId).get();
-        }
+
+        updatedUser.setUserId(userId);
+        updatedUser.setRole(user.getRole());
+        userRepository.save(updatedUser); // update existing user
+
+        return userRepository.findById(userId).get();
     }
 
     public List<Account> getAccountsByUserId(Integer userId) {
         List<Account> accountList = new ArrayList<>();
 
-        try {
-            accountRepository.findAll().forEach(accountObject -> {
-                if (userId == accountObject.getOwnerId()) {
-                    accountList.add(accountObject);
-                }
-            });
-            return accountList;
+        if (userId == null) {
+            logger.warning("Invalid user provided.");
+            throw new IllegalArgumentException("Invalid user provided.");
         }
-        catch (Exception e) {
-            logger.warning("Could not get users" + e.getMessage());
-            return accountList;
-        }
+        accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+/*
+        accountRepository.findAll().forEach(accountObject -> {
+            if (userId == accountObject.getOwnerId()) {
+                accountList.add(accountObject);
+            }
+        });
+*/
+        return accountList;
     }
 
-    public Account createAccount(int userId, Body jsonInput) {
-        try {
-            JSONObject jsonObj = new JSONObject(jsonInput);
-            String type = jsonObj.getString("accountType");
+    public Account createAccount(int userId, String typeAccount) {
             Account.TypeEnum accountType = null;
 
-            if (type.equals(Account.TypeEnum.CHECKING.toString())) {
+            if (typeAccount.equals(Account.TypeEnum.CHECKING.toString()))
+            {
                 accountType = Account.TypeEnum.CHECKING;
-            } else if (type.equals(Account.TypeEnum.SAVING.toString())) {
+            }
+            else if (typeAccount.equals(Account.TypeEnum.SAVING.toString()))
+            {
                 accountType = Account.TypeEnum.SAVING;
             }
+            else {
+                logger.warning("Invalid account type");
+                throw new IllegalArgumentException("Invalid account type");
+            }
 
-            //AccountObject.TypeEnum accountType = AccountObject.TypeEnum.fromValue(jsonInput.getClass().getName());
+            if (!userRepository.existsById(userId))
+            {
+                logger.warning("User does not exist");
+                throw new IllegalArgumentException("User does not exist");
+            }
+
             Account newAccount = new Account(userId, accountType);
             accountRepository.save(newAccount);
-
             return newAccount;
-        }
-        catch (Exception e) {
-            logger.warning("Could not create user" + e.getMessage());
-            return new Account();
-        }
     }
 }

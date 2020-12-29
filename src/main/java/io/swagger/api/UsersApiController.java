@@ -40,52 +40,69 @@ public class UsersApiController implements IUsersApi {
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<Account> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
-            , @ApiParam(value = "The account to create.") @Valid @RequestBody Body body
+    public ResponseEntity<Account> createAccount(@ApiParam(value = "the userId of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
+            , @Valid @RequestParam(value = "accountType", required = true) String accountType
     ) {
         try {
-            return new ResponseEntity<Account>(userService.createAccount(userId, body), HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.warn("Account creation failed");
-            return new ResponseEntity<Account>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Account>(userService.createAccount(userId, accountType), HttpStatus.CREATED);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not create account. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    public ResponseEntity<UserCredentials> createUser(@ApiParam(value = "") @Valid @RequestBody User user
     ) {
-        InlineResponse200 createdUserResponse = new InlineResponse200();
         try {
-            userService.createUser(body);
-            createdUserResponse.userId(body.getUserId().toString());
-            return new ResponseEntity<InlineResponse200>(createdUserResponse, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.warn("User creation failed");
-            return new ResponseEntity<InlineResponse200>(HttpStatus.INTERNAL_SERVER_ERROR);
+            UserCredentials createdUserResponse = new UserCredentials();
+            userService.createUser(user);
+            createdUserResponse.userId(user.getUserId().toString());
+
+            return new ResponseEntity<UserCredentials>(createdUserResponse, HttpStatus.CREATED);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not create user. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<Void> deleteUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userid
+    public ResponseEntity<Void> deleteUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userId
     ) {
         try {
-            userService.deleteUser(userid); // delete user from database
+            userService.deleteUser(userId); // delete user from database
             return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User deletion failed" + e.getMessage());
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not delete user. " + e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<User> editUser(@ApiParam(value = "", required = true) @PathVariable("userid") Integer userId
-            , @ApiParam(value = "") @Valid @RequestBody User body
+            , @ApiParam(value = "") @Valid @RequestBody User user
     ) {
         try {
-            return new ResponseEntity<User>(userService.editUser(userId, body), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User editing failed");
-            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<User>(userService.editUser(userId, user), HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not update user. " +  e.getMessage());
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -94,21 +111,25 @@ public class UsersApiController implements IUsersApi {
     ) {
         try {
             return new ResponseEntity<List<Account>>(userService.getAccountsByUserId(userId), HttpStatus.OK);
-        } catch (Exception e) {
-            log.warn("User getting failed");
-            return new ResponseEntity<List<Account>>(HttpStatus.NOT_FOUND);
+        }
+        catch (IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            log.warn("Could not find accounts");
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND, e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    public ResponseEntity<List<UserCredentials>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
     ) {
         try {
-            return new ResponseEntity<List<InlineResponse200>>(userService.getAllUsers(new Filter(limit == null ? 0 : limit, offset == null ? 0 : offset)), HttpStatus.OK);
+            return new ResponseEntity<List<UserCredentials>>(userService.getAllUsers(new Filter(limit == null ? 0 : limit, offset == null ? 0 : offset)), HttpStatus.OK);
         } catch (Exception e) {
             log.warn("Users getting failed");
-            return new ResponseEntity<List<InlineResponse200>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<UserCredentials>>(HttpStatus.BAD_REQUEST);
         }
 
     }

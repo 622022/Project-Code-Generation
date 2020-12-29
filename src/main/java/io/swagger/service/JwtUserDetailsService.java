@@ -42,6 +42,12 @@ public class JwtUserDetailsService implements UserDetailsService {
     public JwtUserDetails loadUserByUsername(String username, String password) {
         User user = userRepository.findUserByUsername(username);
 
+        if (user == null)
+        {
+            LOGGER.warning("Invalid username provided");
+            throw new IllegalArgumentException("Invalid username provided");
+        }
+
         if (user.getUsername().equals(username) && user.getPassword().equals(password))
         {
             return new JwtUserDetails(user);

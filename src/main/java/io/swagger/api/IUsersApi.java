@@ -6,8 +6,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Account;
-import io.swagger.model.Body;
-import io.swagger.model.InlineResponse200;
+import io.swagger.model.UserCredentials;
 import io.swagger.model.User;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -33,19 +32,19 @@ public interface IUsersApi {
             consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<Account> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
-            , @ApiParam(value = "The account to create.") @Valid @RequestBody Body body
+            , @Valid @RequestParam(value = "accountType", required = true) String accountType
     );
 
 
-    @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = InlineResponse200.class, authorizations = {
+    @ApiOperation(value = "Creates a User", nickname = "createUser", notes = "Creates a user", response = UserCredentials.class, authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Users",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "the user.", response = InlineResponse200.class)})
+            @ApiResponse(code = 200, message = "the user.", response = UserCredentials.class)})
     @RequestMapping(value = "/users",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<InlineResponse200> createUser(@ApiParam(value = "") @Valid @RequestBody User body
+    ResponseEntity<UserCredentials> createUser(@ApiParam(value = "") @Valid @RequestBody User body
     );
 
 
@@ -83,14 +82,14 @@ public interface IUsersApi {
     );
 
 
-    @ApiOperation(value = "Get users", nickname = "getAllUsers", notes = "Return all users", response = InlineResponse200.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get users", nickname = "getAllUsers", notes = "Return all users", response = UserCredentials.class, responseContainer = "List", authorizations = {
             @Authorization(value = "bearerAuth")}, tags = {"Users",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Users list.", response = InlineResponse200.class, responseContainer = "List")})
+            @ApiResponse(code = 200, message = "Users list.", response = UserCredentials.class, responseContainer = "List")})
     @RequestMapping(value = "/users",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<InlineResponse200>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    ResponseEntity<List<UserCredentials>> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
     );
 

@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,13 +54,36 @@ public class LoginApiController implements ILoginApi {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<InlineResponse200> loginUser(@ApiParam(value = "") @Valid @RequestBody Body1 body
+    public ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails loginDetails
     ) {
-        User user = userRepository.findUserByUsername(body.getUsername());
-        final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(body.getUsername(), body.getPassword());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        InlineResponse200 response200 = new InlineResponse200(userDetails.getUser().getUserId().toString(), "Bearer", token, userDetails.getUser().getRole());
-        return new ResponseEntity<InlineResponse200>(response200, HttpStatus.OK);
+        try {
+            final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
+            final String token = jwtTokenUtil.generateToken(userDetails);
+
+            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
+            return new ResponseEntity<UserCredentials>(userCredentials, HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch(UsernameNotFoundException e) {
+            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e) {
+            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //this is not being used
+    // we should make sure if we need this method and how can we use it
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
     }
 
 }
