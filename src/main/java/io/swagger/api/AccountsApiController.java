@@ -40,7 +40,6 @@ public class AccountsApiController implements IAccountsApi {
     public ResponseEntity<Void> deleteAccount(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            String accept = request.getHeader("Accept");
             accountService.deleteAccount(iBan); // delete account
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
