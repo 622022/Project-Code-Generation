@@ -2,11 +2,12 @@ package io.swagger.api;
 
 import io.swagger.annotations.*;
 import io.swagger.model.Account;
+import io.swagger.model.JSONResponse;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "accounts", description = "the accounts API")
@@ -42,7 +43,7 @@ public interface IAccountsApi {
     @RequestMapping(value = "/accounts",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<Account>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    HttpEntity<JSONResponse> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
             , @ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
             , @ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type

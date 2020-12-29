@@ -20,6 +20,9 @@ public class InlineResponse200 {
   @JsonProperty("tokenValue")
   private String tokenValue = null;
 
+  @JsonProperty("userRole")
+  private Role userRole = null;
+
   public InlineResponse200(String userId, String tokenType, String tokenValue) {
     this.userId = userId;
     this.tokenType = tokenType;
@@ -32,6 +35,13 @@ public class InlineResponse200 {
   }
 
   public InlineResponse200() {
+  }
+
+  public InlineResponse200(String userId, String tokenType, String tokenValue, Role userRole) {
+    this.userId = userId;
+    this.tokenType = tokenType;
+    this.tokenValue = tokenValue;
+    this.userRole = userRole;
   }
 
   /**

@@ -4,6 +4,7 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class AccountService {
     public Iterable<Account> getAllAccounts(Filter filter) {
         Iterable<Account> accounts = new ArrayList<>();
         try {
-            accounts= fillResponse(filter);
+            accounts = fillResponse(filter);
         } catch (Exception e) {
             logger.warning("Failed to get accounts " + e.getMessage());
             e.getMessage();
@@ -61,34 +62,45 @@ public class AccountService {
     }
 
     private Iterable<Account> fillResponse(Filter filter) {
-        Iterable<Account> accounts = new ArrayList<>();
+        List<Account> result = new ArrayList<Account>();
+        Iterable<Account> accounts = new ArrayList<Account>();
         if (filter.accountOwnerId != null) {
             accounts = accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId);
+            accounts.forEach(result::add);
         }
         if (filter.status != null) {
-            accounts = accountRepository.getAccountObjectByStatus(filter.status);
+            if (result.size() == 0) {
+                accounts = accountRepository.getAccountObjectByStatus(filter.status);
+                accounts.forEach(result::add);
+            } else {
+                List<Account> temp = new ArrayList<Account>();
+                accounts.forEach(account -> { if (account.getStatus()== filter.status )  temp.add(account) ; } );
+                temp.forEach(result::add);
+            }
         }
         if (filter.type != null) {
-            accounts = accountRepository.getAccountObjectByType(filter.type);
+            if (result.size() == 0){
+                accounts = accountRepository.getAccountObjectByType(filter.type);
+                accounts.forEach(result::add);
+            }
+            else{
+                List<Account> temp = new ArrayList<Account>();
+                accounts.forEach(account -> { if (account.getType()== filter.type )  temp.add(account) ; } );
+                temp.forEach(result::add);
+            }
         }
         if (filter.limit != null) {
-            accounts = accountRepository.findAll();
-            List<Account> result = new ArrayList<Account>();
+            accounts = accountRepository.GetAllLimit(filter.limit);
             accounts.forEach(result::add);
             result = result.subList(0, filter.limit);
-            accounts = result;
         }
         if (filter.offset != null) {
             accounts = accountRepository.findAll();
-            List<Account> result = new ArrayList<Account>();
             accounts.forEach(result::add);
             result = result.subList(filter.offset, result.size());
             accounts = result;
         }
-        if (accounts == null) {
-            accounts = accountRepository.findAll();
-        }
-        return accounts;
+        return result;
     }
 
 }
