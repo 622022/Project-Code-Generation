@@ -2,7 +2,7 @@ package io.swagger.api;
 
 import io.swagger.annotations.*;
 import io.swagger.model.Account;
-import io.swagger.model.JSONResponse;
+import io.swagger.model.JsonResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public interface IAccountsApi {
             @ApiResponse(code = 200, message = "the account been closed.")})
     @RequestMapping(value = "/accounts/{IBAN}",
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAccount(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("IBAN") String IBAN
+    ResponseEntity<JsonResponse> deleteAccount(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("IBAN") String IBAN
     );
 
 
@@ -31,7 +31,7 @@ public interface IAccountsApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<Account> editAccount(@ApiParam(value = "", required = true) @Valid @RequestBody Account body
+    ResponseEntity<JsonResponse> editAccount(@ApiParam(value = "", required = true) @Valid @RequestBody Account body
             , @ApiParam(value = "the IBAN of the account.", required = true) @PathVariable("IBAN") String IBAN
     );
 
@@ -43,7 +43,7 @@ public interface IAccountsApi {
     @RequestMapping(value = "/accounts",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    HttpEntity<JSONResponse> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
+    HttpEntity<JsonResponse> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
             , @ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
             , @ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
@@ -58,7 +58,7 @@ public interface IAccountsApi {
     @RequestMapping(value = "/accounts/{IBAN}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Account> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String IBAN
+    ResponseEntity<JsonResponse> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String IBAN
     );
 
 }

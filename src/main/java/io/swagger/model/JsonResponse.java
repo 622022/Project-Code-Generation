@@ -16,7 +16,7 @@ import javax.persistence.Entity;
         setterVisibility = JsonAutoDetect.Visibility.NONE,
         creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class JSONResponse<T> {
+public class JsonResponse<T> {
 
     @Nullable
     @JsonProperty("Data")
@@ -26,7 +26,7 @@ public class JSONResponse<T> {
     @JsonProperty("Response")
     private final T UserMessage;
 
-    public JSONResponse(@Nullable T body, @Nullable T userMessage) {
+    public JsonResponse(@Nullable T body, @Nullable T userMessage) {
         this.body = body;
         UserMessage = userMessage;
     }
@@ -57,6 +57,14 @@ public class JSONResponse<T> {
         public Boolean IsSuccessful;
 
         public UserMessage() {
+            Text = "Handled";
+            Status = HttpStatus.OK;
+            IsSuccessful = true;
+        }
+        public UserMessage(HttpStatus status) {
+            Text = "Handled";
+            Status = status;
+            IsSuccessful = true;
         }
         public UserMessage(String text, HttpStatus status, Boolean isSuccessful) {
             Text = text;

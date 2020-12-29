@@ -71,12 +71,12 @@ public class AccountService {
         List<Account> result = new ArrayList<Account>();
         Iterable<Account> accounts = new ArrayList<Account>();
         if (filter.accountOwnerId != null) {
-            accounts = accountRepository.getAccountObjectByOwnerId(filter.accountOwnerId);
+            accounts = accountRepository.getAccountsByOwnerId(filter.accountOwnerId);
             accounts.forEach(result::add);
         }
         if (filter.status != null) {
             if (result.size() == 0) {
-                accounts = accountRepository.getAccountObjectByStatus(filter.status);
+                accounts = accountRepository.getAccountsByStatus(filter.status);
                 accounts.forEach(result::add);
             } else {
                 List<Account> temp = new ArrayList<Account>();
@@ -86,7 +86,7 @@ public class AccountService {
         }
         if (filter.type != null) {
             if (result.size() == 0){
-                accounts = accountRepository.getAccountObjectByType(filter.type);
+                accounts = accountRepository.getAccountsByType(filter.type);
                 accounts.forEach(result::add);
             }
             else{

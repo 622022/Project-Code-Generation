@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import io.swagger.model.JsonResponse;
 import io.swagger.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -42,15 +43,15 @@ public class TransactionsApiController implements ITransactionsApi {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
-    public ResponseEntity<Transaction> createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body
+    public ResponseEntity<JsonResponse> createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction body
     ) {
         try {
             Transaction newTransaction = transactionService.createTransaction(body);
+            JsonResponse response = new JsonResponse(newTransaction , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             if (newTransaction != null) {
-                return new ResponseEntity<Transaction>(newTransaction, HttpStatus.OK);
+                throw new NotFoundException("Transaction not found");
             }
-
-            throw new NotFoundException("Transaction not found");
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         } catch (Exception e) {
             if (e.getClass().getName().toLowerCase().equals("notfoundexception")) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

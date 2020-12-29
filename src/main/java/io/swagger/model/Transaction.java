@@ -202,18 +202,15 @@ public class Transaction   {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Transaction {\n");
-
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    sender: ").append(toIndentedString(sender)).append("\n");
-    sb.append("    receiver: ").append(toIndentedString(receiver)).append("\n");
-    sb.append("    receiverName: ").append(toIndentedString(receiverName)).append("\n");
-    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    performedby: ").append(toIndentedString(performedby)).append("\n");
-    sb.append("    timestamp: ").append(toIndentedString(timeStamp)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    return "Transaction{" +
+            "id=" + id +
+            ", sender='" + sender + '\'' +
+            ", receiver='" + receiver + '\'' +
+            ", receiverName='" + receiverName + '\'' +
+            ", amount=" + amount +
+            ", performedby=" + performedby +
+            ", timeStamp='" + timeStamp + '\'' +
+            '}';
   }
 
   /**
