@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
+import io.swagger.model.JSONResponse;
 import io.swagger.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
@@ -64,20 +66,30 @@ public class AccountsApiController implements IAccountsApi {
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<List<Account>> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "0") Integer limit
-            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+    public HttpEntity<JSONResponse> getAllAccounts(@ApiParam(value = "returns all accounts of the bank with their details.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit
+            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset
             , @ApiParam(value = "returns account(s) based on the account's holder name") @Valid @RequestParam(value = "accountOwner", required = false) Integer accountOwner
             , @ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "type", required = false) String type
             , @ApiParam(value = "type of the requested accounts.") @Valid @RequestParam(value = "status", required = false) String status
     ) {
-        try {
-            Filter filter = new Filter(limit, offset == null ? 0 : offset, accountOwner == null ? 0 : accountOwner, type == null ? "" : type, status == null ? "" : status);
-            return new ResponseEntity<List<Account>>((List<Account>) accountService.getAllAccounts(filter), HttpStatus.OK); // return all accounts
-        } catch (Exception e) {
-            LOGGER.warning("Could not get accounts" + e.getMessage());
-            //we have to check what exception it is and log the right message
-            //e.getClass().getName();
-            return new ResponseEntity<List<Account>>(HttpStatus.NOT_FOUND);
+        try
+        {
+            Filter filter = new Filter(limit, offset, accountOwner , type, status);
+            JSONResponse response = new JSONResponse(accountService.getAllAccounts(filter), new JSONResponse.UserMessage("Hanldled", HttpStatus.OK, true));
+            return new ResponseEntity<JSONResponse>((JSONResponse) response, HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e)
+        {
+            Iterable<Account> accounts = new ArrayList<>();
+            JSONResponse respons = new JSONResponse(accounts, new JSONResponse.UserMessage("Filter params are not filled correctly" ,HttpStatus.NOT_ACCEPTABLE, false));
+            return new ResponseEntity<JSONResponse>((JSONResponse) respons, HttpStatus.NOT_ACCEPTABLE);
+        }
+        catch (Exception e)
+        {
+            LOGGER.warning("GetAllAccounts: " + e.getMessage());
+            Iterable<Account> accounts = new ArrayList<>();
+            JSONResponse respons = new JSONResponse(accounts, new JSONResponse.UserMessage("An unexpected error occured" ,HttpStatus.NOT_ACCEPTABLE, false));
+            return new ResponseEntity<JSONResponse>((JSONResponse) respons, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,7 +100,7 @@ public class AccountsApiController implements IAccountsApi {
             return new ResponseEntity<Account>(accountService.getSpecificAccount(IBAN), HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.warning("Could not get account" + e.getMessage());
-            return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Account>(HttpStatus.NO_CONTENT);
         }
     }
 }

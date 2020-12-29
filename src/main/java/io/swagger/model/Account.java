@@ -334,19 +334,17 @@ public Account(){
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class AccountObject {\n");
-
-    sb.append("    IBAN: ").append(toIndentedString(IBAN)).append("\n");
-    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    transactionLimit: ").append(toIndentedString(transactionLimit)).append("\n");
-    sb.append("    dayLimit: ").append(toIndentedString(dayLimit)).append("\n");
-    sb.append("    absolutelimit: ").append(toIndentedString(absolutelimit)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    return "Account{" +
+            "IBAN='" + IBAN + '\'' +
+            ", amount=" + amount +
+            ", ownerId=" + ownerId +
+            ", user=" + user +
+            ", type=" + type +
+            ", status=" + status +
+            ", transactionLimit=" + transactionLimit +
+            ", dayLimit=" + dayLimit +
+            ", absolutelimit=" + absolutelimit +
+            '}';
   }
 
   /**
