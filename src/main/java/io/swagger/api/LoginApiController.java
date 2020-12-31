@@ -54,23 +54,29 @@ public class LoginApiController implements ILoginApi {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails loginDetails
+    public ResponseEntity<JsonResponse> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails loginDetails
     ) {
         try {
             final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
             final String token = jwtTokenUtil.generateToken(userDetails);
 
-            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token,userDetails.getUser().getRole() );
-            return new ResponseEntity<UserCredentials>(userCredentials, HttpStatus.OK);
+            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
+            JsonResponse response = new JsonResponse(userCredentials , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch(IllegalArgumentException e) {
-            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch(UsernameNotFoundException e) {
-            return new ResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, e.getMessage()), HttpStatus.BAD_REQUEST);
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
-            return new ResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.warn("LoginUser: " + e.getMessage());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

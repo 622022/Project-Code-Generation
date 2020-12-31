@@ -27,6 +27,11 @@ public class TransactionService {
     public List<Transaction> getTransactions(String iBan) {
         List<Transaction> transactionList = new ArrayList<>();
 
+        if (iBan.equals("")) {
+            logger.warning("Invalid IBAN provided");
+            throw new IllegalArgumentException("Invalid IBAN provided");
+        }
+
         transactionRepository.findAll().forEach(transaction -> {
             if (transaction.getSender().equals(iBan) || transaction.getReceiver().equals(iBan)) {
                 transactionList.add(transaction);
