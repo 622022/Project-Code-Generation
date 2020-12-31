@@ -61,11 +61,17 @@ public class UserService {
     }
 
     public User editUser(Integer userId, User updatedUser) {
-        User user = userRepository.findById(userId).get();
-        if (user == null) {
+        if (!userRepository.existsById(userId)) {
             logger.warning("User: " + userId + " does not exist");
             throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
+
+        if (updatedUser != null) {
+            logger.warning("Request body can not be null");
+            throw new IllegalArgumentException("Request body can not be null");
+        }
+
+        User user = userRepository.findById(userId).get();
 
         updatedUser.setUserId(userId);
         updatedUser.setRole(user.getRole());
@@ -77,18 +83,12 @@ public class UserService {
     public List<Account> getAccountsByUserId(Integer userId) {
         List<Account> accountList = new ArrayList<>();
 
-        if (userId == null) {
-            logger.warning("Invalid user provided.");
-            throw new IllegalArgumentException("Invalid user provided.");
+        if (!userRepository.existsById(userId)) {
+            logger.warning("Invalid user ID provided.");
+            throw new IllegalArgumentException("Invalid user ID provided.");
         }
         accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
-/*
-        accountRepository.findAll().forEach(accountObject -> {
-            if (userId == accountObject.getOwnerId()) {
-                accountList.add(accountObject);
-            }
-        });
-*/
+
         return accountList;
     }
 

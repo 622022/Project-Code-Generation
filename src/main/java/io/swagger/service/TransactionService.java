@@ -42,8 +42,8 @@ public class TransactionService {
 
     public void createTransaction(Transaction transaction) {
         // retrieve accounts sender and receiver
-        Account accountSender = accountRepository.getAccountByIban(transaction.getSender());
-        Account accountReceiver = accountRepository.getAccountByIban(transaction.getReceiver());
+        Account accountSender = accountRepository.getAccountByIBAN(transaction.getSender());
+        Account accountReceiver = accountRepository.getAccountByIBAN(transaction.getReceiver());
 
         // check if accounts exist
         if (accountSender == null && accountReceiver == null) {
