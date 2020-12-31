@@ -20,10 +20,15 @@ public class UserCredentials {
   @JsonProperty("tokenValue")
   private String tokenValue = null;
 
-  public UserCredentials(String userId, String tokenType, String tokenValue) {
+  @JsonProperty("role")
+  private Role role = null;
+
+  public UserCredentials(String userId, String tokenType, String tokenValue,Role role) {
     this.userId = userId;
     this.tokenType = tokenType;
     this.tokenValue = tokenValue;
+    this.role =role;
+
   }
 
   public UserCredentials userId(String userId) {
