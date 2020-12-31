@@ -21,9 +21,9 @@ class LoginApiControllerTest {
     private ObjectMapper mapper;
 
     @Test
-    public void loginRequestShouldReturn200Response() throws Exception{
-        mapper=new ObjectMapper();
-        loginMockedUser= new MockedUser("username_1","password_1");
+    public void loginRequestShouldReturn200Response() throws Exception {
+        mapper = new ObjectMapper();
+        loginMockedUser = new MockedUser("username_1", "password_1");
         this.mvc
                 .perform(post("/login")
 
@@ -33,7 +33,8 @@ class LoginApiControllerTest {
     }
 
 }
-class MockedUser{
+
+class MockedUser {
     public String username;
     public String password;
 
