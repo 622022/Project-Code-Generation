@@ -60,7 +60,7 @@ public class LoginApiController implements ILoginApi {
             final JwtUserDetails userDetails = userDetailsService.loadUserByUsername(loginDetails.getUsername(), loginDetails.getPassword());
             final String token = jwtTokenUtil.generateToken(userDetails);
 
-            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token);
+            UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token, userDetails.getUser().getRole());
             JsonResponse response = new JsonResponse(userCredentials , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
 
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
