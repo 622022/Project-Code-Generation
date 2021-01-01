@@ -5,6 +5,7 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.JsonResponse;
 import io.swagger.model.LoginDetails;
 import io.swagger.model.UserCredentials;
 import io.swagger.annotations.*;
@@ -27,7 +28,7 @@ public interface ILoginApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<UserCredentials> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails body
+    ResponseEntity<JsonResponse> loginUser(@ApiParam(value = "") @Valid @RequestBody LoginDetails body
     );
 
 }
