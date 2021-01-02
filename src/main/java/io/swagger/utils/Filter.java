@@ -32,8 +32,6 @@ public class Filter {
         this.receiverName = receiverName;
     }
 
-
-
     public int getType() {
         if (this.type == Account.TypeEnum.CHECKING) {
             return 0;
@@ -57,57 +55,71 @@ public class Filter {
         this.offset = offset == 0 ? null : offset;
     }
 
-    public boolean OnlyLimit() {
+    public boolean onlyLimit() {
         if (this.type == null && this.status == null && this.accountOwnerId == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyAccountOwnerId() {
+    public boolean onlyAccountOwnerId() {
         if (this.accountOwnerId != null && this.type == null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyStatus() {
+    public boolean onlyStatus() {
         if (this.accountOwnerId == null && this.type == null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyType() {
+    public boolean onlyType() {
         if (this.accountOwnerId == null && this.type != null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWStatus() {
+    public boolean ownerIdWStatus() {
         if (this.accountOwnerId != null && this.type == null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWType() {
+    public boolean ownerIdWType() {
         if (this.accountOwnerId != null && this.type != null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean StatusWType() {
+    public boolean statusWType() {
         if (this.accountOwnerId == null && this.type != null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWStatusWType() {
+    public boolean ownerIdWStatusWType() {
         if (this.accountOwnerId != null && this.type != null && this.status != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean senderOrReceiver() {
+        if (this.iBan != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean receiverName() {
+        if (this.iBan != null && this.receiverName != null) {
             return true;
         }
         return false;

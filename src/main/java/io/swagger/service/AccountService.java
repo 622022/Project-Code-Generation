@@ -64,36 +64,36 @@ public class AccountService {
 
     private Iterable<Account> fillResponse(Filter filter) {
         List<Account> result = new ArrayList<>();
-        if (filter.OnlyLimit()){
+        if (filter.onlyLimit()){
             accountRepository.GetAllLimit(filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.OnlyAccountOwnerId()){
+        else if (filter.onlyAccountOwnerId()){
             accountRepository.getAccountsByOwnerId(filter.accountOwnerId, filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.OnlyStatus()){
+        else if (filter.onlyStatus()){
             accountRepository.getAccountsByStatus(filter.getStatus(), filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.OnlyType()){
+        else if (filter.onlyType()){
             accountRepository.getAccountsByType(1, filter.limit,filter.offset).forEach(result::add);
             return result;
         }
 
-        else if (filter.OwnerIdWStatus()){
+        else if (filter.ownerIdWStatus()){
             accountRepository.getAccountByOwnerIdAndStatusCustom(filter.getStatus(), filter.accountOwnerId,filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.OwnerIdWType()){
+        else if (filter.ownerIdWType()){
             accountRepository.getAccountByOwnerIdAndTypeCustom(filter.getType(),filter.accountOwnerId ,filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.StatusWType()){
+        else if (filter.statusWType()){
             accountRepository.getAccountByStatusAndTypeCustom(filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
             return result;
         }
-        else if (filter.OwnerIdWStatusWType()){
+        else if (filter.ownerIdWStatusWType()){
             accountRepository.getAccountByOwnerIdAndStatusAndTypeCustom(filter.accountOwnerId,filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
             return result;
         }

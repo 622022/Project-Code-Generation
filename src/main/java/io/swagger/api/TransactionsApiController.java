@@ -58,17 +58,17 @@ public class TransactionsApiController implements ITransactionsApi {
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<JsonResponse> getTransactions(@NotNull @ApiParam(value = "Filter transactions by IBAN.", required = true) @Valid @RequestParam(value = "IBAN", required = true) String iBan
-            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
-            , @ApiParam(value = "returns transaction(s) based on the reciever's name") @Valid @RequestParam(value = "reciever", required = false) String recieverName
+            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset
+            , @ApiParam(value = "returns transaction(s) based on the receiver's name") @Valid @RequestParam(value = "receiverName", required = false) String receiverName
             , @ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
     ) {
         try {
-            Filter filter = new Filter(iBan, limit, offset, recieverName);
+            Filter filter = new Filter(iBan, limit, offset, receiverName);
             List<Transaction> transactions = transactionService.getTransactions(filter);
 
             if (transactions.isEmpty()) {
                 JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("No transactions", HttpStatus.NO_CONTENT, false));
-                return new ResponseEntity<JsonResponse>(response, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
             }
 
             JsonResponse response = new JsonResponse(transactions , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
