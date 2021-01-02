@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     User findUserByUsername(String username);
-    @Query(nativeQuery = true, value = "SELECT * FROM User LIMIT :limit OFFSET :offset")
-    Iterable<User> getallUsers(@Param("limit") int limit, @Param("offset") int offset);
+    @Query(nativeQuery = true, value = "SELECT user_id FROM User LIMIT :limit OFFSET :offset")
+    Iterable<Integer> getallUsersId(@Param("limit") int limit, @Param("offset") int offset);
 }

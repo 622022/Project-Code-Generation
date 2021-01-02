@@ -139,7 +139,7 @@ public class UsersApiController implements IUsersApi {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<JsonResponse> getAllUsers(@ApiParam(value = "Limit the number of users to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
-            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
+            , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false,defaultValue = "0") Integer offset
     ) {
         try {
             Filter filter = new Filter(limit , offset == null ? 0 : offset);

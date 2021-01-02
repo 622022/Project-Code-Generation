@@ -27,7 +27,7 @@ public class TransactionsApiController implements ITransactionsApi {
     @Autowired
     TransactionService transactionService;
 
-    private static final Logger log = LoggerFactory.getLogger(TransactionsApiController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransactionsApiController.class);
 
     private final ObjectMapper objectMapper;
 
@@ -48,11 +48,12 @@ public class TransactionsApiController implements ITransactionsApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("TransactionsController:CreateTransaction: "+e.getMessage()+" :"+e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            log.warn("CreateTransaction: " + e.getMessage());
+            logger.warn("TransactionsController:CreateTransaction: " + e.getMessage()+":"+e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -79,7 +80,7 @@ public class TransactionsApiController implements ITransactionsApi {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            log.warn("GetTransaction: " + e.getMessage());
+            logger.warn("GetTransaction: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

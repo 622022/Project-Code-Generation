@@ -8,14 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class TransactionService {
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
     private AccountService accountService;
-    private static final Logger logger = Logger.getLogger(TransactionService.class.getName());
 
 
     public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository, AccountService accountService) {
@@ -28,7 +26,6 @@ public class TransactionService {
         List<Transaction> transactionList = new ArrayList<>();
 
         if (accountRepository.existsById(iBan)) {
-            logger.warning("Invalid IBAN provided. Account does not exist");
             throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist");
         }
 
@@ -47,7 +44,6 @@ public class TransactionService {
 
         // check if accounts exist
         if (accountSender == null || accountReceiver == null) {
-            logger.info("Accounts sender and receiver cannot be found");
             throw new IllegalArgumentException("Accounts sender and receiver cannot be found");
         }
 
@@ -58,12 +54,10 @@ public class TransactionService {
                 makeTransaction(accountSender, accountReceiver, transaction);
             }
             else {
-                logger.info("Accounts sender and receiver cannot be the same account");
                 throw new IllegalArgumentException("Accounts sender and receiver cannot be the same account");
             }
         }
         else {
-            logger.info("Accounts sender and receiver cannot belong to different customers");
             throw new IllegalArgumentException("Accounts sender and receiver cannot belong to different customers");
         }
     }
@@ -86,15 +80,12 @@ public class TransactionService {
 
                     transactionRepository.save(transaction);
                 } else {
-                    logger.info("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                     throw new IllegalArgumentException("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                 }
             } else {
-                logger.info("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
                 throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
             }
         } else {
-            logger.info("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
             throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
         }
     }

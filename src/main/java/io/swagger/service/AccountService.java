@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class AccountService {
@@ -17,17 +16,11 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    private static final Logger logger = Logger.getLogger(AccountService.class.getName());
 
 
     public Iterable<Account> getAllAccounts(Filter filter) throws Exception {
-        Iterable<Account> accounts = new ArrayList<>();
-        try {
-            accounts = fillResponse(filter);
-        } catch (Exception e) {
-            logger.warning("Failed to get accounts " + e.getMessage());
-            throw new Exception(e.getMessage());
-        }
+        Iterable<Account> accounts ;
+        accounts = fillResponse(filter);
         return accounts;
     }
 
@@ -48,14 +41,12 @@ public class AccountService {
         if (accountRepository.existsById(iBan)) {
             accountRepository.deleteById(iBan);
         } else {
-            logger.warning("Failed to delete account:  " + iBan + " does not exist.");
             throw new IllegalArgumentException("Failed to delete account: " + iBan + " does not exist.");
         }
     }
 
     public Account editAccount(String iBan, Account updatedAccount) {
         if (iBan.equals("") || updatedAccount == null) {
-            logger.warning("Invalid IBAN or account provided.");
             throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
         accountRepository.save(updatedAccount);
@@ -64,37 +55,29 @@ public class AccountService {
 
     private Iterable<Account> fillResponse(Filter filter) {
         List<Account> result = new ArrayList<>();
-        if (filter.OnlyLimit()){
-            accountRepository.GetAllLimit(filter.limit,filter.offset).forEach(result::add);
+        if (filter.OnlyLimit()) {
+            accountRepository.GetAllLimit(filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.OnlyAccountOwnerId()){
-            accountRepository.getAccountsByOwnerId(filter.accountOwnerId, filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OnlyAccountOwnerId()) {
+            accountRepository.getAccountsByOwnerId(filter.accountOwnerId, filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.OnlyStatus()){
-            accountRepository.getAccountsByStatus(filter.getStatus(), filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OnlyStatus()) {
+            accountRepository.getAccountsByStatus(filter.getStatus(), filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.OnlyType()){
-            accountRepository.getAccountsByType(1, filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OnlyType()) {
+            accountRepository.getAccountsByType(1, filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-
-        else if (filter.OwnerIdWStatus()){
-            accountRepository.getAccountByOwnerIdAndStatusCustom(filter.getStatus(), filter.accountOwnerId,filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OwnerIdWStatus()) {
+            accountRepository.getAccountByOwnerIdAndStatusCustom(filter.getStatus(), filter.accountOwnerId, filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.OwnerIdWType()){
-            accountRepository.getAccountByOwnerIdAndTypeCustom(filter.getType(),filter.accountOwnerId ,filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OwnerIdWType()) {
+            accountRepository.getAccountByOwnerIdAndTypeCustom(filter.getType(), filter.accountOwnerId, filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.StatusWType()){
-            accountRepository.getAccountByStatusAndTypeCustom(filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.StatusWType()) {
+            accountRepository.getAccountByStatusAndTypeCustom(filter.getStatus(), filter.getType(), filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.OwnerIdWStatusWType()){
-            accountRepository.getAccountByOwnerIdAndStatusAndTypeCustom(filter.accountOwnerId,filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
+        } else if (filter.OwnerIdWStatusWType()) {
+            accountRepository.getAccountByOwnerIdAndStatusAndTypeCustom(filter.accountOwnerId, filter.getStatus(), filter.getType(), filter.limit, filter.offset).forEach(result::add);
             return result;
         }
         return result;
