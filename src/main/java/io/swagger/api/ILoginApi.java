@@ -5,9 +5,9 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.JsonResponse;
-import io.swagger.model.LoginDetails;
-import io.swagger.model.UserCredentials;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.LoginDetails;
+import io.swagger.model.api.UserCredentials;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

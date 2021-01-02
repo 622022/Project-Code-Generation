@@ -5,10 +5,10 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Account;
-import io.swagger.model.JsonResponse;
-import io.swagger.model.UserCredentials;
-import io.swagger.model.User;
+import io.swagger.model.content.Account;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.UserCredentials;
+import io.swagger.model.content.User;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "users", description = "the users API")

@@ -1,7 +1,7 @@
 package io.swagger.api;
 
-import io.swagger.model.JsonResponse;
-import io.swagger.model.Transaction;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.content.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.TransactionService;

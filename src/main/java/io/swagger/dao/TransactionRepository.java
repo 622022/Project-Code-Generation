@@ -1,6 +1,6 @@
 package io.swagger.dao;
 
-import io.swagger.model.Transaction;
+import io.swagger.model.content.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

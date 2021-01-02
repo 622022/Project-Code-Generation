@@ -2,10 +2,10 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
-import io.swagger.filter.Filter;
-import io.swagger.model.Account;
-import io.swagger.model.UserCredentials;
-import io.swagger.model.User;
+import io.swagger.utils.Filter;
+import io.swagger.model.content.Account;
+import io.swagger.model.api.UserCredentials;
+import io.swagger.model.content.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class UserService {
             return userIdList;
         }
         catch (Exception e) {
-            logger.warning("Can not get users" + e.getMessage());
+            logger.warning("UserService:getAllUsers: " + e.getMessage());
             return null;
         }
     }
