@@ -1,14 +1,12 @@
 package io.swagger.service;
 
 import io.swagger.dao.UserRepository;
-import io.swagger.model.JwtUserDetails;
-import io.swagger.model.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import io.swagger.model.api.JwtUserDetails;
+import io.swagger.model.content.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @Service

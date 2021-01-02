@@ -1,4 +1,4 @@
-package io.swagger.model;
+package io.swagger.model.api;
 
 import org.springframework.http.HttpStatus;
 

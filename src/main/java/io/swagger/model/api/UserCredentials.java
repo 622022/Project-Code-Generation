@@ -1,8 +1,9 @@
-package io.swagger.model;
+package io.swagger.model.api;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.content.Role;
 import org.springframework.validation.annotation.Validated;
 
 /**

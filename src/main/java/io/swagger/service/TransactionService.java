@@ -2,8 +2,8 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
-import io.swagger.model.Account;
-import io.swagger.model.Transaction;
+import io.swagger.model.content.Account;
+import io.swagger.model.content.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

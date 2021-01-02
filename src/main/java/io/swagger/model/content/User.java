@@ -1,4 +1,4 @@
-package io.swagger.model;
+package io.swagger.model.content;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,7 +36,8 @@ public class  User   {
   @JsonProperty("role")
   private Role role = null;
 
-  public Role getRole() {
+
+    public Role getRole() {
     return role;
   }
 
@@ -55,6 +56,13 @@ public class  User   {
   public User() {
   }
 
+  public User(Integer id,String username, String password,String email,Role role){
+    this.username = username;
+    this.password = password;
+    this.role = role;
+    this.email=email;
+    this.userId = id;
+  }
   public User( String username, String password, String email, Role role) {
 
     this.username = username;

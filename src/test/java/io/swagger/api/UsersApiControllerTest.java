@@ -1,8 +1,8 @@
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.Role;
-import io.swagger.model.User;
+import io.swagger.model.content.Role;
+import io.swagger.model.content.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,14 +26,13 @@ class UsersApiControllerTest {
     private User user = new User("username_10", "password_10", "email_10", Role.EMPLOYEE);
     private String employeeToken;
     private MockedAccountType accountType;
-
+    private String specificUser;
 
 
     @BeforeEach
     public void loginToGetToken() throws Exception {
-        utility = new Token(mvc,mapper);
-        employeeToken = utility.getTokenFromSpecificUser("username_1","password_1");
-
+        utility = new Token(mvc, mapper);
+        employeeToken = utility.getTokenFromSpecificUser("username_1", "password_1");
     }
 
 
@@ -93,10 +94,10 @@ class UsersApiControllerTest {
     public void creatingAccountForSpecificUserReturns201Response() throws Exception {
         accountType = new MockedAccountType("Saving");
         this.mvc
-                .perform(post("/users/{userid}/accounts", "7")
+                .perform(post("/users/{userid}/accounts/", 7)
                         .header("Authorization", employeeToken)
-                        .contentType((MediaType.APPLICATION_JSON))
-                        .content(this.mapper.writeValueAsString(accountType)))
+                        .param("accountType", "SAVING")
+                        .contentType((MediaType.APPLICATION_JSON)))
                 .andExpect(status().isCreated());
     }
 

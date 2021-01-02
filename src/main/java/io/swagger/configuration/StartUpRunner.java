@@ -3,7 +3,11 @@ package io.swagger.configuration;
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
 import io.swagger.dao.UserRepository;
-import io.swagger.model.*;
+import io.swagger.model.api.JwtUserDetails;
+import io.swagger.model.content.Account;
+import io.swagger.model.content.Role;
+import io.swagger.model.content.Transaction;
+import io.swagger.model.content.User;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -33,7 +37,7 @@ public class StartUpRunner implements ApplicationRunner {
         List<Transaction> transactionList = new ArrayList<>();
         try{
             for (int i = 1; i < 6; i++) {
-                User user = new User( "username_" + i, "password_" + i, "email_" + i,Role.EMPLOYEE);
+                User user = new User( "username_" + i, "password_" + i, "email_" + i, Role.EMPLOYEE);
                 userList.add(user);
 
                 Transaction transaction = new Transaction("NL12ING0123456789" + i, "NL02ABNA728391237"+ i, user.getUsername(),

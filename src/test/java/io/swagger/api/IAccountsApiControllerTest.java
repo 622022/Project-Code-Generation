@@ -1,7 +1,7 @@
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.Account;
+import io.swagger.model.content.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,8 +91,8 @@ class IAccountsApiControllerTest {
 
     @Test
     public void editAccountOfSpecificIbanReturns200Response() throws Exception {
-        updatedAccount = new Account(200, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
-                10.10, 50, 80);
+        updatedAccount = new Account(200.0, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
+                10.10, 50, 80.9);
 
         this.mvc
                 .perform(put("/accounts/{Iban}", specificAccountIban)

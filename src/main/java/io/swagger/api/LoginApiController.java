@@ -2,9 +2,12 @@ package io.swagger.api;
 
 import io.swagger.configuration.JwtTokenUtil;
 import io.swagger.dao.UserRepository;
-import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.JwtUserDetails;
+import io.swagger.model.api.LoginDetails;
+import io.swagger.model.api.UserCredentials;
 import io.swagger.service.JwtUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

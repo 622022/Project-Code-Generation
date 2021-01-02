@@ -1,8 +1,8 @@
 package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
-import io.swagger.filter.Filter;
-import io.swagger.model.Account;
+import io.swagger.utils.Filter;
+import io.swagger.model.content.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

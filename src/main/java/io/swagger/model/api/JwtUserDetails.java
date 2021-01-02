@@ -1,5 +1,6 @@
-package io.swagger.model;
+package io.swagger.model.api;
 
+import io.swagger.model.content.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

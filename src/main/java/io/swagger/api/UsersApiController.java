@@ -2,8 +2,10 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.filter.Filter;
-import io.swagger.model.*;
+import io.swagger.utils.Filter;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.UserCredentials;
+import io.swagger.model.content.User;
 import io.swagger.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
@@ -46,12 +47,10 @@ public class UsersApiController implements IUsersApi {
         try {
             JsonResponse response = new JsonResponse(userService.createAccount(userId, accountType), new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("CreateAccount: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,12 +67,10 @@ public class UsersApiController implements IUsersApi {
 
             JsonResponse response = new JsonResponse(createdUserResponse, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("CreateUser: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,12 +84,10 @@ public class UsersApiController implements IUsersApi {
             userService.deleteUser(userId); // delete user from database
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("DeleteUser: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,12 +101,10 @@ public class UsersApiController implements IUsersApi {
         try {
             JsonResponse response = new JsonResponse(userService.editUser(userId, user), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("EditUser: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -124,12 +117,10 @@ public class UsersApiController implements IUsersApi {
         try {
             JsonResponse response = new JsonResponse(userService.getAccountsByUserId(userId), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("GetAccountsByUserId: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -144,8 +135,7 @@ public class UsersApiController implements IUsersApi {
             Filter filter = new Filter(limit == null ? 0 : limit, offset == null ? 0 : offset);
             JsonResponse response = new JsonResponse(filter, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("GetAllUsers: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);

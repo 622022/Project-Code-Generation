@@ -20,7 +20,7 @@ public class Token {
         this.mvc = mvc;
     }
 
-    public String getTokenFromSpecificUser(String username , String password)throws Exception{
+    public String getTokenFromSpecificUser(String username, String password) throws Exception {
         MockedUser loginMockedUser = new MockedUser(username, password);
         String token;
         MvcResult loginResult =
