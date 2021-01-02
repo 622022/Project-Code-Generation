@@ -58,7 +58,7 @@ public class AccountsApiController implements IAccountsApi {
             , @ApiParam(value = "the IBAN of the account.", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            JsonResponse response = new JsonResponse(accountService.editAccount(iBan, account), new JsonResponse.UserMessage("UnHanldled", HttpStatus.BAD_REQUEST, false));
+            JsonResponse response = new JsonResponse(accountService.editAccount(iBan, account), new JsonResponse.UserMessage("Handled", HttpStatus.ACCEPTED, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
 
         } catch (IllegalArgumentException e) {

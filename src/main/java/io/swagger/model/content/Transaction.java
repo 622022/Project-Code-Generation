@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
@@ -12,9 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Transaction
- */
 @Entity
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
@@ -59,11 +55,6 @@ public class Transaction   {
     this.performedby = performedby;
   }
 
-  /**
-   * Get id
-   * @return id
-   **/
-  @ApiModelProperty(value = "")
 
   public Integer getId() {
     return id;
@@ -78,11 +69,6 @@ public class Transaction   {
     return this;
   }
 
-  /**
-   * Get sender
-   * @return sender
-   **/
-  @ApiModelProperty(value = "")
 
   public String getSender() {
     return sender;
@@ -105,11 +91,6 @@ public class Transaction   {
     return this;
   }
 
-  /**
-   * Get receiver
-   * @return receiver
-   **/
-  @ApiModelProperty(value = "")
 
   public String getReceiver() {
     return receiver;
@@ -124,11 +105,6 @@ public class Transaction   {
     return this;
   }
 
-  /**
-   * Get receiverName
-   * @return receiverName
-   **/
-  @ApiModelProperty(value = "")
 
   public String getReceiverName() {
     return receiverName;
@@ -143,11 +119,7 @@ public class Transaction   {
     return this;
   }
 
-  /**
-   * Get amount
-   * @return amount
-   **/
-  @ApiModelProperty(value = "")
+
 
   public Double getAmount() {
     return amount;
@@ -162,11 +134,7 @@ public class Transaction   {
     return this;
   }
 
-  /**
-   * Get performedby
-   * @return performedby
-   **/
-  @ApiModelProperty(value = "")
+
 
   public Role getPerformedby() {
     return performedby;

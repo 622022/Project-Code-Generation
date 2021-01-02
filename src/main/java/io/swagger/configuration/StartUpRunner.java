@@ -56,7 +56,7 @@ public class StartUpRunner implements ApplicationRunner {
                     .findAll()
                     .forEach(user -> accountRepository.save(new Account( 1000d,
                             user.getUserId(), Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE, 500.00,
-                            2, 6d)
+                            4, 60d)
                     ));
             userRepository
                     .findAll()

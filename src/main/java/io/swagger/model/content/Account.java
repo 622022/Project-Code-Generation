@@ -13,9 +13,7 @@ import javax.persistence.ManyToOne;
 import java.util.Objects;
 import java.util.Random;
 
-/**
- * AccountObject
- */
+
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Entity
@@ -62,9 +60,6 @@ public Account(){
   }
 
 
-  /**
-   * Generate IBAN
-   */
   public String generateIban() {
     Random rand = new Random();
     String iBan = "NL16ABNA";
@@ -78,9 +73,6 @@ public Account(){
   }
 
 
-  /**
-   * Gets or Sets type
-   */
   public enum TypeEnum {
     CHECKING("CHECKING"),
 
@@ -111,9 +103,6 @@ public Account(){
   @JsonProperty("type")
   private TypeEnum type = null;
 
-  /**
-   * Gets or Sets status
-   */
   public enum StatusEnum {
     ACTIVE("Active"),
 
@@ -158,11 +147,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get IBAN
-   * @return IBAN
-   **/
-  @ApiModelProperty(value = "")
 
   public String getIBAN() {
     return IBAN;
@@ -177,11 +161,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get amount
-   * @return amount
-   **/
-  @ApiModelProperty(value = "")
 
   public Double getAmount() {
     return amount;
@@ -196,11 +175,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get ownerId
-   * @return ownerId
-   **/
-  @ApiModelProperty(value = "")
 
   public Integer getOwnerId() {
     return ownerId;
@@ -215,11 +189,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get type
-   * @return type
-   **/
-  @ApiModelProperty(value = "")
 
   public TypeEnum getType() {
     return type;
@@ -234,11 +203,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get status
-   * @return status
-   **/
-  @ApiModelProperty(value = "")
 
   public StatusEnum getStatus() {
     return status;
@@ -253,11 +217,7 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get transactionLimit
-   * @return transactionLimit
-   **/
-  @ApiModelProperty(value = "")
+
 
   public Double getTransactionLimit() {
     return transactionLimit;
@@ -272,11 +232,6 @@ public Account(){
     return this;
   }
 
-  /**
-   * Get dayLimit
-   * @return dayLimit
-   **/
-  @ApiModelProperty(value = "")
 
   public Integer getDayLimit() {
     return dayLimit;

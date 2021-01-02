@@ -29,20 +29,22 @@ public class UserService {
         List<UserCredentials> userIdList = new ArrayList<>();
 
         try {
-            userRepository.findAll().forEach(user -> {
+                userRepository.findAll().forEach(user -> {
                 UserCredentials getUsersResponse = new UserCredentials(); // create get users response
                 getUsersResponse.userId(user.getUserId().toString());
                 userIdList.add(getUsersResponse);
             });
             return userIdList;
-        } catch (Exception e) {
-            logger.warning("Can not get users" + e.getMessage());
+        }
+        catch (Exception e) {
+            logger.warning("UserService:getAllUsers: " + e.getMessage());
             return null;
         }
     }
 
     public void createUser(User user) {
-        if (user == null) {
+        if (user == null)
+        {
             logger.warning("User can not be null");
             throw new IllegalArgumentException("User can not be null.");
         }
@@ -50,7 +52,8 @@ public class UserService {
     }
 
     public void deleteUser(Integer userId) {
-        if (!userRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId))
+        {
             logger.warning("User: " + userId + " does not exist");
             throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
@@ -63,7 +66,7 @@ public class UserService {
             throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
 
-        if (updatedUser == null) {
+        if (updatedUser != null) {
             logger.warning("Request body can not be null");
             throw new IllegalArgumentException("Request body can not be null");
         }
@@ -90,24 +93,29 @@ public class UserService {
     }
 
     public Account createAccount(int userId, String typeAccount) {
-        Account.TypeEnum accountType = null;
+            Account.TypeEnum accountType = null;
 
-        if (typeAccount.equals(Account.TypeEnum.CHECKING.toString())) {
-            accountType = Account.TypeEnum.CHECKING;
-        } else if (typeAccount.equals(Account.TypeEnum.SAVING.toString())) {
-            accountType = Account.TypeEnum.SAVING;
-        } else {
-            logger.warning("Invalid account type");
-            throw new IllegalArgumentException("Invalid account type");
-        }
+            if (typeAccount.equals(Account.TypeEnum.CHECKING.toString()))
+            {
+                accountType = Account.TypeEnum.CHECKING;
+            }
+            else if (typeAccount.equals(Account.TypeEnum.SAVING.toString()))
+            {
+                accountType = Account.TypeEnum.SAVING;
+            }
+            else {
+                logger.warning("Invalid account type");
+                throw new IllegalArgumentException("Invalid account type");
+            }
 
-        if (!userRepository.existsById(userId)) {
-            logger.warning("User does not exist");
-            throw new IllegalArgumentException("User does not exist");
-        }
+            if (!userRepository.existsById(userId))
+            {
+                logger.warning("User does not exist");
+                throw new IllegalArgumentException("User does not exist");
+            }
 
-        Account newAccount = new Account(userId, accountType);
-        accountRepository.save(newAccount);
-        return newAccount;
+            Account newAccount = new Account(userId, accountType);
+            accountRepository.save(newAccount);
+            return newAccount;
     }
 }

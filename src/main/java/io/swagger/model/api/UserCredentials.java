@@ -2,13 +2,10 @@ package io.swagger.model.api;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.content.Role;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * UserCredentials
- */
+
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class UserCredentials {
@@ -40,11 +37,6 @@ public class UserCredentials {
   public UserCredentials() {
   }
 
-  /**
-   * Get userId
-   * @return userId
-  **/
-  @ApiModelProperty(value = "")
   
     public String getUserId() {
     return userId;
@@ -59,11 +51,6 @@ public class UserCredentials {
     return this;
   }
 
-  /**
-   * Get tokenType
-   * @return tokenType
-  **/
-  @ApiModelProperty(value = "")
   
     public String getTokenType() {
     return tokenType;
@@ -78,11 +65,6 @@ public class UserCredentials {
     return this;
   }
 
-  /**
-   * Get tokenValue
-   * @return tokenValue
-  **/
-  @ApiModelProperty(value = "")
   
     public String getTokenValue() {
     return tokenValue;
