@@ -9,8 +9,6 @@ import io.swagger.model.api.JwtUserDetails;
 import io.swagger.model.api.LoginDetails;
 import io.swagger.model.api.UserCredentials;
 import io.swagger.service.JwtUserDetailsService;
-
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,7 +43,7 @@ public class LoginApiController implements ILoginApi {
 
     private UserRepository userRepository;
 
-    private static final Logger logger = Logger.getLogger(LoginApiController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(LoginApiController.class.getName());
 
     private final ObjectMapper objectMapper;
 
@@ -69,15 +68,17 @@ public class LoginApiController implements ILoginApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch(IllegalArgumentException e) {
+            logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch(UsernameNotFoundException e) {
+            logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
-            logger.warning("LoginUser: " + e.getMessage());
+            logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -89,9 +90,9 @@ public class LoginApiController implements ILoginApi {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            logger.warn("LoginController:authenticate: " + e.getMessage() + " " + e.getStackTrace());
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            logger.warn("LoginController:authenticate: " + e.getMessage() + " " + e.getStackTrace());
         }
     }
 

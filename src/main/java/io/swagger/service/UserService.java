@@ -10,14 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class UserService {
 
     private AccountRepository accountRepository;
     private UserRepository userRepository;
-    private static final Logger logger = Logger.getLogger(UserService.class.getName());
 
 
     public UserService(AccountRepository accountRepository, UserRepository userRepository) {
