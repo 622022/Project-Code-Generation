@@ -10,12 +10,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class UserService {
 
     private AccountRepository accountRepository;
     private UserRepository userRepository;
+    private static final Logger logger = Logger.getLogger(UserService.class.getName());
+
 
     public UserService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
@@ -46,16 +49,16 @@ public class UserService {
             throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
 
-        if (updatedUser != null) {
+        if (updatedUser == null) {
             throw new IllegalArgumentException("Request body can not be null");
         }
+
         User user = userRepository.findById(userId).get();
+
         updatedUser.setUserId(userId);
         updatedUser.setRole(user.getRole());
         userRepository.save(updatedUser); // update existing user
         return userRepository.findById(userId).get();
-
-
     }
 
     public List<Account> getAccountsByUserId(Integer userId) throws Exception {

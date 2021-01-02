@@ -2,18 +2,21 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
+import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
 import io.swagger.model.content.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class TransactionService {
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
     private AccountService accountService;
+    private static final Logger logger = Logger.getLogger(TransactionService.class.getName());
 
 
     public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository, AccountService accountService) {
@@ -22,18 +25,15 @@ public class TransactionService {
         this.accountService = accountService;
     }
 
-    public List<Transaction> getTransactions(String iBan) {
+    public List<Transaction> getTransactions(Filter filter) {
         List<Transaction> transactionList = new ArrayList<>();
 
-        if (accountRepository.existsById(iBan)) {
+        if (!accountRepository.existsById(filter.iBan)) {
+            logger.warning("Invalid IBAN provided. Account does not exist");
             throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist");
         }
+        transactionList = (List<Transaction>) fillResponse(filter);
 
-        transactionRepository.findAll().forEach(transaction -> {
-            if (transaction.getSender().equals(iBan) || transaction.getReceiver().equals(iBan)) {
-                transactionList.add(transaction);
-            }
-        });
         return transactionList;
     }
 
@@ -44,6 +44,7 @@ public class TransactionService {
 
         // check if accounts exist
         if (accountSender == null || accountReceiver == null) {
+            logger.info("Accounts sender and receiver cannot be found");
             throw new IllegalArgumentException("Accounts sender and receiver cannot be found");
         }
 
@@ -54,10 +55,12 @@ public class TransactionService {
                 makeTransaction(accountSender, accountReceiver, transaction);
             }
             else {
+                logger.info("Accounts sender and receiver cannot be the same account");
                 throw new IllegalArgumentException("Accounts sender and receiver cannot be the same account");
             }
         }
         else {
+            logger.info("Accounts sender and receiver cannot belong to different customers");
             throw new IllegalArgumentException("Accounts sender and receiver cannot belong to different customers");
         }
     }
@@ -80,14 +83,32 @@ public class TransactionService {
 
                     transactionRepository.save(transaction);
                 } else {
+                    logger.info("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                     throw new IllegalArgumentException("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                 }
             } else {
+                logger.info("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
                 throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
             }
         } else {
+            logger.info("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
             throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
         }
+    }
+
+    private Iterable<Transaction> fillResponse(Filter filter) {
+        List<Transaction> result = new ArrayList<>();
+
+        if (filter.receiverName()) {
+            transactionRepository.getTransactionsByReceiverName(filter.iBan, filter.iBan, filter.receiverName,
+                    filter.limit,filter.offset).forEach(result::add);
+            return result;
+        }
+        else if (filter.senderOrReceiver()) {
+            transactionRepository.getTransactionsBySenderOrReceiver(filter.iBan, filter.iBan).forEach(result::add);
+            return result;
+        }
+        return result;
     }
 
 }

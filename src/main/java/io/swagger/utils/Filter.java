@@ -9,17 +9,27 @@ public class Filter {
     public Account.TypeEnum type;
     public Account.StatusEnum status;
 
+    public String iBan;
+    public String receiverName;
 
     public Filter(Integer limit, Integer offset, Integer accountOwnerId, String type, String status) {
-        try {
+        try{
             this.limit = limit;
             this.offset = offset;
             this.accountOwnerId = accountOwnerId;
-            this.type = type == null || type == "" ? null : Account.TypeEnum.valueOf(type.trim().toUpperCase());
-            this.status = status == null || status == "" ? null : Account.StatusEnum.valueOf(status.trim().toUpperCase());
-        } catch (Exception e) {
+            this.type = type == null? null: Account.TypeEnum.valueOf(type.trim().toUpperCase()) ;
+            this.status = status == null ? null : Account.StatusEnum.valueOf(status.trim().toUpperCase());
+        }
+        catch(Exception e){
             throw new IllegalArgumentException("Filters were not correctly passed");
         }
+    }
+
+    public Filter(String iBan, Integer limit, Integer offset, String receiverName) {
+        this.iBan = iBan;
+        this.limit = limit;
+        this.offset = offset;
+        this.receiverName = receiverName;
     }
 
     public int getType() {
@@ -45,60 +55,73 @@ public class Filter {
         this.offset = offset == 0 ? null : offset;
     }
 
-    public boolean OnlyLimit() {
+    public boolean onlyLimit() {
         if (this.type == null && this.status == null && this.accountOwnerId == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyAccountOwnerId() {
+    public boolean onlyAccountOwnerId() {
         if (this.accountOwnerId != null && this.type == null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyStatus() {
+    public boolean onlyStatus() {
         if (this.accountOwnerId == null && this.type == null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OnlyType() {
+    public boolean onlyType() {
         if (this.accountOwnerId == null && this.type != null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWStatus() {
+    public boolean ownerIdWStatus() {
         if (this.accountOwnerId != null && this.type == null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWType() {
+    public boolean ownerIdWType() {
         if (this.accountOwnerId != null && this.type != null && this.status == null) {
             return true;
         }
         return false;
     }
 
-    public boolean StatusWType() {
+    public boolean statusWType() {
         if (this.accountOwnerId == null && this.type != null && this.status != null) {
             return true;
         }
         return false;
     }
 
-    public boolean OwnerIdWStatusWType() {
+    public boolean ownerIdWStatusWType() {
         if (this.accountOwnerId != null && this.type != null && this.status != null) {
             return true;
         }
         return false;
     }
 
+    public boolean senderOrReceiver() {
+        if (this.iBan != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean receiverName() {
+        if (this.iBan != null && this.receiverName != null) {
+            return true;
+        }
+        return false;
+    }
 }
