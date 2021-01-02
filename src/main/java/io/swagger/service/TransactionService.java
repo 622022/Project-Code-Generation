@@ -27,9 +27,9 @@ public class TransactionService {
     public List<Transaction> getTransactions(String iBan) {
         List<Transaction> transactionList = new ArrayList<>();
 
-        if (iBan.equals("")) {
-            logger.warning("Invalid IBAN provided");
-            throw new IllegalArgumentException("Invalid IBAN provided");
+        if (accountRepository.existsById(iBan)) {
+            logger.warning("Invalid IBAN provided. Account does not exist");
+            throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist");
         }
 
         transactionRepository.findAll().forEach(transaction -> {
@@ -46,7 +46,7 @@ public class TransactionService {
         Account accountReceiver = accountRepository.getAccountByIBAN(transaction.getReceiver());
 
         // check if accounts exist
-        if (accountSender == null && accountReceiver == null) {
+        if (accountSender == null || accountReceiver == null) {
             logger.info("Accounts sender and receiver cannot be found");
             throw new IllegalArgumentException("Accounts sender and receiver cannot be found");
         }
@@ -54,12 +54,12 @@ public class TransactionService {
         // one cannot directly transfer from a savings account to an account that is not of the same customer
         // one cannot directly transfer to a savings account from an account that is not from the same customer
         if (accountSender.getOwnerId() == accountReceiver.getOwnerId()) {
-            if (accountSender.getType() != accountReceiver.getType()) {
+            if (!accountSender.getIBAN().equals(accountReceiver.getIBAN())) {
                 makeTransaction(accountSender, accountReceiver, transaction);
             }
             else {
-                logger.info("Accounts sender and receiver cannot have the same account types");
-                throw new IllegalArgumentException("Accounts sender and receiver cannot have the same account types");
+                logger.info("Accounts sender and receiver cannot be the same account");
+                throw new IllegalArgumentException("Accounts sender and receiver cannot be the same account");
             }
         }
         else {
@@ -76,29 +76,26 @@ public class TransactionService {
 
         double transactionAmount = transaction.getAmount();
 
-        if (balanceSender - transactionAmount > absoluteLimitSender) {
+        if (balanceSender - transactionAmount >= absoluteLimitSender) {
             if (dayLimitSender > 0) {
-                if (transactionAmount < transactionLimitSender)
+                if (transactionAmount <= transactionLimitSender && transactionAmount > 0)
                 {
                     accountSender.setAmount(balanceSender - transactionAmount); // withdraw amount from sender
                     accountReceiver.setAmount(accountReceiver.getAmount() + transactionAmount); // add amount to receiver
                     accountSender.setDayLimit(dayLimitSender - 1); // decrease day limit per transaction
 
                     transactionRepository.save(transaction);
-                    System.out.println(accountSender);
-                    System.out.println(accountReceiver);
-
                 } else {
-                    logger.info("Transaction amount cannot be higher than sender transaction limit");
-                    throw new IllegalArgumentException("Transaction amount cannot be higher than sender transaction limit");
+                    logger.info("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
+                    throw new IllegalArgumentException("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                 }
             } else {
                 logger.info("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
                 throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " day limit cannot be surpassed");
             }
         } else {
-            logger.info("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit");
-            throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit");
+            logger.info("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
+            throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
         }
     }
 
