@@ -1,7 +1,6 @@
 package io.swagger.dao;
 
-import io.swagger.model.Account;
-import io.swagger.model.Transaction;
+import io.swagger.model.content.Transaction;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

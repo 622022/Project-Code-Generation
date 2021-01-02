@@ -2,8 +2,10 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.filter.Filter;
-import io.swagger.model.*;
+import io.swagger.utils.Filter;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.UserCredentials;
+import io.swagger.model.content.User;
 import io.swagger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

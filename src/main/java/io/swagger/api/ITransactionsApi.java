@@ -5,8 +5,8 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.JsonResponse;
-import io.swagger.model.Transaction;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.content.Transaction;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Api(value = "transactions", description = "the transactions API")

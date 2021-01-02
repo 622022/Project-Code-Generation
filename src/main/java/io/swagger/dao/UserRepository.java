@@ -1,7 +1,6 @@
 package io.swagger.dao;
 
-import io.swagger.model.User;
-import org.springframework.data.jpa.repository.Query;
+import io.swagger.model.content.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

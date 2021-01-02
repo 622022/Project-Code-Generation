@@ -2,11 +2,14 @@ package io.swagger.api;
 
 import io.swagger.configuration.JwtTokenUtil;
 import io.swagger.dao.UserRepository;
-import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.model.api.JsonResponse;
+import io.swagger.model.api.JwtUserDetails;
+import io.swagger.model.api.LoginDetails;
+import io.swagger.model.api.UserCredentials;
 import io.swagger.service.JwtUserDetailsService;
-import io.swagger.service.TransactionService;
+
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

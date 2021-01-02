@@ -1,6 +1,6 @@
-package io.swagger.filter;
+package io.swagger.utils;
 
-import io.swagger.model.Account;
+import io.swagger.model.content.Account;
 
 public class Filter {
     public Integer limit;
