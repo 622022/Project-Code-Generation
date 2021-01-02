@@ -2,10 +2,10 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.utils.Filter;
 import io.swagger.model.api.JsonResponse;
 import io.swagger.model.api.UserCredentials;
 import io.swagger.model.content.User;
+import io.swagger.utils.Filter;
 import io.swagger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -142,8 +142,8 @@ public class UsersApiController implements IUsersApi {
             , @ApiParam(value = "The number of items to skip before starting to collect the result set") @Valid @RequestParam(value = "offset", required = false) Integer offset
     ) {
         try {
-            Filter filter = new Filter(limit == null ? 0 : limit, offset == null ? 0 : offset);
-            JsonResponse response = new JsonResponse(filter, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            Filter filter = new Filter(limit , offset == null ? 0 : offset);
+            JsonResponse response = new JsonResponse(userService.getAllUsers(filter), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch (Exception e) {

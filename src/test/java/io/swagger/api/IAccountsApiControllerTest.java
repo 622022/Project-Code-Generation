@@ -19,84 +19,82 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class IAccountsApiControllerTest {
     @Autowired
     private MockMvc mvc;
-
-    private ObjectMapper mapper= new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
     private String token;
     private MockedUser loginMockedUser;
     private Account updatedAccount;
-    private String specifcAccountIban;
+    private String specificAccountIban;
 
 
     @BeforeEach
-    public void loginForToken()throws Exception{
+    public void loginForToken() throws Exception {
         //here we are performing login to get a token to pass it for authorization
-        loginMockedUser=new MockedUser("username_1","password_1");
-        MvcResult loginResult=
+        loginMockedUser = new MockedUser("username_1", "password_1");
+        MvcResult loginResult =
                 this.mvc
                         .perform(post("/login")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                 .content(this.mapper.writeValueAsString(loginMockedUser)))
                         .andReturn();
-        String responseContent=loginResult.getResponse().getContentAsString();
+        String responseContent = loginResult.getResponse().getContentAsString();
         String[] dividedResponse = responseContent.split("\"tokenValue\":\"");
-        String [] clearingToken= dividedResponse[1].split("\"");
-        token = "Bearer "+clearingToken[0];
+        String[] clearingToken = dividedResponse[1].split("\"");
+        token = "Bearer " + clearingToken[0];
 
         //get a valid existing account is required for some tests
-        MvcResult oneAccountResult=
+        MvcResult oneAccountResult =
                 this.mvc
                         .perform(get("/accounts")
-                                .header("Authorization",token)
-                                .param("limit","1"))
+                                .header("Authorization", token)
+                                .param("limit", "1"))
                         .andReturn();
-        String ibanResponseContent= oneAccountResult.getResponse().getContentAsString();
+        String ibanResponseContent = oneAccountResult.getResponse().getContentAsString();
         try {
             String[] dividedAccountResponse = ibanResponseContent.split(",");
-            specifcAccountIban = dividedAccountResponse[0].split(":\"")[1].substring(0, dividedAccountResponse[0].split(":\"")[1].length() - 1);
+            specificAccountIban = dividedAccountResponse[0].split(":\"")[1].substring(0, dividedAccountResponse[0].split(":\"")[1].length() - 1);
+        } catch (Exception ex) {
+            System.out.println(String.format("Something went wrong reading the account object: %s", ex.getMessage()));
         }
-        catch (Exception ex){
-            System.out.println(String.format("Something went wrong reading the account object: %s",ex.getMessage() ));
-        }
-
 
 
     }
 
     @Test
-    public void getAllAccountsShouldReturn200Response()throws Exception{
+    public void getAllAccountsShouldReturn200Response() throws Exception {
         this.mvc
                 .perform(get("/accounts")
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void gettingNonExistingAccountReturns204Response()throws Exception{
+    public void gettingNonExistingAccountReturns406Response() throws Exception {
         this.mvc
                 .perform(get("/accounts/NL12ING01234")
-                        .header("Authorization",token))
-                .andExpect(status().isNoContent());
+                        .header("Authorization", token))
+                .andExpect(status().isNotAcceptable());
 
     }
+
     @Test
-    public void gettingExistingAccountReturns200Response()throws Exception{
+    public void gettingExistingAccountReturns200Response() throws Exception {
         this.mvc
-                .perform(get("/accounts/{Iban}",specifcAccountIban)
-                        .header("Authorization",token))
+                .perform(get("/accounts/{Iban}", specificAccountIban)
+                        .header("Authorization", token))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void editAccountOfSpecificIbanReturns200Response()throws Exception{
-        updatedAccount = new Account(200,6, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
-                10.10,50,80);
+    public void editAccountOfSpecificIbanReturns200Response() throws Exception {
+        updatedAccount = new Account(200, 6, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
+                10.10, 50, 80);
 
         this.mvc
-                .perform(put("/accounts/{IBAN}",specifcAccountIban)
-                        .header("Authorization",token)
+                .perform(put("/accounts/{IBAN}", specificAccountIban)
+                        .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(updatedAccount)))
                 .andExpect(status().isOk());
@@ -104,11 +102,11 @@ class IAccountsApiControllerTest {
     }
 
     @Test
-    public void deleteAccountReturns200Response()throws Exception{
+    public void deleteAccountReturns202Response() throws Exception {
         this.mvc
-                .perform(delete("/accounts/{IBAN}",specifcAccountIban)
-                        .header("Authorization",token)
-                        )
-                .andExpect((status().isOk()));
+                .perform(delete("/accounts/{IBAN}", specificAccountIban)
+                        .header("Authorization", token)
+                )
+                .andExpect((status().isAccepted()));
     }
 }

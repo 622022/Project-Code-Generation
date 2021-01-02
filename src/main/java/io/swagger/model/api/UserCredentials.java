@@ -2,12 +2,10 @@ package io.swagger.model.api;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.content.Role;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * UserCredentials
- */
+
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 public class UserCredentials {
@@ -20,10 +18,15 @@ public class UserCredentials {
   @JsonProperty("tokenValue")
   private String tokenValue = null;
 
-  public UserCredentials(String userId, String tokenType, String tokenValue) {
+  @JsonProperty("role")
+  private Role role = null;
+
+  public UserCredentials(String userId, String tokenType, String tokenValue,Role role) {
     this.userId = userId;
     this.tokenType = tokenType;
     this.tokenValue = tokenValue;
+    this.role =role;
+
   }
 
   public UserCredentials userId(String userId) {
@@ -34,11 +37,6 @@ public class UserCredentials {
   public UserCredentials() {
   }
 
-  /**
-   * Get userId
-   * @return userId
-  **/
-  @ApiModelProperty(value = "")
   
     public String getUserId() {
     return userId;
@@ -53,11 +51,6 @@ public class UserCredentials {
     return this;
   }
 
-  /**
-   * Get tokenType
-   * @return tokenType
-  **/
-  @ApiModelProperty(value = "")
   
     public String getTokenType() {
     return tokenType;
@@ -72,11 +65,6 @@ public class UserCredentials {
     return this;
   }
 
-  /**
-   * Get tokenValue
-   * @return tokenValue
-  **/
-  @ApiModelProperty(value = "")
   
     public String getTokenValue() {
     return tokenValue;

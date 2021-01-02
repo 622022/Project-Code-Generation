@@ -31,9 +31,9 @@ class ITransactionsApiControllerTest {
     private ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
-    public void loginToGetToken()throws Exception{
+    public void loginToGetToken() throws Exception {
         //here we are performing login to get a token to pass it for authorization
-        loginMockedUser= new MockedUser("username_1","password_1");
+        loginMockedUser = new MockedUser("username_1", "password_1");
         MvcResult result =
                 this.mvc
                         .perform(post("/login")
@@ -42,44 +42,55 @@ class ITransactionsApiControllerTest {
                         .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        String[] responseParts=content.split("\"tokenValue\":\"");
+        String[] responseParts = content.split("\"tokenValue\":\"");
         String t = responseParts[1];
-        String[] clearTheToken=responseParts[1].split("\"");
-        token= "Bearer "+clearTheToken[0];
+        String[] clearTheToken = responseParts[1].split("\"");
+        token = "Bearer " + clearTheToken[0];
 
         // getting the accounts of specific user to test the transaction on them.
-        MvcResult accountResults= this.mvc
-                                        .perform(get("/users/{userid}/accounts","2")
-                                        .header("Authorization",token))
-                                    .andReturn();
+        MvcResult accountResults = this.mvc
+                .perform(get("/users/{userid}/accounts", "2")
+                        .header("Authorization", token))
+                .andReturn();
         String userAccounts = accountResults.getResponse().getContentAsString();
         try {
             String[] dividedAccountResponse = userAccounts.split("iban\":\"");
             senderIban = dividedAccountResponse[1].split("\",\"amount")[0];
-            receiverIban=dividedAccountResponse[2].split("\",\"amount")[0];
-        }
-        catch (Exception ex){
-            System.out.println(String.format("Something went wrong reading the account object: %s",ex.getMessage() ));
+            receiverIban = dividedAccountResponse[2].split("\",\"amount")[0];
+        } catch (Exception ex) {
+            System.out.println(String.format("Something went wrong reading the account object: %s", ex.getMessage()));
         }
 
 
     }
 
+
     @Test
-    public void creatingTransactionReturns200Response() throws Exception{
-        transaction = new Transaction(senderIban,receiverIban,"username_2",10.0, Role.EMPLOYEE);
+    public void gettingTransactionsByIbanForAccountsWithNoTransactionsReturn204Status() throws Exception {
+        this.mvc
+                .perform(get("/transactions?IBAN={iban}", senderIban)
+                        .header("Authorization", token))
+                .andExpect(status().isNoContent());
+    }
+
+
+    @Test
+    public void creatingTransactionReturns201Response() throws Exception {
+        transaction = new Transaction(senderIban, receiverIban, "username_2", 10.0, Role.EMPLOYEE);
         this.mvc
                 .perform(post("/transactions")
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(transaction)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
+
+
     @Test
-    public void gettingTransactionsByIbanReturn200Status()throws Exception{
+    public void gettingTransactionsByIbanForAccountWithTransactionHistoryReturn201Status() throws Exception {
         this.mvc
-                .perform(get("/transactions?IBAN={iban}",senderIban)
-                        .header("Authorization",token))
-                .andExpect(status().isOk());
+                .perform(get("/transactions?IBAN={iban}", senderIban)
+                        .header("Authorization", token))
+                .andExpect(status().isCreated());
     }
 }

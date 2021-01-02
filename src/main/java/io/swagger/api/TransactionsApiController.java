@@ -46,8 +46,8 @@ public class TransactionsApiController implements ITransactionsApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
-            return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
+            JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
+            return new ResponseEntity<JsonResponse>(respons, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
             logger.warning("CreateTransaction: " + e.getMessage());
@@ -67,7 +67,8 @@ public class TransactionsApiController implements ITransactionsApi {
             List<Transaction> transactions = transactionService.getTransactions(filter);
 
             if (transactions.isEmpty()) {
-                return new ResponseEntity<JsonResponse>(HttpStatus.NO_CONTENT);
+                JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("No transactions", HttpStatus.NO_CONTENT, false));
+                return new ResponseEntity<JsonResponse>(response, HttpStatus.NO_CONTENT);
             }
 
             JsonResponse response = new JsonResponse(transactions , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
@@ -84,5 +85,5 @@ public class TransactionsApiController implements ITransactionsApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
+

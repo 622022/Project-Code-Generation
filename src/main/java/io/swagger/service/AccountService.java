@@ -4,6 +4,7 @@ import io.swagger.dao.AccountRepository;
 import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,37 +20,32 @@ public class AccountService {
     private static final Logger logger = Logger.getLogger(AccountService.class.getName());
 
 
-    public Iterable<Account> getAllAccounts(Filter filter) {
+    public Iterable<Account> getAllAccounts(Filter filter) throws Exception {
         Iterable<Account> accounts = new ArrayList<>();
         try {
             accounts = fillResponse(filter);
         } catch (Exception e) {
             logger.warning("Failed to get accounts " + e.getMessage());
-            e.getMessage();
+            throw new Exception(e.getMessage());
         }
         return accounts;
     }
 
 
     public Account getSpecificAccount(String iBan) {
-        if (iBan.equals(""))
-        {
-            logger.warning("Invalid IBAN provided.");
+        if (iBan.equals("")) {
             throw new IllegalArgumentException("Invalid IBAN provided.");
         }
 
         Account account = accountRepository.findById(iBan).get();
-        if (account == null)
-        {
-            logger.warning("Account "+ iBan + " does not exist.");
-            throw new IllegalArgumentException("Account "+ iBan + " does not exist.");
+        if (account == null) {
+            throw new IllegalArgumentException("Account " + iBan + " does not exist.");
         }
         return account;
     }
 
     public void deleteAccount(String iBan) {
-        if (accountRepository.existsById(iBan))
-        {
+        if (accountRepository.existsById(iBan)) {
             accountRepository.deleteById(iBan);
         } else {
             logger.warning("Failed to delete account:  " + iBan + " does not exist.");
@@ -58,8 +54,7 @@ public class AccountService {
     }
 
     public Account editAccount(String iBan, Account updatedAccount) {
-        if (iBan.equals("") || updatedAccount == null)
-        {
+        if (iBan.equals("") || updatedAccount == null) {
             logger.warning("Invalid IBAN or account provided.");
             throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
@@ -68,43 +63,39 @@ public class AccountService {
     }
 
     private Iterable<Account> fillResponse(Filter filter) {
-        List<Account> result = new ArrayList<Account>();
-        Iterable<Account> accounts = new ArrayList<Account>();
-        if (filter.accountOwnerId != null) {
-            accounts = accountRepository.getAccountsByOwnerId(filter.accountOwnerId);
-            accounts.forEach(result::add);
+        List<Account> result = new ArrayList<>();
+        if (filter.OnlyLimit()){
+            accountRepository.GetAllLimit(filter.limit,filter.offset).forEach(result::add);
+            return result;
         }
-        if (filter.status != null) {
-            if (result.size() == 0) {
-                accounts = accountRepository.getAccountsByStatus(filter.status);
-                accounts.forEach(result::add);
-            } else {
-                List<Account> temp = new ArrayList<Account>();
-                accounts.forEach(account -> { if (account.getStatus()== filter.status )  temp.add(account) ; } );
-                temp.forEach(result::add);
-            }
+        else if (filter.OnlyAccountOwnerId()){
+            accountRepository.getAccountsByOwnerId(filter.accountOwnerId, filter.limit,filter.offset).forEach(result::add);
+            return result;
         }
-        if (filter.type != null) {
-            if (result.size() == 0){
-                accounts = accountRepository.getAccountsByType(filter.type);
-                accounts.forEach(result::add);
-            }
-            else{
-                List<Account> temp = new ArrayList<Account>();
-                accounts.forEach(account -> { if (account.getType()== filter.type )  temp.add(account) ; } );
-                temp.forEach(result::add);
-            }
+        else if (filter.OnlyStatus()){
+            accountRepository.getAccountsByStatus(filter.getStatus(), filter.limit,filter.offset).forEach(result::add);
+            return result;
         }
-        if (filter.limit != null) {
-            accounts = accountRepository.GetAllLimit(filter.limit);
-            accounts.forEach(result::add);
-            result = result.subList(0, filter.limit);
+        else if (filter.OnlyType()){
+            accountRepository.getAccountsByType(1, filter.limit,filter.offset).forEach(result::add);
+            return result;
         }
-        if (filter.offset != null) {
-            accounts = accountRepository.findAll();
-            accounts.forEach(result::add);
-            result = result.subList(filter.offset, result.size());
-            accounts = result;
+
+        else if (filter.OwnerIdWStatus()){
+            accountRepository.getAccountByOwnerIdAndStatusCustom(filter.getStatus(), filter.accountOwnerId,filter.limit,filter.offset).forEach(result::add);
+            return result;
+        }
+        else if (filter.OwnerIdWType()){
+            accountRepository.getAccountByOwnerIdAndTypeCustom(filter.getType(),filter.accountOwnerId ,filter.limit,filter.offset).forEach(result::add);
+            return result;
+        }
+        else if (filter.StatusWType()){
+            accountRepository.getAccountByStatusAndTypeCustom(filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
+            return result;
+        }
+        else if (filter.OwnerIdWStatusWType()){
+            accountRepository.getAccountByOwnerIdAndStatusAndTypeCustom(filter.accountOwnerId,filter.getStatus(),filter.getType() ,filter.limit,filter.offset).forEach(result::add);
+            return result;
         }
         return result;
     }

@@ -37,7 +37,7 @@ public class UserService {
             return userIdList;
         }
         catch (Exception e) {
-            logger.warning("Can not get users" + e.getMessage());
+            logger.warning("UserService:getAllUsers: " + e.getMessage());
             return null;
         }
     }
