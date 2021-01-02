@@ -9,6 +9,8 @@ public class Filter {
     public Account.TypeEnum type;
     public Account.StatusEnum status;
 
+    public String iBan;
+    public String receiverName;
 
     public Filter(Integer limit, Integer offset, Integer accountOwnerId, String type, String status) {
         try{
@@ -26,5 +28,12 @@ public class Filter {
     public Filter(Integer limit, Integer offset) {
         this.limit = limit==0?null:limit;
         this.offset = offset==0?null:offset;
+    }
+
+    public Filter(String iBan, Integer limit, Integer offset, String receiverName) {
+        this.iBan = iBan;
+        this.limit = limit;
+        this.offset = offset;
+        this.receiverName = receiverName;
     }
 }

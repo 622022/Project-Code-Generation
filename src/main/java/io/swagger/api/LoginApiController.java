@@ -6,8 +6,8 @@ import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.service.JwtUserDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.swagger.service.TransactionService;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class LoginApiController implements ILoginApi {
 
     private UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginApiController.class);
+    private static final Logger logger = Logger.getLogger(LoginApiController.class.getName());
 
     private final ObjectMapper objectMapper;
 
@@ -74,7 +74,7 @@ public class LoginApiController implements ILoginApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
-            logger.warn("LoginUser: " + e.getMessage());
+            logger.warning("LoginUser: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

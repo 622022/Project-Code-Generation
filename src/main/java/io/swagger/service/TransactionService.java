@@ -2,11 +2,13 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
+import io.swagger.filter.Filter;
 import io.swagger.model.Account;
 import io.swagger.model.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -24,19 +26,15 @@ public class TransactionService {
         this.accountService = accountService;
     }
 
-    public List<Transaction> getTransactions(String iBan) {
+    public List<Transaction> getTransactions(Filter filter) {
         List<Transaction> transactionList = new ArrayList<>();
 
-        if (accountRepository.existsById(iBan)) {
+        if (!accountRepository.existsById(filter.iBan)) {
             logger.warning("Invalid IBAN provided. Account does not exist");
             throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist");
         }
+        transactionList = (List<Transaction>) fillResponse(filter);
 
-        transactionRepository.findAll().forEach(transaction -> {
-            if (transaction.getSender().equals(iBan) || transaction.getReceiver().equals(iBan)) {
-                transactionList.add(transaction);
-            }
-        });
         return transactionList;
     }
 
@@ -97,6 +95,42 @@ public class TransactionService {
             logger.info("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
             throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
         }
+    }
+
+    private Iterable<Transaction> fillResponse(Filter filter) {
+        List<Transaction> result = new ArrayList<>();
+        List<Transaction> tempResult = new ArrayList<>();
+        Iterator<Transaction> tempIterator;
+
+        transactionRepository.getTransactionsBySenderOrReceiver(filter.iBan, filter.iBan).forEach(tempResult::add);
+
+        if (filter.receiverName != null) {
+            tempIterator = tempResult.iterator();
+
+            while (tempIterator.hasNext())
+            {
+                Transaction tempTransaction = tempIterator.next();
+                if (!tempTransaction.getReceiverName().equals(filter.receiverName)){
+                    tempIterator.remove();
+                }
+            }
+        }
+
+        tempResult.forEach(result::add);
+        if (filter.offset != null) {
+            if (result.isEmpty()) {
+                transactionRepository.getAllTransactionsLimit(filter.offset + filter.limit).forEach(result::add);
+                result = result.subList(filter.offset, result.size());
+            } else {
+                result = result.subList(filter.offset, result.size());
+            }
+        }
+        if (result.isEmpty()) {
+            transactionRepository.getAllTransactionsLimit(filter.limit).forEach(result::add);
+        } else {
+            result = result.subList(0, filter.limit);
+        }
+        return result;
     }
 
 }

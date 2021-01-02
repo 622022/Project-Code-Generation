@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.filter.Filter;
 import io.swagger.model.Account;
 import io.swagger.model.JsonResponse;
-import io.swagger.model.ApiError;
 import io.swagger.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.logging.Logger;
@@ -30,7 +28,7 @@ public class AccountsApiController implements IAccountsApi {
     private AccountService accountService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest request;
-    private static final Logger LOGGER = Logger.getLogger(AccountsApiController.class.getName());
+    private static final Logger logger = Logger.getLogger(AccountsApiController.class.getName());
 
     @org.springframework.beans.factory.annotation.Autowired
     public AccountsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -49,7 +47,7 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            LOGGER.warning("DeleteAccount: " + e.getMessage());
+            logger.warning("DeleteAccount: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -67,7 +65,7 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            LOGGER.warning("EditAccount: " + e.getMessage());
+            logger.warning("EditAccount: " + e.getMessage());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -88,7 +86,7 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception e) {
-            LOGGER.warning("GetAllAccounts: " + e.getMessage());
+            logger.warning("GetAllAccounts: " + e.getMessage());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -104,7 +102,7 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception e) {
-            LOGGER.warning("GetSpecificAccount: " + e.getMessage());
+            logger.warning("GetSpecificAccount: " + e.getMessage());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
         }
