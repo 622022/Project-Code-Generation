@@ -51,8 +51,8 @@ public class Filter {
     }
 
     public Filter(Integer limit, Integer offset) {
-        this.limit = limit == 0 ? null : limit;
-        this.offset = offset == 0 ? null : offset;
+        this.limit = limit;
+        this.offset =  offset;
     }
 
     public boolean onlyLimit() {
