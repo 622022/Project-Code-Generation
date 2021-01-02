@@ -1,5 +1,7 @@
 package io.swagger.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.swagger.utils.Filter;
 import io.swagger.model.api.JsonResponse;
 import io.swagger.model.content.Transaction;
@@ -18,7 +20,6 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.logging.Logger;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
@@ -28,7 +29,7 @@ public class TransactionsApiController implements ITransactionsApi {
     TransactionService transactionService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest request;
-    private static final Logger logger = Logger.getLogger(TransactionsApiController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UsersApiController.class);
 
     @org.springframework.beans.factory.annotation.Autowired
     public TransactionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -46,11 +47,12 @@ public class TransactionsApiController implements ITransactionsApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("CreateTransaction: " + e.getMessage());
+            logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -76,11 +78,12 @@ public class TransactionsApiController implements ITransactionsApi {
 
         }
         catch (IllegalArgumentException e) {
+            logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("GetTransaction: " + e.getMessage());
+            logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
