@@ -35,8 +35,6 @@ public class Account {
 public Account(){
 
 }
-  public Account(int i, int ownerId, TypeEnum saving, StatusEnum active, double transactionLimit, int dayLimit, int i1) {
-  }
 
   public Account(Integer ownerId, TypeEnum type) { // most fields are ints
     this.IBAN = generateIban();

@@ -28,7 +28,8 @@ public class UsersApiController implements IUsersApi {
     @Autowired
     private UserService userService;
 
-    private static final Logger logger = Logger.getLogger(UsersApiController.class.getName());
+
+    private static final Logger logger = LoggerFactory.getLogger(UsersApiController.class);
 
     private final ObjectMapper objectMapper;
 
@@ -49,11 +50,13 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("UserController:CreateAccount: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("CreateAccount: " + e.getMessage());
+
+            logger.warn("UserController:CreateAccount: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -71,11 +74,12 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("UserController:CreateUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("CreateUser: " + e.getMessage());
+            logger.warn("UserController:CreateUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -90,11 +94,12 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("UserController:DeleteUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("DeleteUser: " + e.getMessage());
+            logger.warn("UserController:DeleteUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -109,11 +114,12 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("UserController:EditUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("EditUser: " + e.getMessage());
+            logger.warn("UserController:EditUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -127,11 +133,12 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch (IllegalArgumentException e) {
+            logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            logger.warning("GetAccountsByUserId: " + e.getMessage());
+            logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -147,7 +154,7 @@ public class UsersApiController implements IUsersApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         }
         catch (Exception e) {
-            logger.warning("GetAllUsers: " + e.getMessage());
+            logger.warn("UserController:GetAllUsers: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
