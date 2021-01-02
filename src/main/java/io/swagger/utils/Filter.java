@@ -25,15 +25,91 @@ public class Filter {
         }
     }
 
-    public Filter(Integer limit, Integer offset) {
-        this.limit = limit==0?null:limit;
-        this.offset = offset==0?null:offset;
-    }
-
     public Filter(String iBan, Integer limit, Integer offset, String receiverName) {
         this.iBan = iBan;
         this.limit = limit;
         this.offset = offset;
         this.receiverName = receiverName;
+    }
+
+
+
+    public int getType() {
+        if (this.type == Account.TypeEnum.CHECKING) {
+            return 0;
+        } else if (this.type == Account.TypeEnum.SAVING) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int getStatus() {
+        if (this.status == Account.StatusEnum.ACTIVE) {
+            return 0;
+        } else if (this.status == Account.StatusEnum.CLOSED) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public Filter(Integer limit, Integer offset) {
+        this.limit = limit == 0 ? null : limit;
+        this.offset = offset == 0 ? null : offset;
+    }
+
+    public boolean OnlyLimit() {
+        if (this.type == null && this.status == null && this.accountOwnerId == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OnlyAccountOwnerId() {
+        if (this.accountOwnerId != null && this.type == null && this.status == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OnlyStatus() {
+        if (this.accountOwnerId == null && this.type == null && this.status != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OnlyType() {
+        if (this.accountOwnerId == null && this.type != null && this.status == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OwnerIdWStatus() {
+        if (this.accountOwnerId != null && this.type == null && this.status != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OwnerIdWType() {
+        if (this.accountOwnerId != null && this.type != null && this.status == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean StatusWType() {
+        if (this.accountOwnerId == null && this.type != null && this.status != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean OwnerIdWStatusWType() {
+        if (this.accountOwnerId != null && this.type != null && this.status != null) {
+            return true;
+        }
+        return false;
     }
 }
