@@ -3,10 +3,6 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.Role;
 import io.swagger.model.Transaction;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,34 +23,24 @@ class ITransactionsApiControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private String token;
+    private String employeeToken;
+    private ObjectMapper mapper = new ObjectMapper();
+    private Token token;
     private MockedUser loginMockedUser;
     private Transaction transaction;
     private String senderIban;
     private String receiverIban;
-    private ObjectMapper mapper = new ObjectMapper();
+
 
     @BeforeEach
     public void loginToGetToken() throws Exception {
-        //here we are performing login to get a token to pass it for authorization
-        loginMockedUser = new MockedUser("username_1", "password_1");
-        MvcResult result =
-                this.mvc
-                        .perform(post("/login")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(this.mapper.writeValueAsString(loginMockedUser)))
-                        .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        String[] responseParts = content.split("\"tokenValue\":\"");
-        String t = responseParts[1];
-        String[] clearTheToken = responseParts[1].split("\"");
-        token = "Bearer " + clearTheToken[0];
+        token = new Token(mvc, mapper);
+        employeeToken = token.getTokenFromSpecificUser("username_1", "password_1");
 
         // getting the accounts of specific user to test the transaction on them.
         MvcResult accountResults = this.mvc
                 .perform(get("/users/{userid}/accounts", "2")
-                        .header("Authorization", token))
+                        .header("Authorization", employeeToken))
                 .andReturn();
         String userAccounts = accountResults.getResponse().getContentAsString();
         try {
@@ -73,7 +59,7 @@ class ITransactionsApiControllerTest {
     public void gettingTransactionsByIbanForAccountsWithNoTransactionsReturn204Status() throws Exception {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
-                        .header("Authorization", token))
+                        .header("Authorization", employeeToken))
                 .andExpect(status().isNoContent());
     }
 
@@ -83,7 +69,7 @@ class ITransactionsApiControllerTest {
         transaction = new Transaction(senderIban, receiverIban, "username_2", 10.0, Role.EMPLOYEE);
         this.mvc
                 .perform(post("/transactions")
-                        .header("Authorization", token)
+                        .header("Authorization", employeeToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(transaction)))
                 .andExpect(status().isCreated());
@@ -94,7 +80,7 @@ class ITransactionsApiControllerTest {
     public void gettingTransactionsByIbanForAccountWithTransactionHistoryReturn201Status() throws Exception {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
-                        .header("Authorization", token))
+                        .header("Authorization", employeeToken))
                 .andExpect(status().isCreated());
     }
 }
