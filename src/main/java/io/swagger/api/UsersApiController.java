@@ -7,6 +7,8 @@ import io.swagger.model.api.UserCredentials;
 import io.swagger.model.content.User;
 import io.swagger.utils.Filter;
 import io.swagger.service.UserService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.logging.Logger;
+
 
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
@@ -29,7 +31,7 @@ public class UsersApiController implements IUsersApi {
     private UserService userService;
 
 
-    private static final Logger logger = LoggerFactory.getLogger(UsersApiController.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(UsersApiController.class);
 
     private final ObjectMapper objectMapper;
 
