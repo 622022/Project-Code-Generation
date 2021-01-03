@@ -16,3 +16,12 @@ You can view the api documentation in swagger-ui by pointing to
 http://localhost:8080/  
 
 Change default port value in application.properties
+
+#API Swagger Documentation:
+https://app.swaggerhub.com/apis-docs/EverApis/BankAPI/1.0-oas3
+
+![AccountsEndPoint](APIDocumentation/APIAccounts.jpg?raw=true "Accounts")
+
+![UsersEndPoint](APIDocumentation/APIUsers.jpg?raw=true "Users")
+
+![TransactionEndPoint](APIDocumentation/APITransaction.jpg?raw=true "Transactions")
