@@ -29,7 +29,6 @@ public interface IUsersApi {
             @ApiResponse(code = 200, message = "the account that has been made for the user.", response = Account.class)})
     @RequestMapping(value = "/users/{userId}/accounts",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<JsonResponse> createAccount(@ApiParam(value = "the userid of the user who owns these accounts", required = true) @PathVariable("userId") Integer userId
             , @Valid @RequestParam(value = "accountType", required = true) String accountType

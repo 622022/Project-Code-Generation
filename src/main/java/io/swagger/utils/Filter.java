@@ -28,7 +28,7 @@ public class Filter {
         this.iBan = iBan;
         this.limit = limit;
         this.offset = offset;
-        this.receiverName = receiverName;
+        this.receiverName = receiverName != null ? receiverName : "";
     }
 
     public int getType() {
@@ -105,20 +105,6 @@ public class Filter {
 
     public boolean ownerIdWStatusWType() {
         if (this.accountOwnerId != null && this.type != null && this.status != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean senderOrReceiver() {
-        if (this.iBan != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean receiverName() {
-        if (this.iBan != null && this.receiverName != null) {
             return true;
         }
         return false;
