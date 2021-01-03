@@ -29,7 +29,9 @@ public class TransactionService {
         if (!accountRepository.existsById(filter.iBan)) {
             throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist");
         }
-        transactionList = (List<Transaction>) fillResponse(filter);
+
+        transactionRepository.getAllTransactions(filter.iBan, filter.iBan, filter.receiverName,
+                filter.limit, filter.offset).forEach(transactionList::add);
 
         return transactionList;
     }
@@ -83,19 +85,4 @@ public class TransactionService {
             throw new IllegalArgumentException("Account sender: " + accountSender.getIBAN() + " balance cannot become lower than absolute limit: " + absoluteLimitSender);
         }
     }
-
-    private Iterable<Transaction> fillResponse(Filter filter) {
-        List<Transaction> result = new ArrayList<>();
-
-        if (filter.receiverName()) {
-            transactionRepository.getTransactionsByReceiverName(filter.iBan, filter.iBan, filter.receiverName,
-                    filter.limit, filter.offset).forEach(result::add);
-            return result;
-        } else if (filter.senderOrReceiver()) {
-            transactionRepository.getTransactionsBySenderOrReceiver(filter.iBan, filter.iBan).forEach(result::add);
-            return result;
-        }
-        return result;
-    }
-
 }

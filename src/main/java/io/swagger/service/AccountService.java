@@ -25,14 +25,11 @@ public class AccountService {
 
 
     public Account getSpecificAccount(String iBan) {
-        if (iBan.equals("")) {
-            throw new IllegalArgumentException("Invalid IBAN provided.");
+        if (!accountRepository.existsById(iBan)) {
+            throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist.");
         }
 
         Account account = accountRepository.findById(iBan).get();
-        if (account == null) {
-            throw new IllegalArgumentException("Account " + iBan + " does not exist.");
-        }
         return account;
     }
 
@@ -45,7 +42,7 @@ public class AccountService {
     }
 
     public Account editAccount(String iBan, Account updatedAccount) {
-        if (iBan.equals("") || updatedAccount == null) {
+        if (accountRepository.existsById(iBan) || updatedAccount == null) {
             throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
         accountRepository.save(updatedAccount);

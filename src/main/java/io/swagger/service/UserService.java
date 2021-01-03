@@ -81,9 +81,15 @@ public class UserService {
     public Account createAccount(int userId, String typeAccount) {
         Account.TypeEnum accountType = null;
         accountType = Account.TypeEnum.valueOf(typeAccount.toUpperCase());
+
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("User does not exist");
         }
+
+        if (accountType == null) {
+            throw new IllegalArgumentException("Invalid account type provided.");
+        }
+
         Account newAccount = new Account(userId, accountType);
         accountRepository.save(newAccount);
         return newAccount;

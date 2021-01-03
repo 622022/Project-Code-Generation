@@ -30,7 +30,6 @@ public class UsersApiController implements IUsersApi {
     @Autowired
     private UserService userService;
 
-
     private static final Logger logger = (Logger) LoggerFactory.getLogger(UsersApiController.class);
 
     private final ObjectMapper objectMapper;
@@ -88,8 +87,8 @@ public class UsersApiController implements IUsersApi {
     ) {
         try {
             userService.deleteUser(userId); // delete user from database
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
-            return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.ACCEPTED, true));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             logger.warn("UserController:DeleteUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
@@ -121,7 +120,6 @@ public class UsersApiController implements IUsersApi {
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','CUSTOMER')")
     public ResponseEntity<JsonResponse> getAccountsByUserId(@ApiParam(value = "the user who ownes these accounts", required = true) @PathVariable("userId") Integer userId
-
     ) {
         try {
             String token = request.getHeader("Authorization");
