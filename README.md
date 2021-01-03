@@ -20,8 +20,8 @@ Change default port value in application.properties
 #API Swagger Documentation:
 https://app.swaggerhub.com/apis-docs/EverApis/BankAPI/1.0-oas3
 
-![AccountsEndPoint](APIDocumentation/APIAccounts.jpg?raw=true "Accounts")
+![AccountsEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APIAccounts.JPG?raw=true "Accounts")
 
-![UsersEndPoint](APIDocumentation/APIUsers.jpg?raw=true "Users")
+![UsersEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APIUsers.jpg?raw=true "Users")
 
-![TransactionEndPoint](APIDocumentation/APITransaction.jpg?raw=true "Transactions")
+![TransactionEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APITransaction.jpg?raw=true "Transactions")
