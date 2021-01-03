@@ -72,11 +72,11 @@ class IAccountsApiControllerTest {
     }
 
     @Test
-    public void gettingNonExistingAccountReturns406Response() throws Exception {
+    public void gettingNonExistingAccountReturns200Response() throws Exception {
         this.mvc
                 .perform(get("/accounts/NL12ING01234")
                         .header("Authorization", employeeToken))
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isOk());
 
     }
 

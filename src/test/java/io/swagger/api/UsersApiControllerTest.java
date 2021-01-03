@@ -25,8 +25,6 @@ class UsersApiControllerTest {
     private Token utility;
     private User user = new User("username_10", "password_10", "email_10", Role.EMPLOYEE);
     private String employeeToken;
-    private MockedAccountType accountType;
-    private String specificUser;
 
 
     @BeforeEach
@@ -92,7 +90,7 @@ class UsersApiControllerTest {
 
     @Test
     public void creatingAccountForSpecificUserReturns201Response() throws Exception {
-        accountType = new MockedAccountType("Saving");
+        MockedAccountType accountType = new MockedAccountType("Saving");
         this.mvc
                 .perform(post("/users/{userid}/accounts/", 7)
                         .header("Authorization", employeeToken)

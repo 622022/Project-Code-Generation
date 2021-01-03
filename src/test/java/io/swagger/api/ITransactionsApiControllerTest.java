@@ -56,7 +56,7 @@ class ITransactionsApiControllerTest {
 
 
     @Test
-    public void gettingTransactionsByIbanForAccountsWithNoTransactionsReturn204Status() throws Exception {
+    public void gettingTransactionsByIbanForAccountsWithNoTransactionsReturn200Status() throws Exception {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
                         .header("Authorization", employeeToken))
@@ -77,7 +77,7 @@ class ITransactionsApiControllerTest {
 
 
     @Test
-    public void gettingTransactionsByIbanForAccountWithTransactionHistoryReturn201Status() throws Exception {
+    public void gettingTransactionsByIbanForAccountWithTransactionHistoryReturn200Status() throws Exception {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
                         .header("Authorization", employeeToken))
