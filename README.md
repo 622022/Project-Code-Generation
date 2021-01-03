@@ -22,6 +22,6 @@ https://app.swaggerhub.com/apis-docs/EverApis/BankAPI/1.0-oas3
 
 ![AccountsEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APIAccounts.JPG?raw=true "Accounts")
 
-![UsersEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APITransaction.JPG?raw=true "Users")
+![UsersEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APIUsers.JPG?raw=true "Users")
 
 ![TransactionEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APITransaction.JPG?raw=true "Transactions")
