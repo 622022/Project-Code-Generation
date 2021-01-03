@@ -25,3 +25,6 @@ https://app.swaggerhub.com/apis-docs/EverApis/BankAPI/1.0-oas3
 ![UsersEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APIUsers.JPG?raw=true "Users")
 
 ![TransactionEndPoint](https://github.com/NofalB/Project-Code-Generation/blob/master/ApiDocumentation/APITransaction.JPG?raw=true "Transactions")
+
+#Functional Test
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/45ae54859152bdb9a4d5)
