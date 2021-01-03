@@ -55,7 +55,6 @@ public class UsersApiController implements IUsersApi {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-
             logger.warn("UserController:CreateAccount: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,7 +68,6 @@ public class UsersApiController implements IUsersApi {
             UserCredentials createdUserResponse = new UserCredentials();
             userService.createUser(user);
             createdUserResponse.userId(user.getUserId().toString());
-
             JsonResponse response = new JsonResponse(createdUserResponse, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
@@ -131,7 +129,12 @@ public class UsersApiController implements IUsersApi {
             logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        }catch (SecurityException e){
+            logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);
+        }
+        catch (Exception e) {
             logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);

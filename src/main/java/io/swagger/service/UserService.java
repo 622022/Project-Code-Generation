@@ -1,14 +1,12 @@
 package io.swagger.service;
 
-import io.swagger.configuration.JwtTokenUtil;
+import io.swagger.utils.JwtTokenUtil;
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
 import io.swagger.model.content.Role;
 import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
-import io.swagger.model.api.UserCredentials;
 import io.swagger.model.content.User;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,13 +47,11 @@ public class UserService {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("User: " + userId + " does not exist");
         }
-
         if (updatedUser == null) {
             throw new IllegalArgumentException("Request body can not be null");
         }
 
         User user = userRepository.findById(userId).get();
-
         updatedUser.setUserId(userId);
         updatedUser.setRole(user.getRole());
         userRepository.save(updatedUser); // update existing user
@@ -72,8 +68,12 @@ public class UserService {
         if (user.getRole() == Role.EMPLOYEE) {
             accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
         } else if (user.getRole() == Role.CUSTOMER) {
-            userId = user.getUserId();
-            accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+           if (user.getUserId()==userId) {
+               accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+           }
+           else{
+               throw new SecurityException("Can not access accounts of the provided userid");
+           }
         }
         return accountList;
     }

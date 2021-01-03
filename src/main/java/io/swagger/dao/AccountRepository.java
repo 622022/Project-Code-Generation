@@ -36,5 +36,4 @@ public interface AccountRepository extends CrudRepository<Account, String> {
     @Query(nativeQuery = true, value = "SELECT * FROM Account a WHERE a.status = :status AND a.type = :accountType AND a.owner_id = :ownerId LIMIT :limit OFFSET :offset")
     Iterable<Account> getAccountByOwnerIdAndStatusAndTypeCustom(@Param("ownerId") Integer ownerId, @Param("status") Integer status, @Param("accountType") Integer accountType, @Param("limit") Integer limit, @Param("offset") int offset);
 
-
 }

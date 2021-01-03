@@ -1,10 +1,8 @@
 package io.swagger.configuration;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.swagger.dao.UserRepository;
 import io.swagger.model.api.JwtUserDetails;
-import io.swagger.model.content.User;
 import io.swagger.service.JwtUserDetailsService;
+import io.swagger.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
