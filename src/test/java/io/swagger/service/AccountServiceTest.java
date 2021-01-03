@@ -31,22 +31,25 @@ class AccountServiceTest {
 
     @Test
     void getSpecificAccountReturnTheRightAccount() throws Exception {
-        String accountIBAN = getAnAccountIban();
+        String accountIBAN = getAnAccount().getIBAN();
         Account account = service.getSpecificAccount(accountIBAN);
-        assertEquals(accountIBAN,account.getIBAN());
+        assertEquals(accountIBAN, account.getIBAN());
     }
+
 
     @Test
-    void deleteAccount() {
+    void editAccountMakeChangesToTheCorrectAccount() throws Exception {
+        Account account = getAnAccount();
+        account.setAmount(2525.55);
+        account.setType(Account.TypeEnum.CHECKING);
+        service.editAccount(account.getIBAN(), account);
+        Account updatedAccount = service.getSpecificAccount(account.getIBAN());
+        assertEquals(account, updatedAccount);
     }
 
-    @Test
-    void editAccount() {
-    }
-
-    private String getAnAccountIban() throws Exception {
+    private Account getAnAccount() throws Exception {
         Iterable<Account> accounts = service.getAllAccounts(filter);
-        String accountIBAN = (Iterables.get(accounts,0)).getIBAN();
-        return accountIBAN;
+        Account account = Iterables.get(accounts, 0);
+        return account;
     }
 }
