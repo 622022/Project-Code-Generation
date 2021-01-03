@@ -1,11 +1,14 @@
 package io.swagger.service;
 
+import io.swagger.configuration.JwtTokenUtil;
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.UserRepository;
+import io.swagger.model.content.Role;
 import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
 import io.swagger.model.api.UserCredentials;
 import io.swagger.model.content.User;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,12 +62,19 @@ public class UserService {
         return userRepository.findById(userId).get();
     }
 
-    public List<Account> getAccountsByUserId(Integer userId) throws Exception {
+    public List<Account> getAccountsByUserId(String token, Integer userId) throws Exception {
         if (!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("Invalid user ID provided.");
         }
+        JwtTokenUtil j = new JwtTokenUtil(userRepository);
+        User user = j.getUserFromToken(token);
         List<Account> accountList = new ArrayList<>();
-        accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+        if (user.getRole() == Role.EMPLOYEE) {
+            accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+        } else if (user.getRole() == Role.CUSTOMER) {
+            userId = user.getUserId();
+            accountList = (List<Account>) accountRepository.getAccountsByOwnerId(userId);
+        }
         return accountList;
     }
 

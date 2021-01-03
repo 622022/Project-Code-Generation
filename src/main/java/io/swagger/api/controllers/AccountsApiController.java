@@ -1,7 +1,8 @@
-package io.swagger.api;
+package io.swagger.api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
+import io.swagger.api.interfaces.IAccountsApi;
 import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
 import io.swagger.model.api.JsonResponse;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-05-21T18:10:30.703Z[GMT]")
 @Controller
@@ -44,12 +47,12 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.ACCEPTED, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
-            logger.warn("AccountController:DeleteAccount: " + e.getMessage()+":"+e.getStackTrace());
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.BAD_REQUEST, false));
+            logger.warn("AccountController:DeleteAccount: " + e.getMessage() + ":" + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled: "+ e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            logger.warn("AccountController:DeleteAccount: " + e.getMessage()+":"+e.getStackTrace());
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.INTERNAL_SERVER_ERROR, false));
+            logger.warn("AccountController:DeleteAccount: " + e.getMessage() + ":" + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,12 +66,12 @@ public class AccountsApiController implements IAccountsApi {
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
 
         } catch (IllegalArgumentException e) {
-            logger.warn("AccountController:editAccount: " + e.getMessage()+":"+e.getStackTrace());
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.BAD_REQUEST, false));
+            logger.warn("AccountController:editAccount: " + e.getMessage() + ":" + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled: "+ e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            logger.warn("AccountController:editAccount: " + e.getMessage()+":"+e.getStackTrace());
-            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled", HttpStatus.INTERNAL_SERVER_ERROR, false));
+            logger.warn("AccountController:editAccount: " + e.getMessage() + ":" + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("UnHanldled: "+ e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -85,11 +88,11 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse response = new JsonResponse(accountService.getAllAccounts(filter), new JsonResponse.UserMessage("Hanldled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            logger.warn("AccountController:getAllAccounts: " + e.getMessage()+":"+e.getStackTrace());
+            logger.warn("AccountController:getAllAccounts: " + e.getMessage() + ":" + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
         } catch (Exception e) {
-            logger.warn("AccountController:getAllAccounts: " + e.getMessage()+":"+e.getStackTrace());
+            logger.warn("AccountController:getAllAccounts: " + e.getMessage() + ":" + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -102,11 +105,17 @@ public class AccountsApiController implements IAccountsApi {
             JsonResponse response = new JsonResponse(accountService.getSpecificAccount(iBan), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            logger.warn("AccountController:getSpecificAccount: " + e.getMessage()+":"+e.getStackTrace());
+            logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + ":" + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
-        } catch (Exception e) {
-            logger.warn("AccountController:getSpecificAccount: " + e.getMessage()+":"+e.getStackTrace());
+        }
+        catch (NoSuchElementException e ){
+            logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + ":" + e.getStackTrace());
+            JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage("No account with the provided Iban: "+e.getMessage(), HttpStatus.NO_CONTENT, false));
+            return new ResponseEntity<JsonResponse>(respons, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + ":" + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
         }

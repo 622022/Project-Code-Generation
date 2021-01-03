@@ -30,9 +30,10 @@ public class JsonResponse<T> {
         this.body = body;
         UserMessage = userMessage;
     }
+
     @Override
     public String toString() {
-        return  "{" +
+        return "{" +
                 "body: " + body +
                 ", UserMessage:" + UserMessage +
                 '}';
@@ -49,7 +50,7 @@ public class JsonResponse<T> {
     }
 
 
-    static public class UserMessage{
+    static public class UserMessage {
 
 
         public String Text;
@@ -61,20 +62,24 @@ public class JsonResponse<T> {
             Status = HttpStatus.OK;
             IsSuccessful = true;
         }
+
         public UserMessage(HttpStatus status) {
             Text = "Handled";
             Status = status;
             IsSuccessful = true;
         }
+
         public UserMessage(String text, HttpStatus status, Boolean isSuccessful) {
             Text = text;
             Status = status;
             IsSuccessful = isSuccessful;
         }
+
         @JsonProperty("Text")
         public String getText() {
             return Text;
         }
+
         public void setText(String text) {
             Text = text;
         }
@@ -83,6 +88,7 @@ public class JsonResponse<T> {
         public HttpStatus getStatus() {
             return Status;
         }
+
         public void setStatus(HttpStatus status) {
             Status = status;
         }
@@ -91,6 +97,7 @@ public class JsonResponse<T> {
         public Boolean getSuccessful() {
             return IsSuccessful;
         }
+
         public void setSuccessful(Boolean successful) {
             IsSuccessful = successful;
         }

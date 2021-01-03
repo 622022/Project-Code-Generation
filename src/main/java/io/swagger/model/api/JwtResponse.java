@@ -2,8 +2,7 @@ package io.swagger.model.api;
 
 import java.io.Serializable;
 
-public class JwtResponse implements Serializable
-{
+public class JwtResponse implements Serializable {
 
     private final String jwttoken;
 

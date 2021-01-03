@@ -1,5 +1,6 @@
-package io.swagger.api;
+package io.swagger.api.controllers;
 
+import io.swagger.api.interfaces.ITransactionsApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.swagger.utils.Filter;
@@ -42,16 +43,14 @@ public class TransactionsApiController implements ITransactionsApi {
     ) {
         try {
             transactionService.createTransaction(transaction);
-            JsonResponse response = new JsonResponse(null , new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
 
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -73,16 +72,14 @@ public class TransactionsApiController implements ITransactionsApi {
                 return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
             }
 
-            JsonResponse response = new JsonResponse(transactions , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            JsonResponse response = new JsonResponse(transactions, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
 
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);

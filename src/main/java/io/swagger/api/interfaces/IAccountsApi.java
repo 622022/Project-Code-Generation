@@ -1,4 +1,4 @@
-package io.swagger.api;
+package io.swagger.api.interfaces;
 
 import io.swagger.annotations.*;
 import io.swagger.model.content.Account;

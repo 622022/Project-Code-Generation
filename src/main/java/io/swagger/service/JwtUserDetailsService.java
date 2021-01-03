@@ -14,20 +14,18 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    public  JwtUserDetailsService(UserRepository userRepository)
-    {
+    public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     private static final Logger LOGGER = Logger.getLogger(JwtUserDetailsService.class.getName());
 
 
     @Override
-    public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException
-    {
+    public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user1 = userRepository.findUserByUsername(username);
 
-        if (user1.getUsername().equals(username))
-        {
+        if (user1.getUsername().equals(username)) {
             return new JwtUserDetails(user1);
         } else {
             LOGGER.warning("User not found with username: " + username);
@@ -40,14 +38,12 @@ public class JwtUserDetailsService implements UserDetailsService {
     public JwtUserDetails loadUserByUsername(String username, String password) {
         User user = userRepository.findUserByUsername(username);
 
-        if (user == null)
-        {
+        if (user == null) {
             LOGGER.warning("Invalid username provided");
             throw new IllegalArgumentException("Invalid username provided");
         }
 
-        if (user.getUsername().equals(username) && user.getPassword().equals(password))
-        {
+        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
             return new JwtUserDetails(user);
         } else {
             LOGGER.warning("User not found with username: " + username);

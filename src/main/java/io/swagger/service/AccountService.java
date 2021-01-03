@@ -17,9 +17,8 @@ public class AccountService {
     }
 
 
-
     public Iterable<Account> getAllAccounts(Filter filter) throws Exception {
-        Iterable<Account> accounts ;
+        Iterable<Account> accounts;
         accounts = fillResponse(filter);
         return accounts;
     }

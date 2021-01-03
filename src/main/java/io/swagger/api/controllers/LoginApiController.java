@@ -1,5 +1,6 @@
-package io.swagger.api;
+package io.swagger.api.controllers;
 
+import io.swagger.api.interfaces.ILoginApi;
 import io.swagger.configuration.JwtTokenUtil;
 import io.swagger.dao.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,36 +65,21 @@ public class LoginApiController implements ILoginApi {
             final String token = jwtTokenUtil.generateToken(userDetails);
 
             UserCredentials userCredentials = new UserCredentials(userDetails.getUser().getUserId().toString(), "Bearer", token, userDetails.getUser().getRole());
-            JsonResponse response = new JsonResponse(userCredentials , new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            JsonResponse response = new JsonResponse(userCredentials, new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
 
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        }
-        catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch(UsernameNotFoundException e) {
+        } catch (UsernameNotFoundException e) {
             logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             logger.warn("LoginController:loginUser: " + e.getMessage() + " :" + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //this is not being used
-    // we should make sure if we need this method and how can we use it
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            logger.warn("LoginController:authenticate: " + e.getMessage() + " " + e.getStackTrace());
-        } catch (BadCredentialsException e) {
-            logger.warn("LoginController:authenticate: " + e.getMessage() + " " + e.getStackTrace());
         }
     }
 

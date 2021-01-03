@@ -49,12 +49,10 @@ public class TransactionService {
         if (accountSender.getOwnerId() == accountReceiver.getOwnerId()) {
             if (!accountSender.getIBAN().equals(accountReceiver.getIBAN())) {
                 makeTransaction(accountSender, accountReceiver, transaction);
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Accounts sender and receiver cannot be the same account");
             }
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Accounts sender and receiver cannot belong to different customers");
         }
     }
@@ -69,8 +67,7 @@ public class TransactionService {
 
         if (balanceSender - transactionAmount >= absoluteLimitSender) {
             if (dayLimitSender > 0) {
-                if (transactionAmount <= transactionLimitSender && transactionAmount > 0)
-                {
+                if (transactionAmount <= transactionLimitSender && transactionAmount > 0) {
                     accountSender.setAmount(balanceSender - transactionAmount); // withdraw amount from sender
                     accountReceiver.setAmount(accountReceiver.getAmount() + transactionAmount); // add amount to receiver
                     accountSender.setDayLimit(dayLimitSender - 1); // decrease day limit per transaction
@@ -92,10 +89,9 @@ public class TransactionService {
 
         if (filter.receiverName()) {
             transactionRepository.getTransactionsByReceiverName(filter.iBan, filter.iBan, filter.receiverName,
-                    filter.limit,filter.offset).forEach(result::add);
+                    filter.limit, filter.offset).forEach(result::add);
             return result;
-        }
-        else if (filter.senderOrReceiver()) {
+        } else if (filter.senderOrReceiver()) {
             transactionRepository.getTransactionsBySenderOrReceiver(filter.iBan, filter.iBan).forEach(result::add);
             return result;
         }

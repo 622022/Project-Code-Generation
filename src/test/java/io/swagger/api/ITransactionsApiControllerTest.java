@@ -60,7 +60,7 @@ class ITransactionsApiControllerTest {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
                         .header("Authorization", employeeToken))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
 
@@ -81,6 +81,6 @@ class ITransactionsApiControllerTest {
         this.mvc
                 .perform(get("/transactions?IBAN={iban}", senderIban)
                         .header("Authorization", employeeToken))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 }

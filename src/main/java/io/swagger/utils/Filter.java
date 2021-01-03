@@ -13,14 +13,13 @@ public class Filter {
     public String receiverName;
 
     public Filter(Integer limit, Integer offset, Integer accountOwnerId, String type, String status) {
-        try{
+        try {
             this.limit = limit;
             this.offset = offset;
             this.accountOwnerId = accountOwnerId;
-            this.type = type == null? null: Account.TypeEnum.valueOf(type.trim().toUpperCase()) ;
+            this.type = type == null ? null : Account.TypeEnum.valueOf(type.trim().toUpperCase());
             this.status = status == null ? null : Account.StatusEnum.valueOf(status.trim().toUpperCase());
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException("Filters were not correctly passed");
         }
     }
@@ -52,7 +51,7 @@ public class Filter {
 
     public Filter(Integer limit, Integer offset) {
         this.limit = limit;
-        this.offset =  offset;
+        this.offset = offset;
     }
 
     public boolean onlyLimit() {

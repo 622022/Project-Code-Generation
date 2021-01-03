@@ -3,6 +3,10 @@ package io.swagger.configuration;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.swagger.dao.UserRepository;
+import io.swagger.model.content.User;
+import io.swagger.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,12 +20,19 @@ import java.util.stream.Collectors;
 
 @Component
 @ComponentScan
-public class JwtTokenUtil implements Serializable
-{
+public class JwtTokenUtil implements Serializable {
 
     //60 minutes validity is being set here for the token
     public static final long JWT_TOKEN_VALIDITY = 1000 * 3600;
 
+    private UserRepository userRepository;
+
+    public JwtTokenUtil(UserRepository repo) {
+        this.userRepository = repo;
+    }
+
+    public JwtTokenUtil() {
+    }
 
     @Value("${security.jwt.token.secret-key:secret}")
     private String secret = "secret";
@@ -61,7 +72,7 @@ public class JwtTokenUtil implements Serializable
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         String username = userDetails.getUsername();
-        return doGenerateToken(claims, username,roles);
+        return doGenerateToken(claims, username, roles);
     }
 
     // while creating the token -
@@ -83,4 +94,13 @@ public class JwtTokenUtil implements Serializable
         final Collection<? extends GrantedAuthority> role = userDetails.getAuthorities();
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+
+    public User getUserFromToken(String token) {
+        token = token.substring(7);
+        String username = getUsernameFromToken(token);
+        User user = userRepository.findUserByUsername(username);
+        return user;
+    }
+
 }

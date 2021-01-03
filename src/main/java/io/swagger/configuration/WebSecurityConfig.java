@@ -20,8 +20,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter
-{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -50,11 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         return super.authenticationManagerBean();
     }
 
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**").allowedOrigins("*")
-//                .allowedMethods("HEAD", "GET", "PUT", "POST",
-//                        "DELETE", "PATCH").allowedHeaders("*");
-//    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -72,16 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/login").permitAll().
 
-                // all other requests need to be authenticated which is being done using @PreAuthorize
-//                antMatchers("/users").hasAuthority("EMPLOYEE").
-//                antMatchers("/users/{userId}/accounts").hasAnyAuthority("EMPLOYEE","CUSTOMER").
-//                antMatchers(HttpMethod.GET,"/accounts/{IBAN}").hasAuthority("EMPLOYEE").
+
                 anyRequest().authenticated().and()
                 .formLogin()
                 .loginPage("/index.html").permitAll()
                 .defaultSuccessUrl("/index.html", true);
-                // making sure we use stateless session; session won't be used to
-                // store user's state.
 
         // Adding a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
