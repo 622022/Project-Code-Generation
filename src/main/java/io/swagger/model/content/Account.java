@@ -71,6 +71,20 @@ public class Account {
         return iBan;
     }
 
+    public Account createBank() {
+        Account bank = new Account();
+        bank.IBAN = "NL01INHO0000000001";
+        bank.ownerId = 0;
+        bank.type = TypeEnum.CHECKING;
+        bank.amount = 10000000000d;
+        bank.status = StatusEnum.ACTIVE;
+        bank.transactionLimit = 10000000d;
+        bank.dayLimit = 9999;
+        bank.absolutelimit = 10000d;
+
+        return bank;
+    }
+
 
     public enum TypeEnum {
         CHECKING("CHECKING"),

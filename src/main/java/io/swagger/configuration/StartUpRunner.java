@@ -51,6 +51,8 @@ public class StartUpRunner implements ApplicationRunner {
             userList.forEach(user -> userRepository.save(user));
             transactionList.forEach(transaction -> transactionRepository.save(transaction));
 
+            accountRepository.save(new Account().createBank());
+
             userRepository
                     .findAll()
                     .forEach(user -> accountRepository.save(new Account(1000d,
