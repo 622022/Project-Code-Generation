@@ -2,6 +2,8 @@ package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
 import io.swagger.dao.TransactionRepository;
+import io.swagger.dao.UserRepository;
+import io.swagger.model.content.Role;
 import io.swagger.utils.Filter;
 import io.swagger.model.content.Account;
 import io.swagger.model.content.Transaction;
@@ -14,12 +16,13 @@ import java.util.List;
 public class TransactionService {
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
+    private UserRepository userRepository;
     private AccountService accountService;
 
-
-    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository, AccountService accountService) {
+    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository, UserRepository userRepository, AccountService accountService) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
         this.accountService = accountService;
     }
 
@@ -43,7 +46,7 @@ public class TransactionService {
 
         // check if accounts exist
         if (accountSender == null || accountReceiver == null) {
-            throw new IllegalArgumentException("Accounts sender and receiver cannot be found");
+            throw new IllegalArgumentException("Accounts sender or receiver cannot be found");
         }
 
         // one cannot directly transfer from a savings account to an account that is not of the same customer
@@ -67,14 +70,23 @@ public class TransactionService {
 
         double transactionAmount = transaction.getAmount();
 
-        if (balanceSender - transactionAmount >= absoluteLimitSender) {
-            if (dayLimitSender > 0) {
-                if (transactionAmount <= transactionLimitSender && transactionAmount > 0) {
-                    accountSender.setAmount(balanceSender - transactionAmount); // withdraw amount from sender
-                    accountReceiver.setAmount(accountReceiver.getAmount() + transactionAmount); // add amount to receiver
-                    accountSender.setDayLimit(dayLimitSender - 1); // decrease day limit per transaction
+        if (balanceSender - transactionAmount >= absoluteLimitSender) { // check if absolute limit is surpassed
+            if (dayLimitSender > 0) { // check if day limit has been surpassed
+                if (transactionAmount <= transactionLimitSender && transactionAmount > 0) { // check if transaction limit has not been reached
 
-                    transactionRepository.save(transaction);
+                    accountSender.setAmount(balanceSender - transactionAmount); // withdraw amount from sender
+                    accountSender.setDayLimit(dayLimitSender - 1); // decrease day limit per transaction
+                    accountRepository.save(accountSender); // update account sender
+
+                    accountReceiver.setAmount(accountReceiver.getAmount() + transactionAmount); // add amount to receiver
+                    accountRepository.save(accountReceiver); // update account sender
+
+                    String receiverName = userRepository.findById(accountReceiver.getOwnerId()).get().getUsername();
+                    Role performedBy = userRepository.findById(accountSender.getOwnerId()).get().getRole();
+
+                    transaction.setReceiverName(receiverName);
+                    transaction.setPerformedby(performedBy);
+                    transactionRepository.save(transaction); // save transaction
                 } else {
                     throw new IllegalArgumentException("Transaction amount must be more than 0 and cannot be higher than transaction limit: " + transactionLimitSender);
                 }

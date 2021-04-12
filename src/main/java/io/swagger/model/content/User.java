@@ -14,8 +14,6 @@ import java.util.Objects;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
-    //@SequenceGenerator(name = "guitar_seq", initialValue = 1000001, allocationSize = 1)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guitar_seq")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("userId")
