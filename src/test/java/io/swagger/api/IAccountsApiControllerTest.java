@@ -31,7 +31,7 @@ class IAccountsApiControllerTest {
     public void getFreshToken() throws Exception {
         utility = new Token(mvc, mapper);
         customerToken = utility.getTokenFromSpecificUser("username_9", "password_9");
-        employeeToken = utility.getTokenFromSpecificUser("username_1", "password_1");
+        employeeToken = utility.getTokenFromSpecificUser("username_2", "password_2");
 
         //get a valid existing account is required for some tests
         MvcResult oneAccountResult =
@@ -72,11 +72,11 @@ class IAccountsApiControllerTest {
     }
 
     @Test
-    public void gettingNonExistingAccountReturns200Response() throws Exception {
+    public void gettingNonExistingAccountReturns406Response() throws Exception {
         this.mvc
                 .perform(get("/accounts/NL12ING01234")
                         .header("Authorization", employeeToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotAcceptable());
 
     }
 

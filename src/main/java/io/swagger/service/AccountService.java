@@ -1,8 +1,13 @@
 package io.swagger.service;
 
 import io.swagger.dao.AccountRepository;
-import io.swagger.utils.Filter;
+import io.swagger.dao.UserRepository;
 import io.swagger.model.content.Account;
+import io.swagger.model.content.Role;
+import io.swagger.model.content.User;
+import io.swagger.utils.Filter;
+import io.swagger.utils.JwtTokenUtil;
+import io.swagger.utils.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,9 +16,13 @@ import java.util.List;
 @Service
 public class AccountService {
     private AccountRepository accountRepository;
+    private UserRepository userRepository;
+    private JwtTokenUtil jwtUtil = new JwtTokenUtil(userRepository);
+    private Utils utils = new Utils();
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -24,12 +33,25 @@ public class AccountService {
     }
 
 
-    public Account getSpecificAccount(String iBan) {
+    public Account getSpecificAccount(String iBan, String token) {
         if (!accountRepository.existsById(iBan)) {
             throw new IllegalArgumentException("Invalid IBAN provided. Account does not exist.");
         }
+        User userPerformingAction = jwtUtil.getUserFromToken(token);
+        Role userRole = jwtUtil.getRoleFromToken(token);
         Account account = accountRepository.findById(iBan).get();
-        return account;
+        if (userRole == Role.EMPLOYEE){
+            return account;
+        }
+        else if (userRole == Role.CUSTOMER){
+            if (utils.authorizeAccount(account,userPerformingAction)){
+                return account;
+            }
+            else {
+                throw new SecurityException("Can not access accounts of the provided userid");
+            }
+        }
+        return null;
     }
 
     public void deleteAccount(String iBan) {

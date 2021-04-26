@@ -103,12 +103,17 @@ public class UsersApiController implements IUsersApi {
             , @ApiParam(value = "") @Valid @RequestBody User user
     ) {
         try {
-            JsonResponse response = new JsonResponse(userService.editUser(userId, user), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            String token = request.getHeader("Authorization");
+            JsonResponse response = new JsonResponse(userService.editUser(userId, user, token), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             logger.warn("UserController:EditUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
+        } catch (SecurityException e){
+            logger.warn("UserController:EditUser: " + e.getMessage() + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.warn("UserController:EditUser: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
@@ -127,7 +132,7 @@ public class UsersApiController implements IUsersApi {
             logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
-        }catch (SecurityException e){
+        } catch (SecurityException e){
             logger.warn("UserController:GetAccountsByUserId: " + e.getMessage() + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);

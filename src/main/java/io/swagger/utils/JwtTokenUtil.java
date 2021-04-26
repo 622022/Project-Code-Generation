@@ -4,9 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.dao.UserRepository;
+import io.swagger.model.content.Role;
 import io.swagger.model.content.User;
-import io.swagger.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.GrantedAuthority;
@@ -101,6 +100,10 @@ public class JwtTokenUtil implements Serializable {
         String username = getUsernameFromToken(token);
         User user = userRepository.findUserByUsername(username);
         return user;
+    }
+
+    public Role getRoleFromToken(String token){
+        return getUserFromToken(token).getRole();
     }
 
 }
