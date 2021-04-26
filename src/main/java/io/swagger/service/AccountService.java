@@ -64,7 +64,7 @@ public class AccountService {
     }
 
     public Account editAccount(String iBan, Account updatedAccount) {
-        if (accountRepository.existsById(iBan) || updatedAccount == null) {
+        if (!accountRepository.existsById(iBan) || updatedAccount == null) {
             throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
         Account account = accountRepository.getAccountByIBAN(iBan);
