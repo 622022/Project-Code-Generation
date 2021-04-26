@@ -68,10 +68,10 @@ public class AccountService {
             throw new IllegalArgumentException("Invalid IBAN or account provided.");
         }
         Account account = accountRepository.getAccountByIBAN(iBan);
-        if (iBan != updatedAccount.getIBAN() || iBan != updatedAccount.getIBAN() ){
+        if ( !updatedAccount.getIBAN().equals(iBan) ){
             throw new IllegalArgumentException("You can not update the account iban");
             }
-        else if (account.getOwnerId()!= updatedAccount.getOwnerId()){
+        else if (!account.getOwnerId().equals(updatedAccount.getOwnerId()) ){
             throw new IllegalArgumentException("You can not update the account ownerId");
         }
         accountRepository.save(updatedAccount);
