@@ -23,7 +23,8 @@ class IAccountsApiControllerTest {
     private String employeeToken;
     private String customerToken;
     private Token utility;
-    private Account updatedAccount;
+    private Account updatedAccount = new Account(200.0, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
+            10.10, 50, 80.9);
     private String specificAccountIban;
 
 
@@ -90,15 +91,15 @@ class IAccountsApiControllerTest {
 
     @Test
     public void editAccountOfSpecificIbanReturns200Response() throws Exception {
-        updatedAccount = new Account(200.0, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
-                10.10, 50, 80.9);
+        updatedAccount.setIBAN(specificAccountIban);
+        updatedAccount.setOwnerId(0);
 
         this.mvc
-                .perform(put("/accounts/{Iban}", "NL16ABNA8211979442")
+                .perform(put("/accounts/{Iban}", specificAccountIban)
                         .header("Authorization", employeeToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(updatedAccount)))
-                .andExpect(status().isOk());
+                .andExpect(status().isAccepted());
 
     }
 
@@ -110,6 +111,8 @@ class IAccountsApiControllerTest {
                 )
                 .andExpect((status().isAccepted()));
     }
+
+
 
 
 }
