@@ -44,7 +44,6 @@ class IAccountsApiControllerTest {
         try {
             String[] dividedAccountResponse = ibanResponseContent.split(",");
             specificAccountIban = dividedAccountResponse[0].split(":\"")[1].substring(0, dividedAccountResponse[0].split(":\"")[1].length() - 1);
-            System.out.println(specificAccountIban);
         } catch (Exception ex) {
             System.out.println(String.format("Something went wrong reading the account object: %s", ex.getMessage()));
         }
@@ -95,7 +94,7 @@ class IAccountsApiControllerTest {
                 10.10, 50, 80.9);
 
         this.mvc
-                .perform(put("/accounts/{Iban}", specificAccountIban)
+                .perform(put("/accounts/{Iban}", "NL16ABNA8211979442")
                         .header("Authorization", employeeToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(updatedAccount)))

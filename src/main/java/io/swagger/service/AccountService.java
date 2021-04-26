@@ -17,12 +17,13 @@ import java.util.List;
 public class AccountService {
     private AccountRepository accountRepository;
     private UserRepository userRepository;
-    private JwtTokenUtil jwtUtil = new JwtTokenUtil(userRepository);
+    private JwtTokenUtil jwtUtil ;
     private Utils utils = new Utils();
 
     public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
+        this.jwtUtil = new JwtTokenUtil(userRepository);
     }
 
 

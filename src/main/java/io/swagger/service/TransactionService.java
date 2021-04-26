@@ -21,7 +21,7 @@ public class TransactionService {
     private AccountRepository accountRepository;
     private AccountService accountService;
     private UserRepository userRepository;
-    private JwtTokenUtil jwtUtil = new JwtTokenUtil(userRepository);
+    private JwtTokenUtil jwtUtil;
     private Utils utils = new Utils();
 
 
@@ -30,6 +30,7 @@ public class TransactionService {
         this.accountRepository = accountRepository;
         this.accountService = accountService;
         this.userRepository = userRepository;
+        this.jwtUtil = new JwtTokenUtil(userRepository);
     }
 
     public List<Transaction> getTransactions(Filter filter, String token) {
