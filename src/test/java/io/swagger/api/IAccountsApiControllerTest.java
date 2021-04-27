@@ -90,6 +90,14 @@ class IAccountsApiControllerTest {
     }
 
     @Test
+    public void gettingAnAccountByTheUserWhoDoesNotOwnItReturns401() throws Exception{
+        this.mvc
+                .perform(get("/accounts/{Iban}", specificAccountIban)
+                        .header("Authorization", customerToken))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void editAccountOfSpecificIbanReturns200Response() throws Exception {
         updatedAccount.setIBAN(specificAccountIban);
         updatedAccount.setOwnerId(0);

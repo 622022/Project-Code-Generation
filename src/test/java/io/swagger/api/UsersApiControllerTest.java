@@ -19,17 +19,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UsersApiControllerTest {
     @Autowired
     private MockMvc mvc;
-
     private ObjectMapper mapper = new ObjectMapper();
     private Token utility;
     private User user = new User("username_10", "password_10", "email_10", Role.EMPLOYEE);
     private String employeeToken;
+    private String customerToken;
 
 
     @BeforeEach
     public void loginToGetToken() throws Exception {
         utility = new Token(mvc, mapper);
         employeeToken = utility.getTokenFromSpecificUser("username_1", "password_1");
+        customerToken = utility.getTokenFromSpecificUser("username_9", "password_9");
     }
 
 
@@ -50,7 +51,7 @@ class UsersApiControllerTest {
     @Test
     public void deletingUserShouldReturnOK() throws Exception {
         this.mvc
-                .perform(delete("/users/{userid}", "8")
+                .perform(delete("/users/{userid}", "5")
                         .header("Authorization", employeeToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
 
@@ -69,13 +70,33 @@ class UsersApiControllerTest {
     }
 
     @Test
-    public void getUserAccountByIdShouldReturn200Response() throws Exception {
+    public void getUserAccountByIdPerformedByEmployeeShouldReturn200Response() throws Exception {
         this.mvc
                 .perform(get("/users/{userid}/accounts", "7")
                         .header("Authorization", employeeToken)
                 )
 
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUserAccountByIdPerformedByCustomerShouldReturn200Response() throws Exception {
+        this.mvc
+                .perform(get("/users/{userid}/accounts", "8")
+                        .header("Authorization", customerToken)
+                )
+
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUserAccountByIdPerformedByCustomerForDifferentCustomerShouldReturn401Response() throws Exception {
+        this.mvc
+                .perform(get("/users/{userid}/accounts", "6")
+                        .header("Authorization", customerToken)
+                )
+
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
