@@ -35,19 +35,18 @@ public class StartUpRunner implements ApplicationRunner {
         List<User> userList = new ArrayList<>();
         List<Transaction> transactionList = new ArrayList<>();
         try {
-            for (int i = 1; i < 6; i++) {
-                User user = new User("username_" + i, "password_" + i, "email_" + i, Role.EMPLOYEE);
+            for (int i = 1; i < 9; i++) {
+
+                Role userRole = i % 2 == 0 ? Role.CUSTOMER : Role.EMPLOYEE;
+
+                User user = new User("username_" + i, "password_" + i, "email_" + i, userRole);
                 userList.add(user);
 
                 Transaction transaction = new Transaction("NL12ING0123456789" + i, "NL02ABNA728391237" + i, user.getUsername(),
                         500.00 * i, Role.EMPLOYEE);
                 transactionList.add(transaction);
             }
-            //ANOTHER TESTING LOOP TO CHECK ROLES
-            for (int x = 7; x < 10; x++) {
-                User user1 = new User("username_" + x, "password_" + x, "email_" + x, Role.CUSTOMER);
-                userList.add(user1);
-            }
+
             userList.forEach(user -> userRepository.save(user));
             transactionList.forEach(transaction -> transactionRepository.save(transaction));
 
