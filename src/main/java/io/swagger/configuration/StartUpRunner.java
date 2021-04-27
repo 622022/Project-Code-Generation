@@ -38,6 +38,7 @@ public class StartUpRunner implements ApplicationRunner {
             for (int i = 1; i < 13; i++) {
                 Role r = i > 6 ? Role.CUSTOMER : Role.EMPLOYEE;
                 User user = new User("username_" + i, "password_" + i, "email_" + i, r);
+
                 userList.add(user);
                 Transaction transaction = new Transaction("NL12INHO0123456789" + i, "NL02INHO728391237" + i, user.getUsername(),
                         500.00 * i, r);
