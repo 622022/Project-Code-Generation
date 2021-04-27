@@ -22,7 +22,6 @@ public class TransactionService {
     private AccountRepository accountRepository;
     private UserRepository userRepository;
     private AccountService accountService;
-    private UserRepository userRepository;
     private JwtTokenUtil jwtUtil;
     private Utils utils = new Utils();
 

@@ -64,10 +64,8 @@ public class UsersApiController implements IUsersApi {
     public ResponseEntity<JsonResponse> createUser(@ApiParam(value = "") @Valid @RequestBody User user
     ) {
         try {
-            UserCredentials createdUserResponse = new UserCredentials();
             userService.createUser(user);
-            createdUserResponse.userId(user.getUserId().toString());
-            JsonResponse response = new JsonResponse(createdUserResponse, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
+            JsonResponse response = new JsonResponse(user, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             logger.warn("UserController:CreateUser: " + e.getMessage() + e.getStackTrace());

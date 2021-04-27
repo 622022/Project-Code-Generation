@@ -36,6 +36,15 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User can not be null.");
         }
+        else {
+            if (user.getRole()== null){
+                user.setRole(Role.CUSTOMER);
+            };
+            if (user.getEmail() == null|| user.getPassword() == null || user.getUsername() == null){
+                throw new IllegalArgumentException("Cannot create a user without an email, password or username");
+            }
+        }
+
         userRepository.save(user);
     }
 
@@ -57,11 +66,12 @@ public class UserService {
         Role userRole = jwtUtil.getRoleFromToken(token);
         User editedUser = userRepository.findById(userId).get();
         updatedUser.setUserId(userId);
+        updatedUser.setRole(editedUser.getRole());
+
         if (userRole == Role.EMPLOYEE){
             userRepository.save(updatedUser);
         } else if (userRole == Role.CUSTOMER){
             if (utils.authorizeEdit(userPerformingAction,userId)){
-                updatedUser.setRole(editedUser.getRole());
                 userRepository.save(updatedUser);
             }else {
                 throw new SecurityException("Can not access accounts of the provided userid");
