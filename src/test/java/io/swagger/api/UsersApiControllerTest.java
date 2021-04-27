@@ -82,7 +82,7 @@ class UsersApiControllerTest {
     @Test
     public void getUserAccountByIdPerformedByCustomerShouldReturn200Response() throws Exception {
         this.mvc
-                .perform(get("/users/{userid}/accounts", "8")
+                .perform(get("/users/{userid}/accounts", "9")
                         .header("Authorization", customerToken)
                 )
 
