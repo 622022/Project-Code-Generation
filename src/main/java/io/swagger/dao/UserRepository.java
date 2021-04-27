@@ -13,4 +13,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query(nativeQuery = true, value = "SELECT user_id FROM User LIMIT :limit OFFSET :offset")
     Iterable<Integer> getallUsersId(@Param("limit") int limit, @Param("offset") int offset);
 
+    User getUserByUsername(String username);
 }

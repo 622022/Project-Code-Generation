@@ -102,12 +102,19 @@ public class AccountsApiController implements IAccountsApi {
     public ResponseEntity<JsonResponse> getSpecificAccount(@ApiParam(value = "the iban of the requested account.", required = true) @PathVariable("IBAN") String iBan
     ) {
         try {
-            JsonResponse response = new JsonResponse(accountService.getSpecificAccount(iBan), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
+            String token = request.getHeader("Authorization");
+            JsonResponse response = new JsonResponse(accountService.getSpecificAccount(iBan,token), new JsonResponse.UserMessage("Handled", HttpStatus.OK, true));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + ":" + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.NOT_ACCEPTABLE, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.NOT_ACCEPTABLE);
+        }
+        catch (SecurityException e){
+            logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);
         }
         catch (NoSuchElementException e ){
             logger.warn("AccountController:getSpecificAccount: " + e.getMessage() + ":" + e.getStackTrace());

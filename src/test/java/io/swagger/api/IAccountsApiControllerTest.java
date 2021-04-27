@@ -23,7 +23,8 @@ class IAccountsApiControllerTest {
     private String employeeToken;
     private String customerToken;
     private Token utility;
-    private Account updatedAccount;
+    private Account updatedAccount = new Account(200.0, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
+            10.10, 50, 80.9);
     private String specificAccountIban;
 
 
@@ -31,7 +32,7 @@ class IAccountsApiControllerTest {
     public void getFreshToken() throws Exception {
         utility = new Token(mvc, mapper);
         customerToken = utility.getTokenFromSpecificUser("username_9", "password_9");
-        employeeToken = utility.getTokenFromSpecificUser("username_1", "password_1");
+        employeeToken = utility.getTokenFromSpecificUser("username_2", "password_2");
 
         //get a valid existing account is required for some tests
         MvcResult oneAccountResult =
@@ -44,7 +45,6 @@ class IAccountsApiControllerTest {
         try {
             String[] dividedAccountResponse = ibanResponseContent.split(",");
             specificAccountIban = dividedAccountResponse[0].split(":\"")[1].substring(0, dividedAccountResponse[0].split(":\"")[1].length() - 1);
-            System.out.println(specificAccountIban);
         } catch (Exception ex) {
             System.out.println(String.format("Something went wrong reading the account object: %s", ex.getMessage()));
         }
@@ -72,11 +72,11 @@ class IAccountsApiControllerTest {
     }
 
     @Test
-    public void gettingNonExistingAccountReturns200Response() throws Exception {
+    public void gettingNonExistingAccountReturns406Response() throws Exception {
         this.mvc
                 .perform(get("/accounts/NL12ING01234")
                         .header("Authorization", employeeToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotAcceptable());
 
     }
 
@@ -90,16 +90,24 @@ class IAccountsApiControllerTest {
     }
 
     @Test
+    public void gettingAnAccountByTheUserWhoDoesNotOwnItReturns401() throws Exception{
+        this.mvc
+                .perform(get("/accounts/{Iban}", specificAccountIban)
+                        .header("Authorization", customerToken))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void editAccountOfSpecificIbanReturns200Response() throws Exception {
-        updatedAccount = new Account(200.0, 1, Account.TypeEnum.SAVING, Account.StatusEnum.ACTIVE,
-                10.10, 50, 80.9);
+        updatedAccount.setIBAN(specificAccountIban);
+        updatedAccount.setOwnerId(0);
 
         this.mvc
                 .perform(put("/accounts/{Iban}", specificAccountIban)
                         .header("Authorization", employeeToken)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(this.mapper.writeValueAsString(updatedAccount)))
-                .andExpect(status().isOk());
+                .andExpect(status().isAccepted());
 
     }
 
@@ -111,6 +119,8 @@ class IAccountsApiControllerTest {
                 )
                 .andExpect((status().isAccepted()));
     }
+
+
 
 
 }

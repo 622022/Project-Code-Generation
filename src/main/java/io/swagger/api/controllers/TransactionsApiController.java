@@ -42,7 +42,8 @@ public class TransactionsApiController implements ITransactionsApi {
     public ResponseEntity<JsonResponse> createTransaction(@ApiParam(value = "", required = true) @Valid @RequestBody Transaction transaction
     ) {
         try {
-            transactionService.createTransaction(transaction);
+            String token = request.getHeader("Authorization");
+            transactionService.createTransaction(transaction, token);
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("Handled", HttpStatus.CREATED, true));
 
             return new ResponseEntity<JsonResponse>(response, HttpStatus.CREATED);
@@ -50,6 +51,10 @@ public class TransactionsApiController implements ITransactionsApi {
             logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse respons = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(respons, HttpStatus.BAD_REQUEST);
+        } catch (SecurityException e){
+            logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.warn("TransactionController:CreateTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));
@@ -64,8 +69,9 @@ public class TransactionsApiController implements ITransactionsApi {
             , @ApiParam(value = "Limit the number of transactions to display.", defaultValue = "20") @Valid @RequestParam(value = "limit", required = false, defaultValue = "20") Integer limit
     ) {
         try {
+            String token = request.getHeader("Authorization");
             Filter filter = new Filter(iBan, limit, offset, receiverName);
-            List<Transaction> transactions = transactionService.getTransactions(filter);
+            List<Transaction> transactions = transactionService.getTransactions(filter,token);
 
             if (transactions.isEmpty()) {
                 JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage("No transactions", HttpStatus.NO_CONTENT, false));
@@ -79,6 +85,10 @@ public class TransactionsApiController implements ITransactionsApi {
             logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.BAD_REQUEST, false));
             return new ResponseEntity<JsonResponse>(response, HttpStatus.BAD_REQUEST);
+        } catch (SecurityException e){
+            logger.warn("TransactionController:GetTransaction: " + e.getMessage() + e.getStackTrace());
+            JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.UNAUTHORIZED, false));
+            return new ResponseEntity<JsonResponse>(response, HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.warn("TransactionController:GetTransaction: " + e.getMessage() + " " + e.getStackTrace());
             JsonResponse response = new JsonResponse(null, new JsonResponse.UserMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, false));

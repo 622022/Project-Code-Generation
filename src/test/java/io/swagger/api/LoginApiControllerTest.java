@@ -32,6 +32,18 @@ class LoginApiControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void loginUnexcitingUserReturn400Response() throws Exception {
+        mapper = new ObjectMapper();
+        loginMockedUser = new MockedUser("username_99", "password_99");
+        this.mvc
+                .perform(post("/login")
+
+                        .contentType((MediaType.APPLICATION_JSON))
+                        .content(this.mapper.writeValueAsString(loginMockedUser)))
+                .andExpect(status().isBadRequest());
+    }
+
 }
 
 class MockedUser {
