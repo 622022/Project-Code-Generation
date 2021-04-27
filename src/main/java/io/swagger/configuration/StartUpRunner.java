@@ -35,15 +35,13 @@ public class StartUpRunner implements ApplicationRunner {
         List<User> userList = new ArrayList<>();
         List<Transaction> transactionList = new ArrayList<>();
         try {
-            for (int i = 1; i < 9; i++) {
+            for (int i = 1; i < 13; i++) {
+                Role r = i > 6 ? Role.CUSTOMER : Role.EMPLOYEE;
+                User user = new User("username_" + i, "password_" + i, "email_" + i, r);
 
-                Role userRole = i % 2 == 0 ? Role.CUSTOMER : Role.EMPLOYEE;
-
-                User user = new User("username_" + i, "password_" + i, "email_" + i, userRole);
                 userList.add(user);
-
-                Transaction transaction = new Transaction("NL12ING0123456789" + i, "NL02ABNA728391237" + i, user.getUsername(),
-                        500.00 * i, Role.EMPLOYEE);
+                Transaction transaction = new Transaction("NL12INHO0123456789" + i, "NL02INHO728391237" + i, user.getUsername(),
+                        500.00 * i, r);
                 transactionList.add(transaction);
             }
 

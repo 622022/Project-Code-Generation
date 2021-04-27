@@ -62,7 +62,7 @@ public class Account {
 
     public String generateIban() {
         Random rand = new Random();
-        String iBan = "NL16ABNA";
+        String iBan = "NL01INHO";
 
         for (int i = 0; i < 10; i++) {
             int accountNumber = rand.nextInt(10) + 0;
