@@ -56,19 +56,18 @@ public class UserService {
         User userPerformingAction = jwtUtil.getUserFromToken(token);
         Role userRole = jwtUtil.getRoleFromToken(token);
         User editedUser = userRepository.findById(userId).get();
-
+        updatedUser.setUserId(userId);
         if (userRole == Role.EMPLOYEE){
-            updatedUser.setUserId(userId);
             userRepository.save(updatedUser);
         } else if (userRole == Role.CUSTOMER){
             if (utils.authorizeEdit(userPerformingAction,userId)){
-                updatedUser.setUserId(userId);
                 updatedUser.setRole(editedUser.getRole());
                 userRepository.save(updatedUser);
             }else {
                 throw new SecurityException("Can not access accounts of the provided userid");
             }
         }
+        //we can simply return the created user from the previous lines but we rather retrieved from the repo because we wanted to make sure the new user is indeed saved
         return userRepository.findById(userId).get();
     }
 

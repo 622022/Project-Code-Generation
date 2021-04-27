@@ -43,7 +43,6 @@ public class TransactionService {
         Role userRole = jwtUtil.getRoleFromToken(token);
         Account userAccount = accountRepository.getAccountByIBAN(filter.iBan);
         if (userRole == Role.EMPLOYEE){
-            //Bug is found here >> iban sender and receiver have the same value filter.iBan
             transactionRepository.getAllTransactions(filter.iBan, filter.iBan, filter.receiverName,
                     filter.limit, filter.offset).forEach(transactionList::add);
         } else if (userRole == Role.CUSTOMER){
